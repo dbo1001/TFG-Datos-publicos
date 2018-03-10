@@ -3,12 +3,18 @@ from .Fuente import Fuente
 
 
 class Ine(Fuente):
+    """
+    Fuente de datos para el instituto nacional de estadística
+    """
 
     def __init__(self, tabla):
         super().__init__('ine', tabla)
 
 
 class InePoblacion(Ine):
+    """
+    Población por sexo y edad
+    """
 
     def __init__(self):
         self.url_base = 'http://www.ine.es/jaxi/files/_px/es/xls/t20/e245/p05/a2016/l0/000{}002.px?'
@@ -18,6 +24,9 @@ class InePoblacion(Ine):
 
     @staticmethod
     def new_column_names(header, nombre_subtotal, cabecera):
+        """
+        Renombra las columnas
+        """
         # La primera columna (municipio) solo aparece una vez sin modicarse
         columnas = [header[0]]
         anterior = None
@@ -33,6 +42,9 @@ class InePoblacion(Ine):
         return columnas
 
     def procesa_provincia(self, codigo_provincia):
+        """
+        Lee un documento y lo convierte en un DataFrame
+        """
         url = self.url_base.format(codigo_provincia)
         # Carga el excel sin las primeras líneas ni las últimas
         df = pd.read_excel(url, skip_footer=6)
@@ -82,6 +94,9 @@ class InePoblacion(Ine):
         return data
 
     def carga(self):
+        """
+        Devuelve un dataframe después de descargar los datos
+        """
         datos_provincias = []
 
         for provincia in self.codigo_provincias:

@@ -3,6 +3,9 @@ from .Fuente import Fuente
 
 
 class Aeat(Fuente):
+    """
+    Fuente de datos para la agencia tributaria
+    """
 
     def __init__(self, anios, tabla):
         self.url_aeat = 'http://www.agenciatributaria.es/AEAT/Contenidos_Comunes/La_Agencia_Tributaria/Estadisticas/Publicaciones/sites/'
@@ -11,6 +14,9 @@ class Aeat(Fuente):
 
     @staticmethod
     def procesa_datos(url):
+        """
+        Lee un documento y lo convierte en un DataFrame
+        """
         df = pd.read_html(url)[0]
         # Cambia el nombre de la primera columna
         df.rename(columns={'Unnamed: 0': 'Municipio'}, inplace=True)
@@ -21,6 +27,9 @@ class Aeat(Fuente):
         return df
 
     def carga(self):
+        """
+        Devuelve un dataframe después de descargar los datos
+        """
         dataframes = []
         for anio, url in self.urls:
             url = self.url_aeat + url
@@ -33,6 +42,9 @@ class Aeat(Fuente):
 
 
 class AeatRenta(Aeat):
+    """
+    Estadísticas de la renta por municipio
+    """
 
     def __init__(self):
         anios = (
