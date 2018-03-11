@@ -1,5 +1,5 @@
 import pandas as pd
-from .Fuente import Fuente
+from fuentes.Fuente import Fuente
 
 
 class Aeat(Fuente):
