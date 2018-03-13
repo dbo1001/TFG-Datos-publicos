@@ -4,7 +4,7 @@ from fuentes.Fuente import Fuente
 
 class Sepe(Fuente):
     """
-    Fuente de datos para el Servucuo Público de Empleo Estatal
+    Fuente de datos para el Servicio Público de Empleo Estatal
     """
 
     def __init__(self, url, anios, tabla):
