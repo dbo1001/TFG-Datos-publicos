@@ -20,7 +20,7 @@ def todas_columnas():
     for fuente in todas_fuentes():
         cols = columnas_coleccion(fuente)
         columnas.extend(cols)
-    return columnas
+    return set(columnas)
 
 
 def columnas_coleccion(coleccion):
