@@ -5,9 +5,9 @@
 
 {% block page_content %}
     {{ wtf.quick_form(form) }}
+{% endblock %}
 
-    {% block scripts %}
-        {{ super() }}
-        <script src="{{ url_for('.static', filename='js/actualiza-columnas.js') }}"></script>
-    {% endblock %}
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for('.static', filename='js/actualiza-columnas.js') }}"></script>
 {% endblock %}
