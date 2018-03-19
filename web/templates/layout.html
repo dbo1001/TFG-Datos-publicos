@@ -3,8 +3,34 @@
 {% block title %}TFG Datos Públicos{% endblock %}
 
 
+{# Lista de páginas en el menú #}
+{% set navigation_bar = [
+    ('index', 'Inicio'),
+    ('consulta', 'Consulta')
+] -%}
+
+{# Página por defecto para marcar la pestaña activa en el menú #}
+{% set active_page = active_page|default('index') -%}
+
+{# Menú #}
+{% block navbar %}
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <ul class="nav navbar-nav">
+            {% for pagina, texto in navigation_bar %}
+            <li{% if active_page == pagina %} class="active"{% endif %}>
+                <a href="{{ url_for(pagina) }}">{{ texto }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</nav>
+
+{% endblock %}
+
 {% block content %}
 
+    <div class="container">
     {# Alertas #}
     {% for message in get_flashed_messages() %}
         <div class="alert alert-warning">
@@ -15,4 +41,5 @@
 
     {# Contenido #}
     {% block page_content %}{% endblock %}
+    </div>
 {% endblock %}
