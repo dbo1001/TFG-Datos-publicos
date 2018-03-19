@@ -8,10 +8,6 @@ $(function() {
 
     // Actualiza las columnas al seleccionar una fuente
     function actualizaColumnas() {
-        var send = {
-            fuente: fuente.val()
-        };
-
         columna.attr('disabled', 'disabled');
         columna.empty();
 
