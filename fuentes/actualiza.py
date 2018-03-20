@@ -6,8 +6,9 @@ def actualiza_fuentes(config):
         database=config.MONGO_DBNAME,
         host=config.MONGO_HOST,
         port=config.MONGO_PORT,
-        username=None,
-        password=None
+        username=config.MONGO_USERNAME,
+        password=config.MONGO_PASSWORD,
+        authSource=config.MONGO_DBNAME
     )
 
     # Carga los dataframes de cada fuente de datos
