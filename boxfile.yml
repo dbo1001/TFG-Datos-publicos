@@ -1,0 +1,18 @@
+# Motor a utilizar
+run.config:
+  engine: python
+  engine.config:
+    runtime: python-3.6
+  # Dependencias de pandas
+  extra_packages:
+    - libxml2
+    - libxslt
+
+# Base de datos
+data.db:
+  image: nanobox/mongodb:3.4
+
+# Arranca el servidor
+web.main:
+  start:
+    flask: gunicorn -b 0.0.0.0:8080 run:app
