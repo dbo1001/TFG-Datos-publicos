@@ -1,5 +1,5 @@
 import pandas as pd
-from fuentes.Fuente import Fuente
+from fuentes.Fuente import Fuente, to_numeric
 
 
 class Aeat(Fuente):
@@ -17,7 +17,7 @@ class Aeat(Fuente):
         """
         Lee un documento y lo convierte en un DataFrame
         """
-        df = pd.read_html(url)[0]
+        df = pd.read_html(url, thousands='.')[0]
         # Cambia el nombre de la primera columna
         df.rename(columns={'Unnamed: 0': 'Municipio'}, inplace=True)
         # Elimina el total, comunidades y provincias
@@ -26,6 +26,7 @@ class Aeat(Fuente):
         df['Municipio'] = df['Municipio'].str.split('-').str[0]
         return df
 
+    @to_numeric
     def carga(self):
         """
         Devuelve un dataframe después de descargar los datos

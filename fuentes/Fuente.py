@@ -1,4 +1,6 @@
 from abc import abstractmethod
+from functools import wraps
+import pandas as pd
 
 
 class Fuente:
@@ -23,3 +25,14 @@ class Fuente:
         Devuelve el nombre de la colección
         """
         return '_'.join([self._fuente, self._tabla])
+
+
+def to_numeric(f):
+    """
+    Decorador que convierte todas las columnas
+    que sean números (como strings) a números.
+    """
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        return f(*args, **kwargs).apply(pd.to_numeric, errors='ignore')
+    return wrapper
