@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, SubmitField
-from wtforms.validators import DataRequired
+from wtforms.validators import Optional
 
 
 class Consulta(FlaskForm):
@@ -11,8 +11,8 @@ class Consulta(FlaskForm):
 
     fuente = SelectField('Fuente de datos', choices=[], id='select_fuente')
     columna_filtro = SelectField('Columna', choices=[], id='select_columna')
-    comparador = SelectField('Comparador', choices=comparadores)
-    valor = StringField('Valor', validators=[DataRequired()])
+    comparador = SelectField('Comparador', choices=comparadores, validators=[Optional()], id='select_comparador')
+    valor = StringField('Valor', id='select_valor')
 
     submit = SubmitField('Consultar')
 

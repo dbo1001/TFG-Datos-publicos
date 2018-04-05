@@ -16,7 +16,7 @@ def todas_columnas():
     """
     Lista todas las columnas de todas las fuentes
     """
-    columnas = []
+    columnas = ['Todas']
     for fuente in todas_fuentes():
         cols = columnas_coleccion(fuente)
         columnas.extend(cols)
@@ -27,22 +27,26 @@ def columnas_coleccion(coleccion):
     """
     Lista todas las columnas de una colección
     """
-    return list(mongo.db[coleccion].find_one().keys())[1:]
+    return list(mongo.db[coleccion].find_one().keys())[1:] + ['Todas']
 
 
 def consulta(fuente, columna, comparador, valor):
     """
     Devuelve el dataframe de la consulta
     """
-    if comparador == '$eq':
-        busqueda = re.compile(valor, re.IGNORECASE)
+    if columna == 'Todas':
+        # Mustra todas las filas
+        filtro = {}
     else:
-        valor = float(valor)
-        busqueda = {comparador: valor}
+        if comparador == '$eq':
+            busqueda = re.compile(valor, re.IGNORECASE)
+        else:
+            valor = float(valor)
+            busqueda = {comparador: valor}
 
-    filtro = {
-        columna: busqueda
-    }
+        filtro = {
+            columna: busqueda
+        }
 
     cursor = mongo.db[fuente].find(filtro)
     df = pd.DataFrame.from_records(cursor, exclude=['_id'])
