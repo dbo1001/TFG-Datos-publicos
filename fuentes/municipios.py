@@ -2,7 +2,7 @@ import pandas as pd
 from fuentes.Fuente import Fuente
 
 
-class CodigosMunicipios(Fuente):
+class Municipios(Fuente):
     """
     Obtiene el código de cada municipio
     """
@@ -28,4 +28,4 @@ class CodigosMunicipios(Fuente):
         """
         Nombre de la colección donde se guardan los codigos
         """
-        return 'codigos'
+        return 'municipios'
