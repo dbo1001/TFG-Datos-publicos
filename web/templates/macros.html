@@ -1,0 +1,13 @@
+{# Campos de entrada #}
+{% macro input(e) %}
+<div class="form-group">
+    {{ e.label }} {{ e(class="form-control", **kwargs) }}
+</div>
+{% endmacro %}
+
+{# Botones de formularios #}
+{% macro button(btn, clase='btn btn-default') %}
+<div class="form-group">
+    {{ btn(class=clase, **kwargs) }}
+</div>
+{% endmacro %}

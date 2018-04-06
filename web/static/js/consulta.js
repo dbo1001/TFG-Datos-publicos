@@ -9,52 +9,55 @@ $(function() {
      */
     var fuente = $("#select_fuente");
     var columna = $("#select_columna");
+    var mostrar = $("#select_mostrar");
     var comparador = $("#select_comparador");
     var valor = $("#select_valor");
 
-    function activaComparador() {
-        comparador.removeAttr("disabled");
-        valor.removeAttr("disabled");
-    }
-
-    function desactivaComparador() {
-        comparador.attr("disabled", true);
-        valor.attr("disabled", true);
+    function actualizaComparador() {
+        if (columna.val() == "Todas") {
+            // Desactiva el comparador
+            comparador.attr("disabled", true);
+            valor.attr("disabled", true);
+        } else {
+            // Activa el comparador
+            comparador.removeAttr("disabled");
+            valor.removeAttr("disabled");
+        }
     }
 
     // Actualiza las columnas al seleccionar una fuente
-    function actualizaColumnas() {
-        columna.attr("disabled", true);
-        columna.empty();
+    function actualizaColumnas(selector) {
+        // Limpia las columnas
+        selector.attr("disabled", true);
+        selector.empty();
 
         // Envía la fuente y recibe las columnas de esta fuente
         $.getJSON("/api/actualiza_columnas/" + fuente.val(), function(data) {
             data.forEach(function(item) {
-                columna.append(
+                selector.append(
                     $("<option>", {
                         value: item,
                         text: item
                     })
                 );
             });
-            columna.removeAttr("disabled");
+            selector.removeAttr("disabled");
+            actualizaComparador();
         });
     }
 
     // Llama primero al cargar la página
-    actualizaColumnas();
+    actualizaColumnas(columna);
+    actualizaColumnas(mostrar);
 
     // Actualiza cada vez que cambie el valor de fuente
     fuente.on("change", function() {
-        actualizaColumnas();
+        actualizaColumnas(columna);
+        actualizaColumnas(mostrar);
     });
 
     columna.on("change", function() {
-        if (columna.val() == "Todas") {
-            desactivaComparador();
-        } else {
-            activaComparador();
-        }
+        actualizaComparador();
     });
 
 });

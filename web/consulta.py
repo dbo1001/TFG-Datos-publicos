@@ -27,10 +27,10 @@ def columnas_coleccion(coleccion):
     """
     Lista todas las columnas de una colección
     """
-    return list(mongo.db[coleccion].find_one().keys())[1:] + ['Todas']
+    return ['Todas'] + list(mongo.db[coleccion].find_one().keys())[1:]
 
 
-def consulta(fuente, columna, comparador, valor):
+def consulta(fuente, columna, mostrar, comparador, valor):
     """
     Devuelve el dataframe de la consulta
     """
@@ -48,7 +48,11 @@ def consulta(fuente, columna, comparador, valor):
             columna: busqueda
         }
 
-    cursor = mongo.db[fuente].find(filtro)
+    # Si no se ha seleccionado una columna a mostrar, muestra todas
+    if not mostrar:
+        mostrar = None
+
+    cursor = mongo.db[fuente].find(filtro, mostrar)
     df = pd.DataFrame.from_records(cursor, exclude=['_id'])
 
     return df

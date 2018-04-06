@@ -1,10 +1,31 @@
 {% extends 'layout.html' %}
 {% import 'bootstrap/wtf.html' as wtf %}
+{% from "macros.html" import input, button %}
 
 {% set active_page = 'consulta' %}
 
 {% block page_content %}
-    {{ wtf.quick_form(form) }}
+    <div class="panel panel-default row">
+        <div class="panel-heading">
+            Consulta
+        </div>
+        <div class="panel-body">
+            <form method="post" action="" class="form">
+                <div class="col-sm-8">
+                    {{ form.csrf_token }}
+                    {{ input(form.fuente) }}
+                    {{ input(form.columna_filtro) }}
+                    {{ input(form.comparador) }}
+                    {{ input(form.valor) }}
+                    {{ button(form.submit) }}
+                </div>
+
+                <div class="col-sm-4">
+                    {{ input(form.columna_mostrar, size=15) }}
+                </div>
+            </form>
+        </div>
+    </div>
 {% endblock %}
 
 {% block scripts %}

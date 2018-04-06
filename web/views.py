@@ -24,6 +24,7 @@ def consulta():
     if form.validate_on_submit():
         datos = web.consulta.consulta(fuente=form.fuente.data,
                                       columna=form.columna_filtro.data,
+                                      mostrar=form.columna_mostrar.data,
                                       comparador=form.comparador.data,
                                       valor=form.valor.data)
         if datos.empty:
