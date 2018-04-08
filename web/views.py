@@ -1,8 +1,7 @@
 from flask import abort, render_template, redirect, request, flash, url_for, jsonify, make_response
-from web import app, mongo
+from web import app
 from web.forms.consulta import Consulta
 import web.consulta
-import pandas as pd
 
 
 @app.route('/')
