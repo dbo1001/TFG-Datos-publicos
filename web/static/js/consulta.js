@@ -34,6 +34,10 @@ $(function() {
         // Envía la fuente y recibe las columnas de esta fuente
         $.getJSON("/api/actualiza_columnas/" + fuente.val(), function(data) {
             data.forEach(function(item) {
+                // No muestra "Todas" en el selector de columna a mostrar
+                if (item === "Todas" && selector === mostrar) {
+                    return;
+                }
                 selector.append(
                     $("<option>", {
                         value: item,
