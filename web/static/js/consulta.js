@@ -14,7 +14,7 @@ $(function() {
     var valor = $("#select_valor");
 
     function actualizaComparador() {
-        if (columna.val() == "Todas") {
+        if (columna.val() === "Todas") {
             // Desactiva el comparador
             comparador.attr("disabled", true);
             valor.attr("disabled", true);

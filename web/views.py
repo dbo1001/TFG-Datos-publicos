@@ -1,4 +1,4 @@
-from flask import render_template, redirect, request, flash, url_for, jsonify
+from flask import render_template, redirect, flash, url_for, jsonify
 from web import app, mongo
 from web.forms.consulta import Consulta
 import web.consulta
