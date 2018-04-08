@@ -50,18 +50,3 @@ def descarga(datos):
     Muestra una cadena de texto
     """
     return datos
-
-
-@app.route('/renta-burgos')
-def renta_burgos():
-    """
-    Ejemplo de consulta
-    """
-    fuente = 'aeat_renta'
-    filtro = {
-        'Municipio': 'Burgos',
-        'RENTA BRUTA MEDIA': {'$lte': 26}
-    }
-    cursor = mongo.db[fuente].find(filtro)
-    df = pd.DataFrame.from_records(cursor, exclude=['_id'])
-    return df.to_html()
