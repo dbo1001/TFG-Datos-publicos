@@ -3,5 +3,18 @@
 {% set active_page = 'consulta' %}
 
 {% block page_content %}
-    {{ datos|safe }}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Consulta
+        </div>
+        <div class="panel-body">
+            <p>
+                <a class="btn btn-default" href="{{ url_for('descarga', datos=datos.to_csv()) }}" download="consulta.csv">Descargar csv</a>
+                <a class="btn btn-default" href="{{ url_for('descarga', datos=datos.to_json()) }}" download="consulta.json">Descargar json</a>
+            </p>
+            <div class="scrollable">
+                {{ datos.to_html(classes=['table', 'table-bordered', 'table-striped', 'table-hover', 'table-condensed'])|safe }}
+            </div>
+        </div>
+    </div>
 {% endblock %}

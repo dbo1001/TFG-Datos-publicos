@@ -1,7 +1,10 @@
 {% extends 'bootstrap/base.html' %}
 {% block html_attribs %} lang="es"{% endblock %}
 {% block title %}TFG Datos Públicos{% endblock %}
-
+{% block head %}
+    {{ super() }}
+    <link href="{{ url_for('.static', filename='css/style.css') }}" rel="stylesheet">
+{% endblock %}
 
 {# Lista de páginas en el menú #}
 {% set navigation_bar = [

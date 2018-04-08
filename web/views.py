@@ -1,4 +1,4 @@
-from flask import render_template, redirect, flash, url_for, jsonify
+from flask import render_template, redirect, request, flash, url_for, jsonify
 from web import app, mongo
 from web.forms.consulta import Consulta
 import web.consulta
@@ -31,7 +31,7 @@ def consulta():
             flash('No hay resultados.')
             return redirect(url_for('consulta'))
         return render_template('resultados-consulta.html',
-                               datos=datos.to_html())
+                               datos=datos)
     return render_template('consulta.html', form=form)
 
 
@@ -42,6 +42,14 @@ def actualiza_columnas(fuente):
     """
     columnas = web.consulta.columnas_coleccion(fuente)
     return jsonify(columnas)
+
+
+@app.route('/consulta/descarga/<datos>')
+def descarga(datos):
+    """
+    Muestra una cadena de texto
+    """
+    return datos
 
 
 @app.route('/renta-burgos')
