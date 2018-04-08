@@ -1,4 +1,3 @@
-import requests
 import pandas as pd
 
 
@@ -9,7 +8,7 @@ def new_column_names(header, nombre_subtotal, cabecera):
     anterior = None
 
     for nombre, tipo in zip(header[1:], cabecera[1:]):
-        if type(tipo) is str:
+        if isinstance(tipo, str):
             anterior = tipo
         else:
             tipo = anterior
@@ -51,7 +50,7 @@ def procesa_provincia(codigo_provincia, url_provincia):
         sub_data.append(df[(df.index > ini) & (df.index < fin - 1)])
 
     # Cambia las columnas de cada subdata
-    for data, nombre, index in zip(sub_data, sub_nombre, sub_index):
+    for data, nombre, _ in zip(sub_data, sub_nombre, sub_index):
         new_columns = new_column_names(data.columns, nombre, cabecera)
         data.columns = new_columns
 
