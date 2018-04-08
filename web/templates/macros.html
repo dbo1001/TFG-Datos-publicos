@@ -11,3 +11,8 @@
     {{ btn(class=clase, **kwargs) }}
 </div>
 {% endmacro %}
+
+{# Botón para descargar la consulta en cierto formato #}
+{% macro descarga_consulta(formato) %}
+<a class="btn btn-default" href="#" onclick="descargaConsulta('{{ formato }}')">{{ formato }}</a>
+{% endmacro %}

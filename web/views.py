@@ -1,4 +1,4 @@
-from flask import render_template, redirect, flash, url_for, jsonify
+from flask import abort, render_template, redirect, request, flash, url_for, jsonify, make_response
 from web import app, mongo
 from web.forms.consulta import Consulta
 import web.consulta
@@ -18,6 +18,7 @@ def consulta():
     """
     Formulario de consulta
     """
+    cookies_descarga = request.cookies.get('descarga')
     columnas = web.consulta.todas_columnas()
     fuentes = web.consulta.todas_fuentes()
     form = Consulta(fuentes=fuentes, columnas=columnas)
@@ -30,6 +31,9 @@ def consulta():
         if datos.empty:
             flash('No hay resultados.')
             return redirect(url_for('consulta'))
+        # Descarga los datos
+        if cookies_descarga:
+            return descarga_consulta(datos, cookies_descarga)
         return render_template('resultados-consulta.html',
                                datos=datos)
     return render_template('consulta.html', form=form)
@@ -44,9 +48,18 @@ def actualiza_columnas(fuente):
     return jsonify(columnas)
 
 
-@app.route('/consulta/descarga/<datos>')
-def descarga(datos):
+def descarga_consulta(datos, formato):
     """
-    Muestra una cadena de texto
+    Descarga un dataframe en el formato especificado
     """
-    return datos
+    if formato == 'csv':
+        contenido = datos.to_csv()
+    elif formato == 'json':
+        contenido = datos.to_json()
+    else:
+        return abort(403)
+    resp = make_response(contenido)
+    resp.headers['Content-type'] = 'text/{}'.format(formato)
+    resp.headers["Content-Disposition"] = 'attachment; filename=consulta.{}'.format(formato)
+    resp.set_cookie('descarga', '')
+    return resp
