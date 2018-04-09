@@ -36,3 +36,15 @@ def to_numeric(f):
     def wrapper(*args, **kwargs):
         return f(*args, **kwargs).apply(pd.to_numeric, errors='ignore')
     return wrapper
+
+
+def rename(columnas):
+    """
+    Decorador que renombra los nombres de las columnas.
+    """
+    def decorator(f):
+        @wraps(f)
+        def wrapper(*args, **kwargs):
+            return f(*args, **kwargs).rename(columns=columnas)
+        return wrapper
+    return decorator
