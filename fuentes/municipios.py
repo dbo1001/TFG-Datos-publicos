@@ -1,5 +1,5 @@
 import pandas as pd
-from fuentes.Fuente import Fuente
+from fuentes.Fuente import Fuente, rename
 
 
 class Municipios(Fuente):
@@ -7,10 +7,16 @@ class Municipios(Fuente):
     Obtiene el código de cada municipio
     """
 
+    renombrar = {
+        'Codigo municipio': 'Codigo municipio (local)',
+        'Codigo': 'Codigo Municipio'
+    }
+
     def __init__(self):
         self.url = 'http://www.ine.es/daco/daco42/codmun/codmun18/18codmun.xlsx'
         super().__init__('codigos', 'municipios')
 
+    @rename(renombrar)
     def carga(self):
         """
         Devuelve el Dataframe con los códigos
