@@ -111,6 +111,9 @@ class InePoblacion(Ine):
         # Elimina el código del municipio
         datos['Codigo Municipio'], datos['Municipio'] = datos['Municipio'].str.split('-', 1).str
 
+        # Elimina los espacios en el código de municipio
+        datos['Codigo Municipio'] = datos['Codigo Municipio'].str.strip()
+
         # Elimina el índice que se ha generado al juntar los dataframes
         datos = datos.reset_index(drop=True)
 
