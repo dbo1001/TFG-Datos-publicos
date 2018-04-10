@@ -14,5 +14,10 @@ function descargaConsulta(formato) {
 
 $(function (){
     // Carga el plugin dynatable para mostrar tablas bonitas
-    $('table').dynatable();
+    $('table').dynatable({
+        // Desactiva los parámetros en la url
+        features: {
+            pushState: false
+        }
+    });
 });
