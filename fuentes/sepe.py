@@ -1,11 +1,16 @@
 import pandas as pd
-from fuentes.Fuente import Fuente
+from fuentes.Fuente import Fuente, rename
 
 
 class Sepe(Fuente):
     """
     Fuente de datos para el Servicio Público de Empleo Estatal
     """
+
+    renombrar = {
+        'mes': 'Fecha',
+        ' Municipio': 'Municipio'
+    }
 
     def __init__(self, url, anios, tabla):
         url_sepe = 'https://sede.sepe.gob.es/es/portaltrabaja/resources/sede/datos_abiertos/datos/'
@@ -20,6 +25,7 @@ class Sepe(Fuente):
         df.drop('Código mes ', axis=1, inplace=True)
         return df
 
+    @rename(renombrar)
     def carga(self):
         dataframes = []
         for anio in self.anios:
@@ -28,11 +34,6 @@ class Sepe(Fuente):
             dataframes.append(df)
             print(url)
         df = pd.concat(dataframes)
-        # Renombra columnas
-        df.rename({
-            'mes': 'Fecha',
-            ' Municipio': 'Municipio'
-        })
         # Restaura los índices
         df = df.reset_index(drop=True)
         return df
