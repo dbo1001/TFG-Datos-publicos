@@ -6,6 +6,7 @@ from fuentes.sepe import SepeContratos, SepeEmpleo, SepeParo
 
 # Lista de todas las fuentes disponibles
 fuentes = [
+    Municipios,
     AeatRenta,
     InePoblacion,
     SepeContratos,

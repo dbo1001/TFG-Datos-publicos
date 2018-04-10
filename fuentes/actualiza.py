@@ -1,4 +1,4 @@
-from fuentes import Database, Municipios, fuentes
+from fuentes import Database, fuentes
 import pandas as pd
 
 
@@ -15,7 +15,9 @@ def actualiza_fuentes(config):
         authSource=config.MONGO_DBNAME
     )
 
-    municipios = carga_fuente(Municipios, db)
+    # Carga los municipios con sus códigos
+    fuente_municipios = fuentes.pop(0)
+    municipios = carga_fuente(fuente_municipios, db)
     codigos = municipios.loc[:, ['Municipio', 'Codigo Municipio']]
 
     # Carga los dataframes de cada fuente de datos
