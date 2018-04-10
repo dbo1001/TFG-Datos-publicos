@@ -1,6 +1,11 @@
 {% extends 'layout.html' %}
 {% from "macros.html" import descarga_consulta %}
 
+{% block head %}
+    {{ super() }}
+    <link href="//cdnjs.cloudflare.com/ajax/libs/Dynatable/0.3.1/jquery.dynatable.min.css" rel="stylesheet">
+{% endblock %}
+
 {% set active_page = 'consulta' %}
 
 {% block page_content %}
@@ -24,4 +29,5 @@
 {% block scripts %}
     {{ super() }}
     <script src="{{ url_for('.static', filename='js/resultados-consulta.js') }}"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/Dynatable/0.3.1/jquery.dynatable.min.js"></script>
 {% endblock %}

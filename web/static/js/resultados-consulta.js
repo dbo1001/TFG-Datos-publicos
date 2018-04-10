@@ -11,3 +11,8 @@ function descargaConsulta(formato) {
     // Recarga la página
     window.location.reload(true);
 }
+
+$(function (){
+    // Carga el plugin dynatable para mostrar tablas bonitas
+    $('table').dynatable();
+});
