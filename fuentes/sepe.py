@@ -34,6 +34,8 @@ class Sepe(Fuente):
             dataframes.append(df)
             print(url)
         df = pd.concat(dataframes)
+        # Convierte los códigos a string con 5 dígitos
+        df['Codigo Municipio'] = df['Codigo Municipio'].astype(str).str.zfill(5)
         # Restaura los índices
         df = df.reset_index(drop=True)
         return df
