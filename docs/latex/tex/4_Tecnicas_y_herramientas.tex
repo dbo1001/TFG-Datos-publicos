@@ -22,3 +22,27 @@ MongoDB es un sistema de bases de datos NoSQL. En esta herramienta los datos se 
 Tanto Riak como Cassandra son también bases de datos NoSQL, se descartaron porque no ofrecen soportes para equipo con sistema operativo windows. 
 
 LevelDB es una base de datos NoSQL de pares clave-valor, esta herramienta se descartó porque no se cree conveniente utilizar pares clave-valor para un proyecto como este y no hay tantos ejemplos en la documentación como en las otras herramientas.
+
+\subsection{DigitalOcean}
+
+\begin{itemize}
+	\tightlist
+	\item
+	Herramientas consideradas:
+	\href{https://www.heroku.com/}{Heroku}, 
+	\href{https://www.pythonanywhere.com/}{PythonAnywhere},
+	\href{https://www.digitalocean.com/}{DigitalOcean}, 
+	\href{https://aws.amazon.com/es/}{Amazon Web Services}.
+	\item
+	Herramienta elegida:
+	\href{https://www.digitalocean.com/}{DigitalOcean}.
+\end{itemize}
+
+DigitalOcean es un proveedor de servidores privados, por ello podemos hacer lo que queramos con el servidor sin limitaciones más allá de la capacidad de procesamiento y memoria ram. Se ha elegido este servicio porque nos da total libertad y se puede probar gratuitamente con \href{https://education.github.com/}{GitHub Education}.
+
+Una alternativa que se consideró y de hecho, se probó es Heroku, en este caso se instala el entorno necesario de forma automática. El problema es que la base de datos en la capa gratuita sólo puede pesar 500MB como máximo y no es suficiente para este proyecto.
+
+PythonAnywhere es un hosting para aplicaciones web en python, el problema con este proveedor es que no ofrece bases de datos locales, por lo que habría que utilizar una remota. La única gratuita que se ha encontrado es \href{https://mlab.com/}{mLab}, la misma que usa Heroku, por lo que volvemos al mismo problema del límite de tamaño.
+
+Por último, se consideró utilizar una instancia de \href{https://aws.amazon.com/es/ec2/}{Amazon AWS EC2}. Es muy similar a DigitalOcean, se eligió el primero porque es más sencillo de utilizar.
+
