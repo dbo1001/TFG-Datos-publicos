@@ -1,3 +1,16 @@
+/* Scroll horizontal */
 .scrollable {
     overflow-y: scroll;
+}
+
+/* Logo de github */
+.github-mark:before {
+    content: "";
+    float: left;
+    width: 24px;
+    height: 24px;
+    margin: -2px 8px 0 0;
+    filter: invert(100%);
+    background-image: url("../imagenes/github-mark.svg");
+    background-size: 24px 24px;
 }
