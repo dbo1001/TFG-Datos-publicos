@@ -7,10 +7,10 @@ class Aeat(Fuente):
     Fuente de datos para la agencia tributaria
     """
 
-    def __init__(self, anios, tabla):
+    def __init__(self, anios, tabla, descripcion):
         self.url_aeat = 'http://www.agenciatributaria.es/AEAT/Contenidos_Comunes/La_Agencia_Tributaria/Estadisticas/Publicaciones/sites/'
         self.urls = anios
-        super().__init__('aeat', tabla)
+        super().__init__('aeat', tabla, descripcion)
 
     @staticmethod
     def procesa_datos(url):
@@ -53,4 +53,5 @@ class AeatRenta(Aeat):
             (2014, 'irpfmunicipios/2014/jrubik4e93d46e7e85aa3dd4296c3fb35c28a0723d87a0.html'),
             (2015, 'irpfmunicipios/2015/jrubik1ba3b6ffb879f0b4654305cde4f7da3038a346e9.html')
         )
-        super().__init__(anios, 'renta')
+        descripcion = 'Estadísticas de la renta de la Agencia Tributaria de 2013 a 2015.'
+        super().__init__(anios, 'renta', descripcion)

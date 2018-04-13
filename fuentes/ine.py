@@ -7,8 +7,8 @@ class Ine(Fuente):
     Fuente de datos para el instituto nacional de estadística
     """
 
-    def __init__(self, tabla):
-        super().__init__('ine', tabla)
+    def __init__(self, tabla, descripcion):
+        super().__init__('ine', tabla, descripcion)
 
 
 class InePoblacion(Ine):
@@ -20,7 +20,9 @@ class InePoblacion(Ine):
         self.url_base = 'http://www.ine.es/jaxi/files/_px/es/xls/t20/e245/p05/a2016/l0/000{}002.px?'
         # código de provincias  01 ... 51
         self.codigo_provincias = [format(n, '02d') for n in range(1, 52)]
-        super().__init__('poblacion')
+        descripcion = 'Estadísticas del padron del Instituto nacional de estadística.' \
+                      ' Clasificados por edad, sexo y nacionalidad.'
+        super().__init__('poblacion', descripcion)
 
     @staticmethod
     def new_column_names(header, nombre_subtotal, cabecera):

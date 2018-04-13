@@ -12,11 +12,12 @@ class Sepe(Fuente):
         ' Municipio': 'Municipio'
     }
 
-    def __init__(self, url, anios, tabla):
+    def __init__(self, url, anios, tabla, descripcion_):
         url_sepe = 'https://sede.sepe.gob.es/es/portaltrabaja/resources/sede/datos_abiertos/datos/'
         self.url = url_sepe + url
         self.anios = anios
-        super().__init__('sepe', tabla)
+        descripcion = descripcion_ + " Servicio Público de Empleo Estatal."
+        super().__init__('sepe', tabla, descripcion)
 
     @staticmethod
     def procesa_datos(url):
@@ -49,7 +50,8 @@ class SepeContratos(Sepe):
     def __init__(self):
         url = 'Contratos_por_municipios_{}_csv.csv'
         anios = range(2006, 2019)
-        super().__init__(url, anios, 'contratos')
+        descripcion = 'Contratos por sexo y por edades.'
+        super().__init__(url, anios, 'contratos', descripcion)
 
 
 class SepeEmpleo(Sepe):
@@ -60,7 +62,8 @@ class SepeEmpleo(Sepe):
     def __init__(self):
         url = 'Dtes_empleo_por_municipios_{}_csv.csv'
         anios = range(2006, 2019)
-        super().__init__(url, anios, 'empleo')
+        descripcion = 'Demandantes de empleo por sexo y por edades por cada municipio.'
+        super().__init__(url, anios, 'empleo', descripcion)
 
 
 class SepeParo(Sepe):
@@ -71,4 +74,5 @@ class SepeParo(Sepe):
     def __init__(self):
         url = 'Paro_por_municipios_{}_csv.csv'
         anios = range(2006, 2019)
-        super().__init__(url, anios, 'paro')
+        descripcion = 'Paro por sexo y por edades por cada municipio.'
+        super().__init__(url, anios, 'paro', descripcion)

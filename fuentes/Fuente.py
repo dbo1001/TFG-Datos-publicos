@@ -8,9 +8,10 @@ class Fuente:
     Clase abstracta que deben implementar todas las fuentes.
     """
 
-    def __init__(self, fuente, tabla):
+    def __init__(self, fuente, tabla, descripcion=''):
         self._fuente = fuente
         self._tabla = tabla
+        self._descripcion = descripcion
         super().__init__()
 
     @abstractmethod
@@ -25,6 +26,13 @@ class Fuente:
         Devuelve el nombre de la colección
         """
         return '_'.join([self._fuente, self._tabla])
+
+    @abstractmethod
+    def descripcion(self):
+        """
+        Devuelve la descripción de la fuente
+        """
+        return self._descripcion
 
 
 def to_numeric(f):
