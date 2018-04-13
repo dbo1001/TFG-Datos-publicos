@@ -12,6 +12,8 @@ $(function() {
     var mostrar = $("#select_mostrar");
     var comparador = $("#select_comparador");
     var valor = $("#select_valor");
+    var descripcion = $("#descripcion");
+    var descripcion_titulo = $("#descripcion_titulo");
 
     function actualizaComparador() {
         if (columna.val() === "Todas") {
@@ -32,8 +34,10 @@ $(function() {
         selector.empty();
 
         // Envía la fuente y recibe las columnas de esta fuente
-        $.getJSON("/api/actualiza_columnas/" + fuente.val(), function(data) {
-            data.forEach(function(item) {
+        $.getJSON("/api/fuente/" + fuente.val(), function(data) {
+            var columnas_fuente = data["columnas"];
+            var descripcion_fuente = data["descripcion"];
+            columnas_fuente.forEach(function(item) {
                 // No muestra "Todas" en el selector de columna a mostrar
                 if (item === "Todas" && selector === mostrar) {
                     return;
@@ -46,6 +50,8 @@ $(function() {
                 );
             });
             selector.removeAttr("disabled");
+            descripcion.text(descripcion_fuente);
+            descripcion_titulo.text(fuente.val());
             actualizaComparador();
         });
     }

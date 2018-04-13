@@ -30,6 +30,15 @@ def columnas_coleccion(coleccion):
     return ['Todas'] + list(mongo.db[coleccion].find_one().keys())[1:]
 
 
+def descripcion_fuente(coleccion):
+    """
+    Devuelve la descripción de una fuente
+    """
+    index = todas_fuentes().index(coleccion)
+    fuente = fuentes[index]()
+    return fuente.descripcion()
+
+
 def consulta(fuente, columna, mostrar, comparador, valor):
     """
     Devuelve el dataframe de la consulta

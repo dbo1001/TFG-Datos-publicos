@@ -38,13 +38,17 @@ def consulta():
     return render_template('consulta.html', form=form)
 
 
-@app.route('/api/actualiza_columnas/<fuente>')
+@app.route('/api/fuente/<fuente>')
 def actualiza_columnas(fuente):
     """
     Obtiene todas las columnas de una fuente en formato json
     """
     columnas = web.consulta.columnas_coleccion(fuente)
-    return jsonify(columnas)
+    descripcion = web.consulta.descripcion_fuente(fuente)
+    return jsonify({
+        'columnas': columnas,
+        'descripcion': descripcion
+    })
 
 
 def descarga_consulta(datos, formato):
