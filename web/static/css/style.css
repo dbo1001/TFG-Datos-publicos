@@ -14,3 +14,40 @@
     background-image: url("../imagenes/github-mark.svg");
     background-size: 24px 24px;
 }
+
+/* Cargando tabla */
+table:not(.dynatable-loaded) {
+    position: relative;
+}
+
+/* Oscurece la tabla */
+table:not(.dynatable-loaded)::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.25);
+}
+
+/* Circulito que gira */
+@keyframes spin-cargando {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Muestra el circulito en medio de la tabla */
+table:not(.dynatable-loaded)::after {
+    content: "";
+    position: absolute;
+    border: 3px solid;
+    border-color: transparent rgb(255, 255, 255) rgb(255, 255, 255);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    top: 175px;
+    left: calc(50% - 25px);
+    animation: 2s linear 0s infinite spin-cargando;
+}
