@@ -8,7 +8,6 @@ class Sepe(Fuente):
     """
 
     renombrar = {
-        'mes': 'Fecha',
         ' Municipio': 'Municipio'
     }
 
@@ -37,6 +36,10 @@ class Sepe(Fuente):
         df = pd.concat(dataframes)
         # Convierte los códigos a string con 5 dígitos
         df['Codigo Municipio'] = df['Codigo Municipio'].astype(str).str.zfill(5)
+        # Divide la fecha en año y mes
+        df['Mes'], df['Año'] = df['mes'].str.split(' de ').str
+        df['Año'].astype(int)
+        df.drop('mes', axis=1, inplace=True)
         # Restaura los índices
         df = df.reset_index(drop=True)
         return df
