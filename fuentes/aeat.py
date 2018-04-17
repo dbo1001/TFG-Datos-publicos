@@ -1,11 +1,17 @@
 import pandas as pd
-from fuentes.Fuente import Fuente, to_numeric
+from fuentes.Fuente import Fuente, rename, to_numeric
 
 
 class Aeat(Fuente):
     """
     Fuente de datos para la agencia tributaria
     """
+
+    renombrar = {
+        'Numerodeclaraciones': 'Número de declaraciones',
+        'Numerohabitantes': 'Número de habitantes',
+        'Renta disponiblemedia': 'Renta disponible media'
+    }
 
     def __init__(self, anios, tabla, descripcion):
         self.url_aeat = 'http://www.agenciatributaria.es/AEAT/Contenidos_Comunes/La_Agencia_Tributaria/Estadisticas/Publicaciones/sites/'
@@ -24,9 +30,12 @@ class Aeat(Fuente):
         df = df[df['Municipio'].str.match(r'.+-[0-9]{5}')]
         # Elimina el código de provincia
         df['Municipio'] = df['Municipio'].str.split('-').str[0]
+        # Capitaliza el nombre de las columnas
+        df.columns = map(str.capitalize, df.columns)
         return df
 
     @to_numeric
+    @rename(renombrar)
     def carga(self):
         """
         Devuelve un dataframe después de descargar los datos
