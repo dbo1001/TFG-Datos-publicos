@@ -1,4 +1,4 @@
-from flask import abort, render_template, redirect, request, flash, url_for, jsonify, make_response
+from flask import abort, render_template, redirect, flash, url_for, jsonify, make_response, session
 from web import app
 from web.forms.consulta import Consulta
 import web.consulta
@@ -17,22 +17,21 @@ def consulta():
     """
     Formulario de consulta
     """
-    cookies_descarga = request.cookies.get('descarga')
     columnas = web.consulta.todas_columnas()
     fuentes = web.consulta.todas_fuentes()
     form = Consulta(fuentes=fuentes, columnas=columnas)
     if form.validate_on_submit():
-        datos = web.consulta.consulta(fuente=form.fuente.data,
-                                      columna=form.columna_filtro.data,
-                                      mostrar=form.columna_mostrar.data,
-                                      comparador=form.comparador.data,
-                                      valor=form.valor.data)
+        form_data = form.data
+        datos = web.consulta.consulta(fuente=form_data['fuente'],
+                                      columna=form_data['columna_filtro'],
+                                      mostrar=form_data['columna_mostrar'],
+                                      comparador=form_data['comparador'],
+                                      valor=form_data['valor'])
         if datos.empty:
             flash('No hay resultados.')
             return redirect(url_for('consulta'))
-        # Descarga los datos
-        if cookies_descarga:
-            return descarga_consulta(datos, cookies_descarga)
+        # Guarda los datos del formulario para la descarga
+        session['consulta'] = form_data
         return render_template('resultados-consulta.html',
                                datos=datos)
     return render_template('consulta.html', form=form)
@@ -51,18 +50,30 @@ def actualiza_columnas(fuente):
     })
 
 
-def descarga_consulta(datos, formato):
+@app.route('/consulta/descarga/<formato>')
+def descarga_consulta(formato):
     """
     Descarga un dataframe en el formato especificado
     """
+    form_data = session.get('consulta')
+    # No se ha hecho una consulta
+    if not form_data:
+        return abort(403)
+    # Hace la consulta
+    datos = web.consulta.consulta(fuente=form_data['fuente'],
+                                  columna=form_data['columna_filtro'],
+                                  mostrar=form_data['columna_mostrar'],
+                                  comparador=form_data['comparador'],
+                                  valor=form_data['valor'])
+    # Según el formato
     if formato == 'csv':
         contenido = datos.to_csv()
     elif formato == 'json':
         contenido = datos.to_json()
     else:
         return abort(403)
+    # Respuesta
     resp = make_response(contenido)
     resp.headers['Content-type'] = 'text/{}'.format(formato)
     resp.headers["Content-Disposition"] = 'attachment; filename=consulta.{}'.format(formato)
-    resp.set_cookie('descarga', '')
     return resp
