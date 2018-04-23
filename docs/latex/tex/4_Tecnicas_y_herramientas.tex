@@ -46,3 +46,21 @@ PythonAnywhere es un hosting para aplicaciones web en python, el problema con es
 
 Por último, se consideró utilizar una instancia de \href{https://aws.amazon.com/es/ec2/}{Amazon AWS EC2}. Es muy similar a DigitalOcean, se eligió el primero porque es más sencillo de utilizar.
 
+\subsection{Nanobox}
+\begin{itemize}
+	\tightlist
+	\item
+	Herramientas consideradas:
+	\href{https://www.heroku.com/}{Heroku}, 
+	\href{https://nanobox.io/}{Nanobox}.
+	\item
+	Herramienta elegida:
+	\href{https://nanobox.io/}{Nanobox}.
+\end{itemize}
+
+Nanobox\cite{docs:nanobox} es una herramienta que nos permite desplegar nuestra aplicación sin centrarnos en la infraestructura del servidor.
+
+Para ello enlazamos nuestra cuenta de un proveedor en la nueve (en este caso DigitalOcean) y nanobox se encargará de instalar el sistema operativo, configurarlo, instalar nuestra aplicación y sus dependencias y ejecutarla.
+
+Heroku es un servicio muy similar, con la diferencia de que no podemos utilizar servidores en la nuve externos, se descartó por lo ya explicado en el punto anterior.
+
