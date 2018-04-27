@@ -20,13 +20,11 @@ def consulta():
     columnas = web.consulta.todas_columnas()
     fuentes = web.consulta.todas_fuentes()
     form = Consulta(fuentes=fuentes, columnas=columnas)
-    if form.validate_on_submit():
+    print(form.is_submitted())
+    print(form.validate())
+    if form.is_submitted():
         form_data = form.data
-        datos = web.consulta.consulta(fuente=form_data['fuente'],
-                                      columna=form_data['columna_filtro'],
-                                      mostrar=form_data['columna_mostrar'],
-                                      comparador=form_data['comparador'],
-                                      valor=form_data['valor'])
+        datos = web.consulta.consulta(form_data)
         if datos.empty:
             flash('No hay resultados.')
             return redirect(url_for('consulta'))
@@ -60,11 +58,7 @@ def descarga_consulta(formato):
     if not form_data:
         return abort(403)
     # Hace la consulta
-    datos = web.consulta.consulta(fuente=form_data['fuente'],
-                                  columna=form_data['columna_filtro'],
-                                  mostrar=form_data['columna_mostrar'],
-                                  comparador=form_data['comparador'],
-                                  valor=form_data['valor'])
+    datos = web.consulta.consulta(form_data)
     # Según el formato
     if formato == 'csv':
         contenido = datos.to_csv()

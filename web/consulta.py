@@ -2,6 +2,7 @@ import re
 import pandas as pd
 from web import mongo
 from fuentes import fuentes
+from functools import reduce
 
 
 def todas_fuentes():
@@ -39,29 +40,47 @@ def descripcion_fuente(coleccion):
     return fuente.descripcion()
 
 
-def consulta(fuente, columna, mostrar, comparador, valor):
+def consulta(entrada):
     """
     Devuelve el dataframe de la consulta
     """
-    if columna == 'Todas':
-        # Mustra todas las filas
-        filtro = {}
-    else:
-        if comparador == '$eq':
-            busqueda = re.compile(valor, re.IGNORECASE)
-        else:
-            valor = float(valor)
-            busqueda = {comparador: valor}
-
-        filtro = {
-            columna: busqueda
-        }
+    fuentes_entrada = entrada['fuente']
+    columnas = entrada['columna_filtro']
+    comparadores = entrada['comparador']
+    valores = entrada['valor']
+    mostrar = entrada['columna_mostrar']
+    max_filas = entrada['max_filas']
+    df_fuentes = []
 
     # Si no se ha seleccionado una columna a mostrar, muestra todas
     if not mostrar:
         mostrar = None
 
-    cursor = mongo.db[fuente].find(filtro, mostrar)
-    df = pd.DataFrame.from_records(cursor, exclude=['_id'])
+    for fuente, columna, comparador, valor in zip(fuentes_entrada, columnas, comparadores, valores):
+        if columna == 'Todas':
+            # Mustra todas las filas
+            filtro = {}
+        else:
+            if comparador == '$eq':
+                busqueda = re.compile(valor, re.IGNORECASE)
+            else:
+                valor = float(valor)
+                busqueda = {comparador: valor}
+
+            filtro = {
+                "$and": [{columna: busqueda}]
+            }
+
+        cursor = mongo.db[fuente].find(filtro, mostrar).limit(max_filas)
+        df = pd.DataFrame.from_records(cursor, exclude=['_id'])
+        df_fuentes.append(df)
+
+    # Combina las consultaslo
+    df = reduce(merge_dataframes, df_fuentes)
 
     return df
+
+
+def merge_dataframes(df1, df2):
+    df_merge = pd.merge(df1, df2, how='inner', on='Codigo Municipio')
+    return df_merge
