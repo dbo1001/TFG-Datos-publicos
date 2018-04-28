@@ -3,22 +3,13 @@ import pandas as pd
 from web import mongo
 from fuentes import fuentes
 from functools import reduce
-from config.config import Config
-
-
-def coleccion():
-    """
-    Obtiene la colección de la base de datos
-    """
-    nombre_coleccion = Config.MONGO_COLLECTION
-    return mongo.db[nombre_coleccion]
 
 
 def todas_fuentes():
     """
     Lista todas las fuentes
     """
-    lista_fuentes = [fuente().nombre() for fuente in fuentes]
+    lista_fuentes = [fuente().coleccion() for fuente in fuentes]
     return lista_fuentes
 
 
@@ -28,24 +19,23 @@ def todas_columnas():
     """
     columnas = ['Todas']
     for fuente in todas_fuentes():
-        cols = columnas_fuente(fuente)
+        cols = columnas_coleccion(fuente)
         columnas.extend(cols)
     return set(columnas)
 
 
-def columnas_fuente(nombre_fuente):
+def columnas_coleccion(coleccion):
     """
     Lista todas las columnas de una colección
     """
-    filtro = {'fuente': nombre_fuente}
-    return ['Todas'] + list(coleccion().find_one(filtro).keys())[1:]
+    return ['Todas'] + list(mongo.db[coleccion].find_one().keys())[1:]
 
 
-def descripcion_fuente(nombre_fuente):
+def descripcion_fuente(coleccion):
     """
     Devuelve la descripción de una fuente
     """
-    index = todas_fuentes().index(nombre_fuente)
+    index = todas_fuentes().index(coleccion)
     fuente = fuentes[index]()
     return fuente.descripcion()
 
@@ -81,7 +71,7 @@ def consulta(entrada):
                 "$and": [{columna: busqueda}]
             }
 
-        cursor = coleccion().find(filtro, mostrar).limit(max_filas)
+        cursor = mongo.db[fuente].find(filtro, mostrar).limit(max_filas)
         df = pd.DataFrame.from_records(cursor, exclude=['_id'])
         df_fuentes.append(df)
 

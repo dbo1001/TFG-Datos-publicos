@@ -40,7 +40,7 @@ def actualiza_columnas(fuente):
     """
     Obtiene todas las columnas de una fuente en formato json
     """
-    columnas = web.consulta.columnas_fuente(fuente)
+    columnas = web.consulta.columnas_coleccion(fuente)
     descripcion = web.consulta.descripcion_fuente(fuente)
     return jsonify({
         'columnas': columnas,
