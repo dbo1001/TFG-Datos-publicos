@@ -7,24 +7,22 @@ class Database:
     Carga datos de DataFrames de pandas en la base de datos.
     """
 
-    def __init__(self, database, *args, **kwargs):
+    def __init__(self, database, coleccion, *args, **kwargs):
         self.client = MongoClient(*args, **kwargs)
-        self.database = self.client[database]
+        self.db = self.client[database][coleccion]
 
-    def carga_datos(self, df, coleccion):
+    def carga_datos(self, df, nombre_fuente):
         """
         Carga los datos de un dataframe en la base de datos.
         """
-        db = self.database[coleccion]
-
         # Borra la colección
-        db.drop()
+        # db.drop()
 
         # Convierte el DataFrame a json
         df_json = json.loads(df.T.to_json()).values()
 
         # Inserta los datos en el documetno de la base de datos
-        db.insert_many(df_json)
+        self.db.insert_many(df_json)
 
     def close(self):
         """

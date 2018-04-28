@@ -16,7 +16,7 @@ class Municipios(Fuente):
         self.url = 'http://www.ine.es/daco/daco42/codmun/codmun18/18codmun.xlsx'
         descripcion = 'Lista de municipios con sus códigos de comunidad, provincia y municipio ' \
         'del instituto nacional de estadística'
-        super().__init__('codigos', 'municipios', descripcion)
+        super().__init__('municipios', descripcion=descripcion)
 
     @rename(renombrar)
     def carga(self):
@@ -31,9 +31,3 @@ class Municipios(Fuente):
         # Calcula el código de provincia
         df['Codigo'] = df['Codigo provincia'] + df['Codigo municipio']
         return df
-
-    def coleccion(self):
-        """
-        Nombre de la colección donde se guardan los codigos
-        """
-        return 'municipios'

@@ -8,6 +8,7 @@ def actualiza_fuentes(config):
     """
     db = Database.Database(
         database=config.MONGO_DBNAME,
+        coleccion=config.MONGO_COLLECTION,
         host=config.MONGO_HOST,
         port=config.MONGO_PORT,
         username=config.MONGO_USERNAME,
@@ -38,10 +39,11 @@ def carga_fuente(fuente, db, codigos=None):
     # Añade el código de municipio
     if codigos is not None:
         df = aniade_codigo_municipio(df, codigos)
+    nombre_fuente = instancia.nombre()
+    df['fuente'] = nombre_fuente
     # Inserta el dataframe en la base de datos
-    coleccion = instancia.coleccion()
-    db.carga_datos(df, coleccion)
-    print('{} cargado'.format(coleccion))
+    db.carga_datos(df, nombre_fuente)
+    print('{} cargado'.format(nombre_fuente))
     # Devuelve el dataframe si no se añade el código de municipio
     if codigos is None:
         return df
