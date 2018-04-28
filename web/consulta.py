@@ -50,12 +50,14 @@ def consulta(entrada):
     valores = entrada['valor']
     mostrar = entrada['columna_mostrar']
     max_filas = entrada['max_filas']
+    join = entrada['join']
     df_fuentes = []
 
     # Si no se ha seleccionado una columna a mostrar, muestra todas
     if not mostrar:
         mostrar = None
 
+    print(fuentes_entrada, columnas, comparadores, valores)
     for fuente, columna, comparador, valor in zip(fuentes_entrada, columnas, comparadores, valores):
         if columna == 'Todas':
             # Mustra todas las filas
@@ -68,7 +70,8 @@ def consulta(entrada):
                 busqueda = {comparador: valor}
 
             filtro = {
-                "$and": [{columna: busqueda}]
+                columna: busqueda
+                # "$and": [{columna: busqueda}]
             }
 
         cursor = mongo.db[fuente].find(filtro, mostrar).limit(max_filas)
@@ -76,11 +79,11 @@ def consulta(entrada):
         df_fuentes.append(df)
 
     # Combina las consultaslo
-    df = reduce(merge_dataframes, df_fuentes)
+    df = reduce(lambda x, y: merge_dataframes(x, y, join), df_fuentes)
 
     return df
 
 
-def merge_dataframes(df1, df2):
-    df_merge = pd.merge(df1, df2, how='inner', on='Codigo Municipio')
+def merge_dataframes(df1, df2, join):
+    df_merge = pd.merge(df1, df2, how=join, on='Codigo Municipio')
     return df_merge

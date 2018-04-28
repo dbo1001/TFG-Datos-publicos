@@ -8,6 +8,7 @@ class Consulta(FlaskForm):
     Formulario para la consulta de datos
     """
     comparadores = [('$eq', '='), ('$ne', '!='), ('$lt', '<'), ('$lte', '<='), ('$gt', '>'), ('$gte', '>=')]
+    join_choices = [('inner', 'inner'), ('outer', 'outer'), ('left', 'left'), ('right', 'right')]
     entradas = 1
 
     fuente = FieldList(SelectField('Fuente de datos', choices=[]), min_entries=entradas)
@@ -17,6 +18,7 @@ class Consulta(FlaskForm):
                                        validators=[Optional()]), min_entries=entradas)
     valor = FieldList(StringField('Valor'), min_entries=entradas)
     max_filas = IntegerField('Número máximo de filas', default=10000)
+    join = SelectField('Join', choices=join_choices)
     submit = SubmitField('Consultar')
 
     def __init__(self, fuentes, columnas, *args, **kwargs):

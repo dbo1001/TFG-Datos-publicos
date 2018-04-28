@@ -20,8 +20,6 @@ def consulta():
     columnas = web.consulta.todas_columnas()
     fuentes = web.consulta.todas_fuentes()
     form = Consulta(fuentes=fuentes, columnas=columnas)
-    print(form.is_submitted())
-    print(form.validate())
     if form.is_submitted():
         form_data = form.data
         datos = web.consulta.consulta(form_data)

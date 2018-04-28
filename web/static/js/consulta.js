@@ -137,6 +137,7 @@ function addSubconsulta() {
     var regex = new RegExp("-" + idUltima, "g");
     html = html.replace(regex, "-" + id);
     $(ultima).after(html);
+    $("#join").show();
 }
 
 /**
@@ -192,5 +193,10 @@ $(function() {
         actualizaEventos();
         $(this).closest("li").before(item);
         $("#subconsulta-tab li:nth-child(" + id + ") a").click();
+    });
+
+    // Activa todos los campos al enviar el formulario
+    $("form").submit(function() {
+        $("input, select").attr("disabled", false);
     });
 });
