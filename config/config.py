@@ -13,3 +13,4 @@ class Config(object):
     MONGO_DBNAME = os.environ.get('DATA_DB_NAME', 'datos')
     MONGO_USERNAME = os.environ.get('DATA_DB_USER', None)
     MONGO_PASSWORD = os.environ.get('DATA_DB_PASS', None)
+    MONGO_COLLECTION = os.environ.get('DATA_DB_COLLECTION', 'datos')
