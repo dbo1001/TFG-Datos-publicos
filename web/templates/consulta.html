@@ -11,17 +11,23 @@
         </div>
         <div class="panel-body">
             <form method="post" action="#" class="form">
-                <div class="subconsulta">
-                    <div class="col-sm-8">
-                        {{ form.csrf_token }}
-                        {% for i in range(form.fuente.min_entries) %}
+                <div class="col-sm-8">
+                    <ul id="subconsulta-tab" class="nav nav-tabs">
+                        <li class="active"><a href="#" data-toggle="tab">Consulta 1</a></li>
+                        <li><a href="#" data-toggle="tab" id="add-subconsulta">
+                            <span class="glyphicon glyphicon-plus"></span></a>
+                        </li>
+                    </ul>
+                    {{ form.csrf_token }}
+                    {% for i in range(form.fuente.min_entries) %}
+                        <div class="subconsulta">
                             {{ input(form.fuente[i]) }}
                             {{ input(form.columna_filtro[i]) }}
                             {{ input(form.comparador[i]) }}
                             {{ input(form.valor[i]) }}
-                        {% endfor %}
-                        {{ button(form.submit) }}
-                    </div>
+                        </div>
+                    {% endfor %}
+                    {{ button(form.submit) }}
                 </div>
 
                 <div class="col-sm-4">
