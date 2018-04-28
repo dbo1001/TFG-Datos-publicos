@@ -18,6 +18,47 @@ function actualizaVariables() {
 }
 
 /**
+ * Actualiza los eventos
+ */
+function actualizaEventos() {
+    // Elimina eventos existentes
+    fuentes.unbind();
+    columnas.unbind();
+
+    // Actualiza cada vez que cambie el valor de fuente
+    fuentes.on("change", function () {
+        var id = getId(this);
+        actualizaColumnas(id);
+    });
+
+    columnas.on("change", function () {
+        var id = getId(this);
+        actualizaComparador(id);
+    });
+}
+
+function muestraSubconsulta(selector) {
+    var parent = $(selector).parent('li');
+    var activa = parent.hasClass('active');
+    var subconsultas = $(".subconsulta");
+    var tabs = $("#subconsulta-tab li");
+    if (!activa) {
+        var id = tabs.index(parent);
+        subconsultas.hide();
+        var subconsulta = $(subconsultas.get(id));
+        subconsulta.show();
+    }
+}
+
+/**
+ * Obtiene el id de un selector a partir de su nombre
+ */
+function getId(element) {
+    var name = element.getAttribute("name");
+    return name.split("-").pop();
+}
+
+/**
  * Activa o desactiva el comparador según el parámetro
  */
 function actualizaComparador(id) {
@@ -36,11 +77,13 @@ function actualizaComparador(id) {
 }
 
 /**
- * Obtiene el id de un selector a partir de su nombre
+ * Consulta información sobre una fuente de datos al servidor
  */
-function getId(element) {
-    var name = element.getAttribute("name");
-    return name.split("-").pop();
+function datosFuente(nombreFuente, callback) {
+    $.ajax({
+        type: "GET",
+        url: "/api/fuente/" + nombreFuente
+    }).done(callback);
 }
 
 /**
@@ -99,49 +142,6 @@ function actualizaColumnas(id) {
 }
 
 /**
- * Actualiza los eventos
- */
-function actualizaEventos() {
-    // Elimina eventos existentes
-    fuentes.unbind();
-    columnas.unbind();
-
-    // Actualiza cada vez que cambie el valor de fuente
-    fuentes.on("change", function () {
-        var id = getId(this);
-        actualizaColumnas(id);
-    });
-
-    columnas.on("change", function () {
-        var id = getId(this);
-        actualizaComparador(id);
-    });
-}
-
-function muestraSubconsulta(selector) {
-    var parent = $(selector).parent("li");
-    var activa = parent.hasClass("active");
-    var subconsultas = $(".subconsulta");
-    var tabs = $("#subconsulta-tab li");
-    if (!activa) {
-        var id = tabs.index(parent);
-        subconsultas.hide();
-        var subconsulta = $(subconsultas.get(id));
-        subconsulta.show();
-    }
-}
-
-/**
- * Consulta información sobre una fuente de datos al servidor
- */
-function datosFuente(nombreFuente, callback) {
-    $.ajax({
-        type: "GET",
-        url: "/api/fuente/" + nombreFuente
-    }).done(callback);
-}
-
-/**
  * Añade una subconsulta
  */
 function addSubconsulta() {
@@ -151,8 +151,7 @@ function addSubconsulta() {
     var id = idUltima + 1;
     var nueva = ultima.clone();
     var html = $(nueva).prop("outerHTML");
-    var exp = "-" + idUltima;
-    var regex = new RegExp(exp, "g");
+    var regex = new RegExp("-" + idUltima, "g");
     html = html.replace(regex, "-" + id);
     $(ultima).after(html);
 }
@@ -187,7 +186,7 @@ $(function() {
         addSubconsulta();
         actualizaVariables();
         actualizaEventos();
-        $(this).closest("li").before(item);
+        $(this).closest('li').before(item);
         $("#subconsulta-tab li:nth-child(" + id + ") a").click();
     });
 });
