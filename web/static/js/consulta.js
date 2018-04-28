@@ -18,28 +18,19 @@ function actualizaVariables() {
 }
 
 /**
- * Actualiza los eventos
+ * Obtiene el id de un selector a partir de su nombre
  */
-function actualizaEventos() {
-    // Elimina eventos existentes
-    fuentes.unbind();
-    columnas.unbind();
-
-    // Actualiza cada vez que cambie el valor de fuente
-    fuentes.on("change", function () {
-        var id = getId(this);
-        actualizaColumnas(id);
-    });
-
-    columnas.on("change", function () {
-        var id = getId(this);
-        actualizaComparador(id);
-    });
+function getId(element) {
+    var name = element.getAttribute("name");
+    return name.split("-").pop();
 }
 
+/**
+ * Muestra la subconsulta correspondiente al selector
+ */
 function muestraSubconsulta(selector) {
-    var parent = $(selector).parent('li');
-    var activa = parent.hasClass('active');
+    var parent = $(selector).parent("li");
+    var activa = parent.hasClass("active");
     var subconsultas = $(".subconsulta");
     var tabs = $("#subconsulta-tab li");
     if (!activa) {
@@ -48,14 +39,6 @@ function muestraSubconsulta(selector) {
         var subconsulta = $(subconsultas.get(id));
         subconsulta.show();
     }
-}
-
-/**
- * Obtiene el id de un selector a partir de su nombre
- */
-function getId(element) {
-    var name = element.getAttribute("name");
-    return name.split("-").pop();
 }
 
 /**
@@ -156,6 +139,27 @@ function addSubconsulta() {
     $(ultima).after(html);
 }
 
+/**
+ * Actualiza los eventos
+ */
+function actualizaEventos() {
+    // Elimina eventos existentes
+    fuentes.unbind();
+    columnas.unbind();
+
+    // Actualiza cada vez que cambie el valor de fuente
+    fuentes.on("change", function () {
+        var id = getId(this);
+        actualizaColumnas(id);
+    });
+
+    columnas.on("change", function () {
+        var id = getId(this);
+        actualizaComparador(id);
+    });
+}
+
+
 
 // Al cargar la página
 $(function() {
@@ -186,7 +190,7 @@ $(function() {
         addSubconsulta();
         actualizaVariables();
         actualizaEventos();
-        $(this).closest('li').before(item);
+        $(this).closest("li").before(item);
         $("#subconsulta-tab li:nth-child(" + id + ") a").click();
     });
 });
