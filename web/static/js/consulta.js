@@ -11,10 +11,10 @@ var mostrar, descripcion, descripcionTitulo;
  * Para elementos generados dinámicamente.
  */
 function actualizaVariables() {
-    fuentes = $("[name^=fuente-]");
-    columnas = $("[name^=columna_filtro-]");
-    comparadores = $("[name^=comparador-]");
-    valores = $("[name^=valor-]");
+    fuentes = $("#consulta [name^=fuente-]");
+    columnas = $("#consulta [name^=columna_filtro-]");
+    comparadores = $("#consulta [name^=comparador-]");
+    valores = $("#consulta [name^=valor-]");
 }
 
 /**
