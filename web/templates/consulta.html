@@ -11,7 +11,7 @@
         </div>
         <div class="panel-body">
             <form method="post" action="#" class="form">
-                <div class="col-sm-8">
+                <div id="consulta" class="col-sm-8">
                     <ul id="subconsulta-tab" class="nav nav-tabs">
                         <li class="active"><a href="#" data-toggle="tab">Consulta 1</a></li>
                         <li><a href="#" data-toggle="tab" id="add-subconsulta">
@@ -41,6 +41,14 @@
                     {{ input(form.max_filas) }}
                 </div>
             </form>
+            <div id="subconsulta-template" hidden>
+                <div class="subconsulta container-fluid">
+                    {{ input(form.fuente[0]) }}
+                    {{ input(form.columna_filtro[0]) }}
+                    {{ input(form.comparador[0]) }}
+                    {{ input(form.valor[0]) }}
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

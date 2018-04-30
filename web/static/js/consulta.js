@@ -31,7 +31,7 @@ function getId(element) {
 function muestraSubconsulta(selector) {
     var parent = $(selector).parent("li");
     var activa = parent.hasClass("active");
-    var subconsultas = $(".subconsulta");
+    var subconsultas = $("#consulta .subconsulta");
     var tabs = $("#subconsulta-tab li");
     if (!activa) {
         var id = tabs.index(parent);
@@ -127,15 +127,17 @@ function actualizaColumnas(id) {
 /**
  * Añade una subconsulta
  */
-function addSubconsulta() {
-    var subconsultas = $(".subconsulta");
+function addSubconsulta(id) {
+    var subconsultas = $("#consulta .subconsulta");
+    var template = $("#subconsulta-template .subconsulta");
     var ultima = subconsultas.last();
-    var idUltima = subconsultas.index(ultima);
-    var id = idUltima + 1;
-    var nueva = ultima.clone();
+    // Clona el template
+    var nueva = template.clone();
     var html = $(nueva).prop("outerHTML");
-    var regex = new RegExp("-" + idUltima, "g");
-    html = html.replace(regex, "-" + id);
+    // Cambia los id de todos los atributos por el correspondiente
+    var regex = new RegExp("-0", "g");
+    html = html.replace(regex, "-" + id - 1);
+    console.log(html);
     $(ultima).after(html);
     $("#join").show();
 }
@@ -188,7 +190,7 @@ $(function() {
         var tabs = $("#subconsulta-tab li");
         var id = tabs.children().length;
         var item = $("<li><a href=\"#\" data-toggle=\"tab\">Consulta " + id + "</a></li>");
-        addSubconsulta();
+        addSubconsulta(id);
         actualizaVariables();
         actualizaEventos();
         $(this).closest("li").before(item);
@@ -197,6 +199,7 @@ $(function() {
 
     // Activa todos los campos al enviar el formulario
     $("form").submit(function() {
+        $("#subconsulta-template").remove();
         $("input, select").attr("disabled", false);
     });
 });
