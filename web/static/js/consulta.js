@@ -136,8 +136,7 @@ function addSubconsulta(id) {
     var html = $(nueva).prop("outerHTML");
     // Cambia los id de todos los atributos por el correspondiente
     var regex = new RegExp("-0", "g");
-    html = html.replace(regex, "-" + id - 1);
-    console.log(html);
+    html = html.replace(regex, "-" + (id - 1));
     $(ultima).after(html);
     $("#join").show();
 }
