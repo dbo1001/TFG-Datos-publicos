@@ -57,7 +57,6 @@ def consulta(entrada):
     if not mostrar:
         mostrar = None
 
-    print(fuentes_entrada, columnas, comparadores, valores)
     for fuente, columna, comparador, valor in zip(fuentes_entrada, columnas, comparadores, valores):
         if columna == 'Todas':
             # Mustra todas las filas

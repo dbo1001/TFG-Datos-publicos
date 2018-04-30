@@ -28,6 +28,9 @@ def consulta():
             return redirect(url_for('consulta'))
         # Guarda los datos del formulario para la descarga
         session['consulta'] = form_data
+        max_filas = form_data['max_filas']
+        if len(datos) >= form_data['max_filas']:
+            flash('Has alcanzado el número máximo de filas ({})'.format(max_filas))
         return render_template('resultados-consulta.html',
                                datos=datos)
     return render_template('consulta.html', form=form)

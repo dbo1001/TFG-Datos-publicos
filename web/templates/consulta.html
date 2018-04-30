@@ -20,7 +20,7 @@
                     </ul>
                     {{ form.csrf_token }}
                     {% for i in range(form.fuente.min_entries) %}
-                        <div class="subconsulta">
+                        <div class="subconsulta container-fluid">
                             {{ input(form.fuente[i]) }}
                             {{ input(form.columna_filtro[i]) }}
                             {{ input(form.comparador[i]) }}
