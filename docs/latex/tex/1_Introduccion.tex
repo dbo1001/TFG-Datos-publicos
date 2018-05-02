@@ -1,3 +1,61 @@
 \capitulo{1}{Introducción}
 
-Descripción del contenido del trabajo y del estrucutra de la memoria y del resto de materiales entregados.
+La \textit{minería de datos} es una metodología para descubrir relaciones ocultas en grandes cantidades de datos utilizando técnicas de inteligencia artificial.
+
+Un tema que está siendo investigado actualmente es comprender las causas por las que se producen crímenes. Por ello, se han realizado estudios para investigar las tasas de criminalidad utilizando técnicas de minería de datos \cite{art:crimeprediction} \cite{art:crimeprediction2} a partir de datos demográficos y sociológicos con el objetivo de determinar los lugares donde asignar más recursos para reducir estos índices de criminalidad.
+
+El objetivo de este trabajo es llevar estos estudios al ámbito español. Integrando varias fuentes de datos públicas utilizando técnicas de web scraping (\ref{webscraping}). Para  después visualizar estos datos de manera sencilla, permitir crear mapas temáticos (\ref{mapascoropleticos}) con esta información y aplicar técnicas de minería de datos para buscar relaciones entre los datos.
+
+\subsection{Fuentes de datos}
+
+A continuación se van a listar las fuentes de datos de organismos públicos que se han integrado.
+
+\begin{itemize}
+	\tightlist
+	\item
+	Servicio Público de Empleo Estatal (SEPE)
+	\begin{itemize}
+		\tightlist
+		\item
+		Paro registrado por municipio\footnote{\href{https://datos.gob.es/catalogo/e00142804-paro-registrado-por-municipios}{https://datos.gob.es/catalogo/e00142804-paro-registrado-por-municipios}}.
+		\item
+		Contratos registrados por municipio\footnote{\href{http://datos.gob.es/es/catalogo/e00142804-contratos-por-municipios}{http://datos.gob.es/es/catalogo/e00142804-contratos-por-municipios}}.
+		\item
+		Demandantes de empleo por municipio\footnote{\href{http://datos.gob.es/es/catalogo/e00142804-demandantes-de-empleo-por-municipios}{http://datos.gob.es/es/catalogo/e00142804-demandantes-de-empleo-por-municipios}}.
+	\end{itemize}
+	\item 
+	Estadísticas de la renta por municipio (Agencia tributaria)\footnote{\href{https://www.agenciatributaria.es/AEAT.internet/datosabiertos/catalogo/hacienda/Estadistica\_de\_los\_declarantes\_del\_IRPF\_por\_municipios.shtml}{https://www.agenciatributaria.es/AEAT.internet/datosabiertos/catalogo/hacienda/ Estadistica\_de\_los\_declarantes\_del\_IRPF\_por\_municipios.shtml}}.
+	\item
+	Instituto Nacional de Estadística (INE)
+	\begin{itemize}
+		\item
+		Estadísticas de población por sexo y edad\footnote{\href{http://www.ine.es/jaxi/Tabla.htm?path=/t20/e245/p05/a2011/l0/\&file=00000001.px\&L=0}{http://www.ine.es/jaxi/Tabla.htm?path=/t20/e245/p05/a2011/l0/\&file=00000001.px\&L=0}}.
+		\item
+		Relación de municipios y códigos por provincias\footnote{\href{http://www.ine.es/daco/daco42/codmun/codmunmapa.htm}{http://www.ine.es/daco/daco42/codmun/codmunmapa.htm}}.
+	\end{itemize}
+\end{itemize}
+
+
+\subsection{Material entregado}
+
+Material adjunto a la memoria:
+
+\begin{itemize}
+	\item 
+	Aplicación web en Flask.
+	\item 
+	Scripts para la integración de fuentes de datos.
+	\item
+	Scripts para la ejecución.
+	\item 
+	Anexos.
+\end{itemize}
+
+Recursos disponibles en internet:
+
+\begin{itemize}
+	\item 
+	\href{https://tfg-datos-publicos.nanoapp.io/}{Página web del proyecto}\footnote{\href{https://tfg-datos-publicos.nanoapp.io/}{https://tfg-datos-publicos.nanoapp.io/}}.
+	\item
+	\href{https://github.com/IvanArjona/TFG-Datos-publicos}{Repositorio del proyecto}\footnote{\href{https://github.com/IvanArjona/TFG-Datos-publicos}{https://github.com/IvanArjona/TFG-Datos-publicos}}.
+\end{itemize}
