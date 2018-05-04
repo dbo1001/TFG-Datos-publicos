@@ -52,6 +52,7 @@ def aniade_codigo_municipio(df, codigos):
     Añade el código de municipio al dataframe
     """
     # Solo si no existe
-    if 'Codigo Municipio' not in df and 'Municipio' in df:
+    if ('Codigo Municipio' not in df or 'Codigo Provincia' not in df) \
+            and 'Municipio' in df:
         df = pd.merge(df, codigos, how='left')
     return df
