@@ -14,11 +14,26 @@
             Consulta
         </div>
         <div class="panel-body">
-            <p>
+            <div class="consulta-top">
                 Descarga la consulta:
                 {{ descarga_consulta('csv') }}
                 {{ descarga_consulta('json') }}
-            </p>
+
+                {% if columnas_numericas %}
+                <div class="dropdown pull-right" style="display: inline">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                        Visualizar mapa
+                        <span class="caret"></span>
+                    </button>
+                        <ul class="dropdown-menu">
+                            {% for columna in columnas_numericas %}
+                                <li><a href="{{ url_for('visualiza_mapa', columna=columna) }}">{{ columna }}</a></li>
+                            {% endfor %}
+                        </ul>
+                </div>
+                {% endif %}
+            </div>
+
             <div class="scrollable">
                 {{ datos.to_html(classes=['table', 'table-bordered', 'table-striped', 'table-hover', 'table-condensed'])|safe }}
             </div>

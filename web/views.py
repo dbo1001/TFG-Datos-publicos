@@ -32,8 +32,11 @@ def consulta():
         max_filas = form_data['max_filas']
         if len(datos) >= form_data['max_filas']:
             flash('Has alcanzado el número máximo de filas ({})'.format(max_filas))
+        columnas_numericas = list(datos.select_dtypes(exclude=['object']).columns.values)
+        print(columnas_numericas)
         return render_template('resultados-consulta.html',
-                               datos=datos)
+                               datos=datos,
+                               columnas_numericas=columnas_numericas)
     return render_template('consulta.html', form=form)
 
 
