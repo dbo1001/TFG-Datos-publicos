@@ -8,6 +8,7 @@ class Municipios(Fuente):
     """
 
     renombrar = {
+        'Codigo provincia': 'Codigo Provincia',
         'Codigo municipio': 'Codigo municipio (local)',
         'Codigo': 'Codigo Municipio'
     }

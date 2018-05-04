@@ -36,6 +36,7 @@ class Sepe(Fuente):
         df = pd.concat(dataframes)
         # Convierte los códigos a string con 5 dígitos
         df['Codigo Municipio'] = df['Codigo Municipio'].astype(str).str.zfill(5)
+        df['Codigo Provincia'] = df['Codigo Provincia'].astype(str).str.zfill(2)
         # Divide la fecha en año y mes
         df['Mes'], df['Año'] = df['mes'].str.split(' de ').str
         df['Año'].astype(int)

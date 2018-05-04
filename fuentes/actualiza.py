@@ -18,7 +18,7 @@ def actualiza_fuentes(config):
     # Carga los municipios con sus códigos
     fuente_municipios = fuentes.pop(0)
     municipios = carga_fuente(fuente_municipios, db)
-    codigos = municipios.loc[:, ['Municipio', 'Codigo Municipio']]
+    codigos = municipios.loc[:, ['Municipio', 'Codigo Municipio', 'Codigo Provincia']]
 
     # Carga los dataframes de cada fuente de datos
     # en una colección con el nombre de la fuente
