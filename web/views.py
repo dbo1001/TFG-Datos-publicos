@@ -2,6 +2,7 @@ from flask import abort, render_template, redirect, flash, url_for, jsonify, mak
 from web import app
 from web.forms.consulta import Consulta
 import web.consulta
+import web.mapa
 
 
 @app.route('/')
@@ -72,3 +73,17 @@ def descarga_consulta(formato):
     resp.headers['Content-type'] = 'text/{}'.format(formato)
     resp.headers["Content-Disposition"] = 'attachment; filename=consulta.{}'.format(formato)
     return resp
+
+
+@app.route('/consulta/mapa/<columna>')
+def visualiza_mapa(columna):
+    """
+    Visualiza en el mapa una consulta.
+    """
+    form_data = session.get('consulta')
+    # No se ha hecho una consulta
+    if not form_data:
+        return abort(403)
+    df = web.consulta.consulta(form_data)
+    web.mapa.visualiza_mapa(df, columna)
+    return render_template('visualiza-mapa.html')

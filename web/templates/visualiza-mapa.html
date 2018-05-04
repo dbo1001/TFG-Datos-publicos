@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+{% from "macros.html" import descarga_consulta %}
+
+{% set active_page = 'consulta' %}
+
+{% block page_content %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Mapa
+        </div>
+        <div class="panel-body">
+            <iframe id="mapa" src="/static/_mapa.html?n={{ range(1, 99999) | random }}"></iframe>
+        </div>
+    </div>
+{% endblock %}
