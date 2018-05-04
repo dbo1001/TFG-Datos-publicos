@@ -33,7 +33,6 @@ def consulta():
         if len(datos) >= form_data['max_filas']:
             flash('Has alcanzado el número máximo de filas ({})'.format(max_filas))
         columnas_numericas = list(datos.select_dtypes(exclude=['object']).columns.values)
-        print(columnas_numericas)
         return render_template('resultados-consulta.html',
                                datos=datos,
                                columnas_numericas=columnas_numericas)
@@ -88,5 +87,5 @@ def visualiza_mapa(columna):
     if not form_data:
         return abort(403)
     df = web.consulta.consulta(form_data)
-    web.mapa.visualiza_mapa(df, columna)
-    return render_template('visualiza-mapa.html')
+    mapa = web.mapa.visualiza_mapa(df, columna)
+    return render_template('visualiza-mapa.html', mapa=mapa)

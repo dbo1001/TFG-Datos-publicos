@@ -26,4 +26,4 @@ def visualiza_mapa(df, columna):
                     # threshold_scale=[100, 200, 300, 500, 1000, 5000],
                     fill_color='BuPu')
 
-    mapa.save('web/static/_mapa.html')
+    return mapa

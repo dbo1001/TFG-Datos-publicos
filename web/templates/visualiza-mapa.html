@@ -9,7 +9,7 @@
             Mapa
         </div>
         <div class="panel-body">
-            <iframe id="mapa" src="/static/_mapa.html?n={{ range(1, 99999) | random }}"></iframe>
+            {{ mapa._repr_html_() | safe }}
         </div>
     </div>
 {% endblock %}
