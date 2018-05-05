@@ -20,16 +20,25 @@
                 {{ descarga_consulta('json') }}
 
                 {% if columnas_numericas %}
-                <div class="dropdown pull-right" style="display: inline">
-                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                        Visualizar mapa
-                        <span class="caret"></span>
-                    </button>
+                <div class="btn-group pull-right" style="display: inline">
+                    <div class="btn-group">
+                        <select id="metodo-mapa" class="btn btn-primary form-control" style="display: inline">
+                            <option selected>mean</option>
+                            <option>sum</option>
+                            <option>count</option>
+                        </select>
+                    </div>
+                    <div id="visualiza-mapa" class="dropdown btn-group" style="display: inline">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                            Visualizar mapa
+                            <span class="caret"></span>
+                        </button>
                         <ul class="dropdown-menu">
                             {% for columna in columnas_numericas %}
-                                <li><a href="{{ url_for('visualiza_mapa', columna=columna) }}">{{ columna }}</a></li>
+                                <li><a href="{{ url_for('visualiza_mapa', metodo='mean', columna=columna) }}">{{ columna }}</a></li>
                             {% endfor %}
                         </ul>
+                    </div>
                 </div>
                 {% endif %}
             </div>
