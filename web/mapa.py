@@ -40,6 +40,8 @@ def visualiza_mapa(df, columna, metodo):
                     data=df,
                     columns=['Codigo Provincia', columna],
                     key_on='feature.properties.cod_prov',
+                    legend_name=columna,
+                    highlight=True,
                     # threshold_scale=[100, 200, 300, 500, 1000, 5000],
                     fill_color='OrRd')
 

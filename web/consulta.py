@@ -84,5 +84,7 @@ def consulta(entrada):
 
 
 def merge_dataframes(df1, df2, join):
-    df_merge = pd.merge(df1, df2, how=join, on='Codigo Municipio')
+    # Columnas que no están en el df1, pero si en el 2. Y la columna del join
+    columnas = list(df2.columns.difference(df1.columns)) + ['Codigo Municipio']
+    df_merge = pd.merge(df1, df2[columnas], how=join, on='Codigo Municipio')
     return df_merge
