@@ -60,17 +60,17 @@ def join():
         messagebox.showwarning('Warning', 'Selecciona al menos dos ficheros')
         return
     try:
+        dataframes = [pd.read_csv(f) for f in ficheros]
+        join_on = columna_join.get()
+        if join_on == '':
+            join_on = None
+        how = how_join.get()
+        df = reduce(lambda x, y: pd.merge(x, y, how=how, on=join_on), dataframes)
         fichero = selecciona_fichero_resultado()
         if fichero:
-            dataframes = [pd.read_csv(f) for f in ficheros]
-            join_on = columna_join.get()
-            if join_on == '':
-                join_on = None
-            how = how_join.get()
-            df = reduce(lambda x, y: pd.merge(x, y, how=how, on=join_on), dataframes)
             df.to_csv(fichero)
-    except:
-        messagebox.showerror('Error', 'No se ha podido hacer el join')
+    except KeyError:
+        messagebox.showerror('Error', 'La columna no está en alguno de los ficheros')
 
 
 # Raíz
