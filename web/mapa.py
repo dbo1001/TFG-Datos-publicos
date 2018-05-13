@@ -20,7 +20,7 @@ def agrupa_df(df, metodo):
     return df.reset_index()
 
 
-def visualiza_mapa(df, columna, metodo):
+def visualiza_mapa(df, columna_valores, metodo, territorio='municipios'):
     """
     Guarda un mapa con el código de provincia y la columna
     del argumento de un dataframe.
@@ -30,19 +30,24 @@ def visualiza_mapa(df, columna, metodo):
                       zoom_start=ZOOM,
                       tiles='cartodbpositron')
 
-    geo_json = 'web/geojson/provincias.geojson'
+    geo_json = 'web/geojson/{}.geojson'.format(territorio)
     geo_data = json.load(open(geo_json, encoding='utf-8'))
 
-    df = df[['Codigo Provincia', columna]]
+    columna_codigo = 'Codigo {}'.format(
+        'Municipio' if territorio == 'municipios' else 'Provincia')
+
+    df = df[[columna_codigo, columna_valores]]
     df = agrupa_df(df, metodo)
 
+    # Añade el maoa coroplético encima del mapa de España
     mapa.choropleth(geo_data=geo_data,
                     data=df,
-                    columns=['Codigo Provincia', columna],
-                    key_on='feature.properties.cod_prov',
-                    legend_name=columna,
+                    columns=[columna_codigo, columna_valores],
+                    key_on='feature.properties.codigo',
+                    legend_name=columna_valores,
+                    line_opacity=0.2,
+                    fill_opacity=0.6,
                     highlight=True,
-                    # threshold_scale=[100, 200, 300, 500, 1000, 5000],
                     fill_color='OrRd')
 
     return mapa
