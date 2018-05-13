@@ -29,12 +29,13 @@ def consulta():
             return redirect(url_for('consulta'))
         # Guarda los datos del formulario para la descarga
         session['consulta'] = form_data
-        max_filas = form_data['max_filas']
-        if len(datos) >= form_data['max_filas']:
-            flash('Has alcanzado el número máximo de filas ({})'.format(max_filas))
+        mostrar = form_data['mostrar']
+        if len(datos) >= mostrar:
+            flash('Mostrando {} de {} filas'.format(mostrar, len(datos)))
         columnas_numericas = list(datos.select_dtypes(exclude=['object']).columns.values)
+        datos_mostrar = datos.head(mostrar)
         return render_template('resultados-consulta.html',
-                               datos=datos,
+                               datos=datos_mostrar,
                                columnas_numericas=columnas_numericas)
     return render_template('consulta.html', form=form)
 

@@ -17,7 +17,7 @@ class Consulta(FlaskForm):
     comparador = FieldList(SelectField('Comparador', choices=comparadores,
                                        validators=[Optional()]), min_entries=entradas)
     valor = FieldList(StringField('Valor'), min_entries=entradas)
-    max_filas = IntegerField('Número máximo de filas', default=10000)
+    mostrar = IntegerField('Filas a mostrar', default=1000)
     join = SelectField('Join', choices=join_choices)
     submit = SubmitField('Consultar')
 

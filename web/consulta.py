@@ -49,7 +49,6 @@ def consulta(entrada):
     comparadores = entrada['comparador']
     valores = entrada['valor']
     mostrar = entrada['columna_mostrar']
-    max_filas = entrada['max_filas']
     join = entrada['join']
     df_fuentes = []
 
@@ -73,7 +72,7 @@ def consulta(entrada):
                 # "$and": [{columna: busqueda}]
             }
 
-        cursor = mongo.db[fuente].find(filtro, mostrar).limit(max_filas)
+        cursor = mongo.db[fuente].find(filtro, mostrar)
         df = pd.DataFrame.from_records(cursor, exclude=['_id'])
         df_fuentes.append(df)
 
