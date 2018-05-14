@@ -1,5 +1,21 @@
 \capitulo{4}{Técnicas y herramientas}
 
+\section{Técnicas}
+
+\subsection{Metodología ágil}
+
+Este proyecto se ha realizado siguiendo los principios del manifiesto ágil \cite{art:agilemanifesto}. En concreto se ha seguido la metodología \textit{scrum} \cite{book:scrum} con sprints normalmente de una semana y reuniones semanales de planificación y revisión.
+
+Al utilizar esta metodología se persigue utilizar una estrategia de desarrollo incremental, en la que al final de cada sprint se tiene como resultado un incremento del software entregable. También se consigue que los requisitos cambien a lo largo del proyecto, en lugar de fijarse al principio, consiguiendo un software de mejor calidad.
+
+Para seguir esta metodología se han utilizado las \foothref{issues de Github}{https://github.com/IvanArjona/TFG-Datos-publicos/issues} y los tableros Kanban de \foothref{ZenHub}{https://www.zenhub.com/} para organizar la pila de tareas a realizar en cada sprint.
+
+\subsection{DevOps}
+
+DevOps \cite{misc:devops} es una metodología para la creación de software en la que se integra el desarrollo de software y la administración de sistemas.
+
+Se ha elegido esta metodología para conseguir desplegar rápidamente todos los cambios en el servidor web. Apollandonos en herramientas como Nanobox (\ref{nanobox}) para facilitar este proceso.
+
 \section{Herramientas}
 
 \subsection{MongoDB}
@@ -46,7 +62,7 @@ PythonAnywhere es un hosting para aplicaciones web en python, el problema con es
 
 Por último, se consideró utilizar una instancia de \href{https://aws.amazon.com/es/ec2/}{Amazon AWS EC2}. Es muy similar a DigitalOcean, se eligió el primero porque es más sencillo de utilizar.
 
-\subsection{Nanobox}
+\subsection{Nanobox} \label{nanobox}
 \begin{itemize}
 	\tightlist
 	\item
