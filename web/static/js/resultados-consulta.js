@@ -5,10 +5,11 @@
 /**
  * Cambia el método en el enlace para mostrar el mapa.
  */
-function cambiaEnlace(selector, metodo, posicion) {
+function cambiaEnlace(selector, metodo) {
     selector = $(selector);
     var href = selector.attr("href");
     var ruta = href.split("/");
+    var posicion = metodo.length > 5 ? 3 : 4;
     ruta[posicion] = metodo;
     href = ruta.join("/");
     selector.attr("href", href);
@@ -32,7 +33,7 @@ $(function (){
     metodoMapa.change(function () {
         var valor = this.value;
         visualizaMapa.each(function() {
-            cambiaEnlace(this, valor, 4);
+            cambiaEnlace(this, valor);
         });
     });
 
@@ -40,7 +41,7 @@ $(function (){
     territorio.change(function () {
         var valor = this.value;
         visualizaMapa.each(function() {
-            cambiaEnlace(this, valor, 3);
+            cambiaEnlace(this, valor);
         });
     });
 
