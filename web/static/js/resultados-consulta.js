@@ -9,8 +9,11 @@ function cambiaEnlace(selector, metodo) {
     selector = $(selector);
     var href = selector.attr("href");
     var ruta = href.split("/");
-    var posicion = metodo.length > 5 ? 3 : 4;
-    ruta[posicion] = metodo;
+    if (metodo.length > 5) {
+        ruta[3] = metodo;
+    } else {
+        ruta[4] = metodo;
+    }
     href = ruta.join("/");
     selector.attr("href", href);
 }

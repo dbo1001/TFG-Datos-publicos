@@ -105,7 +105,6 @@ columna_join_entry.grid(row=1, column=1, pady=3)
 # Forma de hacer el join
 how_join_box = ttk.Combobox(mainframe, textvariable=how_join, state='readonly', width=20)
 how_join_box.grid(row=2, column=1, pady=3)
-# print(how_join_box['values'])
 how_join_box['values'] = ('inner', 'outer', 'left', 'right')
 how_join_box.current(0)
 
