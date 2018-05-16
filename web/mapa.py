@@ -20,7 +20,7 @@ def agrupa_df(df, metodo):
     return df.reset_index()
 
 
-def visualiza_mapa(df, columna_valores, metodo, territorio='municipios'):
+def visualiza_mapa(df, columna_valores, territorio, metodo):
     """
     Guarda un mapa con el código de provincia y la columna
     del argumento de un dataframe.

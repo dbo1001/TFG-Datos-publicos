@@ -78,8 +78,8 @@ def descarga_consulta(formato):
     return resp
 
 
-@app.route('/consulta/mapa/<metodo>/<columna>')
-def visualiza_mapa(metodo, columna):
+@app.route('/consulta/mapa/<territorio>/<metodo>/<columna>')
+def visualiza_mapa(metodo, territorio, columna):
     """
     Visualiza en el mapa una consulta.
     """
@@ -88,5 +88,5 @@ def visualiza_mapa(metodo, columna):
     if not form_data:
         return abort(403)
     df = web.consulta.consulta(form_data)
-    mapa = web.mapa.visualiza_mapa(df, columna, metodo)
+    mapa = web.mapa.visualiza_mapa(df, columna, territorio, metodo)
     return render_template('visualiza-mapa.html', mapa=mapa)
