@@ -57,8 +57,107 @@ En este apéndice se describirán los objetivos de la aplicación y se detallar�
 
 \section{Especificación de requisitos}
 
-\subsection{Diagrama de casos de uso}
+En esta sección se desarrollan los casos de uso relacionados con los requisitos funcionales del apartado anterior, se enumeran los actores que interactúan con la aplicación y se incluye el diagrama de casos de uso.
 
-\subsection{Descripcion de casos de uso}
+\subsection{Descripción de casos de uso}
 
+A continuación se desarrolla la tabla de cada uno de los casos de uso.
+\newpage
+
+% Caso de uso 1
+
+\casoDeUso{1}{Carga de datos}
+{RF-1}
+{Carga el contenido de las fuentes de datos a la base de datos de la aplicación.}
+{Se ha iniciado la base de datos}
+{
+	\item El administrador de datos ejecuta el script para cargar las fuentes de datos.
+}
+{La información de las fuentes de datos se cargan en la base de datos.}
+{
+	\item Alguna fuente no está disponible.
+	\item La estructura de los datos de alguna fuente ha cambiado.
+}
+{Alta}
+
+% Caso de uso 2
+
+\casoDeUso{2}{Consulta de datos}
+{RF-2, RF-2.1, RF-2.2, RF-2.3}
+{Permite al usuario consultar una o varias fuentes de datos.}
+{Los datos están cargados en la base de datos.}
+{
+	\item El usuario entra en la página de consulta.
+	\item Selecciona la fuente de datos.
+	\item Selecciona un filtro (columna, comparador y valor).
+	\item Si quiere añadir más fuentes pulsa "+" y repite desde el paso 2.
+	\item Selecciona el tipo de \textit{join} (\textit{inner}, \textit{outer}, \textit{left}, \textit{right})
+	\item Escoge las columnas a mostrar y el número de filas.
+	\item Pulsa el botón consultar.
+}
+{Se muestra la consulta realizada por el usuario.}
+{
+	\item No hay ningún dato que concuerde con el filtro.
+	\item El número de filas totales es menor que el número a mostrar (avisa al usuario).
+}
+{Alta}
+
+% Caso de uso 3
+
+\casoDeUso{3}{Visualización de datos}
+{RF-3, RF-3.1, RF-3.2, RF-3.3}
+{Permite al usuario visualizar un conjunto de datos en el mapa.}
+{Se ha realizado una consulta (CU-2 \ref{CU:2}).}
+{
+	\item El usuario realiza una consulta.
+	\item Selecciona el método de agregación (mean, sum, count).
+	\item Selecciona el nivel al que mostrar el mapa (Municipios o provincias).
+	\item Escoge la columna de datos a representar.
+}
+{Se muestra un mapa coroplético con los datos de la columna seleccionada.}
+{
+	\item Error al cargar las divisiones geográficas.
+	\item No hay datos suficientes.
+}
+{Media}
+
+% Caso de uso 4
+
+\casoDeUso{4}{Exportar consulta}
+{RF-4}
+{Exporta el resultado de una consulta en varios formatos.}
+{Se ha realizado una consulta (CU-2 \ref{CU:2}).}
+{
+	\item El usuario realiza una consulta.
+	\item Pulsa el botón correspondiente al formato en el que quiere descargar el resultado de la consulta.
+}
+{Descarga un archivo con los datos de la consulta en el formato seleccionado.}
+{
+	\item No hay datos suficientes.
+}
+{Media}
+
+% Caso de uso 5
+
+\casoDeUso{5}{Juntar ficheros csv}
+{RF-5, RF-5.1, RF-5.2, RF-5.3}
+{Junta dos o más ficheros csv en uno solo.}
+{Se tienen al menos dos ficheros csv con al menos una columna común.}
+{
+	\item El usuario abre la aplicación para juntar csv.
+	\item Sube al menos dos ficheros csv.
+	\item Selecciona la columna por la que juntarlos.
+	\item Selecciona el tipo de \textit{join} (\textit{inner}, \textit{outer}, \textit{left}, \textit{right})
+	\item Pulsa el botón `Join'.
+	\item Seleccionar la ruta donde guardar el archivo resultante.
+}
+{Descarga un único fichero csv con la combinación de los anteriores en la ruta seleccionada.}
+{
+	\item Hay menos de dos ficheros.
+	\item No tienen columnas en común.
+	\item No se puede acceder a alguno de los ficheros.
+	\item Alguno de los archivos no está en formato csv.
+	\item No se puede escribir en la ruta seleccionada.
+}
+{Media}
 
