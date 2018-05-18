@@ -19,6 +19,29 @@ En este apéndice se describirán los objetivos de la aplicación y se detallar�
 
 \subsection{Requisitos funcionales}
 
+\begin{itemize}
+	\item \textbf{RF-1 Cargar datos}: El administrador de datos debe poder cargar y actualizar los datos desde sus respectivas fuentes de forma automatizada.
+	\item \textbf{RF-2 Consulta}: Los usuarios deben poder consultar información de las fuentes de datos.
+	\begin{itemize}
+		\item \textbf{RF-2.1}: Podrán realizarse varias subconsultas al mismo tiempo.
+		\item \textbf{RF-2.2}: Se podrá seleccionar las columnas resultantes a mostrar.
+		\item \textbf{RF-2.3}: Se podrá filtrar según los campos de una de las fuentes de datos.
+	\end{itemize}
+	\item \textbf{RF-3 Visualizar datos}: Los usuarios deben poder visualizar los datos de una consulta en forma de mapa coroplético.
+	\begin{itemize}
+		\item \textbf{RF-3.1}: Los datos podrán elegirse de cualquier columna numérica.
+		\item \textbf{RF-3.2}: Se podrán mostrar los datos en un mapa a nivel municipal o provincial.
+		\item \textbf{RF-3.3}: Los datos de una columna se agregarán utilizando varios métodos (media, suma y cuenta).
+	\end{itemize}
+	\item \textbf{RF-4 Exportar}: Los usuarios deben poder exportar datos en varios formatos.
+	\item \textbf{RF-5 Juntar csv}: Los usuarios deben poder juntar varios archivos csv.
+		\begin{itemize}
+		\item \textbf{RF-5.1}: Juntar los archivos mediante una columna común.
+		\item \textbf{RF-5.2}: Utilizando varios tipos de join (\textit{inner}, \textit{outer}, \textit{left}, \textit{right}).
+		\item \textbf{RF-5.3}: Seleccionar la ruta donde se exporta el resultado.
+	\end{itemize}
+\end{itemize}
+
 \subsection{Requisitos no funcionales}
 
 \begin{itemize}
