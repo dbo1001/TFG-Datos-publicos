@@ -29,7 +29,26 @@ def vacia_ficheros():
     lista_lbl.grid_remove()
 
 
-def selecciona_ficheros(*args):
+def actualiza_columnas_comunes():
+    """
+    Actualiza la lista de columnas por las que hacer join
+    """
+    columnas = []
+    for f in ficheros:
+        df = pd.read_csv(f)
+        columnas.extend(df.columns.values)
+    columnas_comunes = set([col for col in columnas if columnas.count(col) == len(ficheros)])
+    columnas_comunes = tuple(columnas_comunes)
+    columna_join_entry['values'] = columnas_comunes
+    # Si Codigo Municipio es una columna, seleccionarla
+    try:
+        index = columnas_comunes.index('Codigo Municipio')
+    except ValueError:
+        index = 0
+    columna_join_entry.current(index)
+
+
+def selecciona_ficheros():
     """
     Acción al pulsar el botón para subir ficheros.
     """
@@ -37,6 +56,7 @@ def selecciona_ficheros(*args):
     for file in files:
         ficheros.add(file)
     muestra_ficheros()
+    actualiza_columnas_comunes()
     vaciar_btn.grid()
     lista_lbl.grid()
 
@@ -99,11 +119,11 @@ columna_join_entry.grid(row=1, column=1, pady=5)
 
 # Columna por la que hacer join
 ttk.Label(mainframe, text="Columna:").grid(row=1, column=0)
-columna_join_entry = ttk.Entry(mainframe, textvariable=columna_join, width=22)
+columna_join_entry = ttk.Combobox(mainframe, textvariable=columna_join, state='readonly')
 columna_join_entry.grid(row=1, column=1, pady=3)
 
 # Forma de hacer el join
-how_join_box = ttk.Combobox(mainframe, textvariable=how_join, state='readonly', width=20)
+how_join_box = ttk.Combobox(mainframe, textvariable=how_join, state='readonly')
 how_join_box.grid(row=2, column=1, pady=3)
 how_join_box['values'] = ('inner', 'outer', 'left', 'right')
 how_join_box.current(0)
