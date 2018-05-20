@@ -14,10 +14,12 @@
             Consulta
         </div>
         <div class="panel-body">
-            <div class="consulta-top">
+            <div class="container-fluid consulta-top">
                 Descarga la consulta:
-                {{ descarga_consulta('csv') }}
-                {{ descarga_consulta('json') }}
+                <div class="btn-group">
+                    {{ descarga_consulta('csv') }}
+                    {{ descarga_consulta('json') }}
+                </div>
 
                 {% if columnas_numericas %}
                 <div class="btn-group pull-right" style="display: inline">

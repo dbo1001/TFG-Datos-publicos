@@ -1,5 +1,16 @@
 {% extends 'layout.html' %}
 
 {% block page_content %}
-    <h1>Hola mundo</h1>
+    <div class="jumbotron">
+        <h1>TFG Datos públicos</h1>
+        <p></p>
+        <p><a class="btn btn-primary btn-lg" href="{{ url_for('consulta') }}" role="button">Página de consulta</a></p>
+        <a href="https://github.com/IvanArjona/TFG-Datos-publicos">Repositorio</a> -
+        <a href="https://github.com/IvanArjona/TFG-Datos-publicos/blob/master/docs/latex/memoria.pdf">Memoria</a> -
+        <a href="https://github.com/IvanArjona/TFG-Datos-publicos/blob/master/docs/latex/anexos.pdf">Anexos</a>
+    </div>
+
+    <footer>
+        <p class="text-muted">Autor: <a href="https://github.com/IvanArjona">Iván Arjona Alonso</a></p>
+    </footer>
 {% endblock %}
