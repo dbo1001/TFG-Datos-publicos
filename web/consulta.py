@@ -1,5 +1,6 @@
 import re
 import pandas as pd
+from flask import flash
 from web import mongo
 from fuentes import fuentes
 from functools import reduce
@@ -49,6 +50,23 @@ def expande(df, exp):
     return reduce(lambda a, kv: a.replace(*kv), zip(columnas, reemplazos), exp)
 
 
+def columna_calculada(df, exp):
+    """
+    Crea una serie con datos calculados a partir de la expresión.
+    """
+    series = None
+    try:
+        # Alguna expresión
+        if exp:
+            expandida = expande(df, exp)
+            series = eval(expandida)
+            return series
+    except (NameError, ValueError):
+        flash('Columna calculada no válida')
+    finally:
+        return series
+
+
 def consulta(entrada):
     """
     Devuelve el dataframe de la consulta
@@ -88,6 +106,11 @@ def consulta(entrada):
 
     # Combina las consultaslo
     df = reduce(lambda x, y: merge_dataframes(x, y, join), df_fuentes)
+
+    # Añade la columna calculada
+    calculada = columna_calculada(df, exp_calculada)
+    if calculada is not None:
+        df = df.assign(Calculada=calculada)
 
     return df
 
