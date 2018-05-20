@@ -59,12 +59,12 @@ def columna_calculada(df, exp):
         # Alguna expresión
         if exp:
             expandida = expande(df, exp)
+            # No se puede usar literal_eval porque estamos usando objetos de pandas
             series = eval(expandida)
             return series
-    except (NameError, ValueError):
+    except (NameError, SyntaxError):
         flash('Columna calculada no válida')
-    finally:
-        return series
+    return series
 
 
 def consulta(entrada):
