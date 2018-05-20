@@ -27,6 +27,9 @@
                             {{ input(form.valor[i]) }}
                         </div>
                     {% endfor %}
+                    <div id="join" hidden>
+                        {{ input(form.join) }}
+                    </div>
                     {{ button(form.submit) }}
                 </div>
 
@@ -36,9 +39,6 @@
                     <p id="descripcion"></p>
                     {{ input(form.columna_mostrar, size=15) }}
                     {{ input(form.columna_calculada) }}
-                    <div id="join" hidden>
-                        {{ input(form.join) }}
-                    </div>
                     {{ input(form.mostrar) }}
                 </div>
             </form>
