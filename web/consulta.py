@@ -40,6 +40,15 @@ def descripcion_fuente(coleccion):
     return fuente.descripcion()
 
 
+def expande(df, exp):
+    """
+    Expande una expresión con las columnas de un dataframe
+    """
+    columnas = df.columns.values
+    reemplazos = ["df['" + col + "']" for col in columnas]
+    return reduce(lambda a, kv: a.replace(*kv), zip(columnas, reemplazos), exp)
+
+
 def consulta(entrada):
     """
     Devuelve el dataframe de la consulta
