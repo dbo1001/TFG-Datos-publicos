@@ -50,6 +50,7 @@ def consulta(entrada):
     valores = entrada['valor']
     mostrar = entrada['columna_mostrar']
     join = entrada['join']
+    exp_calculada = entrada['columna_calculada']
     df_fuentes = []
 
     # Si no se ha seleccionado una columna a mostrar, muestra todas

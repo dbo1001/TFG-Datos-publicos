@@ -18,6 +18,7 @@ class Consulta(FlaskForm):
                                        validators=[Optional()]), min_entries=entradas)
     valor = FieldList(StringField('Valor'), min_entries=entradas)
     mostrar = IntegerField('Filas a mostrar', default=1000)
+    columna_calculada = StringField('Columna calculada')
     join = SelectField('Join', choices=join_choices)
     submit = SubmitField('Consultar')
 
