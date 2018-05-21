@@ -2,7 +2,31 @@
 
 \section{Introducción}
 
+En este anexo se explican los diseños que se han llevado a cabo para realizar los objetivos anteriores. Se incluye el diseño de datos, diseño procedimental y diseño arquitectónico.
+
 \section{Diseño de datos}
+
+La base de datos utilizada en este proyecto es una base de datos de tipo NoSQL, por lo que no hay un sistema relacional de tablas.
+
+Como en la aplicación se trabaja con datos públicos, no se consideró realizar un sistema de usuarios, por lo que cualquiera puede usarla.
+
+\subsection{Fuentes de datos}
+
+Las fuentes de datos se almacenan cada una de ellas en una colección con sus campos correspondientes.
+
+Todas estas fuentes de datos tiene dos campos comunes: código de municipio y código de comunidad. Estos campos se utilizan para agregar varias fuentes de datos en la consulta y dibujar los mapas coropléticos por provincia o municipio.
+
+% TODO Diagrama entidad relación?
+
+\subsection{Fronteras geográficas}
+
+Para poder dibujar los mapas coropléticos es necesario tener almacenados los límites geográficos para pintar las porciones correspondientes.
+
+Estos límites geográficos están almacenados an archivos \textit{geojson} \cite{misc:geojson}, que son estructuras siguiendo el formato \textit{json} para representar elementos geográficos sencillos.
+
+Los geojson utilizados se han obtenido de \cite{misc:limitesmunicipales} en el caso de los límites geográficos por provincias y \cite{misc:carto} para los límites municipales.
+
+En ambos casos se ha utilizado \foothref{mapshaper}{http://mapshaper.org/} \cite{misc:mapshaper} para minimizar los archivos y que el renderizado sea menos pesado en el navegador.
 
 \section{Diseño procedimental}
 
