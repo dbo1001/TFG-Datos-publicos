@@ -31,7 +31,9 @@ def visualiza_mapa(df, columna_valores, territorio, metodo):
                       tiles='cartodbpositron')
 
     geo_json = 'web/geojson/{}.geojson'.format(territorio)
-    geo_data = json.load(open(geo_json, encoding='utf-8'))
+    file = open(geo_json, encoding='utf-8')
+    geo_data = json.load(file)
+    file.close()
 
     columna_codigo = 'Codigo {}'.format(
         'Municipio' if territorio == 'municipios' else 'Provincia')
