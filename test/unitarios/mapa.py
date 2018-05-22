@@ -38,7 +38,7 @@ class MapaUnitTest(unittest.TestCase):
         """
         Prueba el método para visualizar el mapa
         """
-        os.chdir('..')
+        os.chdir('../..')
         columna = 'Número de habitantes'
         d = {'Codigo Provincia': ['09'], columna: [50000]}
         df = pd.DataFrame(data=d)
