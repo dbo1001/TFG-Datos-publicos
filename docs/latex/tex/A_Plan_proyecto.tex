@@ -149,47 +149,49 @@ El proyecto se ha llevado a cabo por un desarrollador empleado a tiempo parcial 
 		Concepto & Coste (\euro) \\
 		\midrule
 		Salario neto & \EUR{1000}  \\
-		Retención IRPF (19 \%) & \EUR{360.53} \\
-		Seguridad social (28,30 \%) & \EUR{537.00} \\
+		Retención IRPF (19 \%) & \EUR{360,53} \\
+		Seguridad social (28,30 \%) & \EUR{537,00} \\
 		\midrule
-		Salario bruto (mensual) & \EUR{1897.53} \\
+		Salario bruto (mensual) & \EUR{1897,53} \\
 		\midrule
-		Total 4 meses & \EUR{7592.59} \\
+		Total 4 meses & \EUR{7592,59} \\
 		\bottomrule
 	\end{tabular}
 	\caption{Costes de personal}
 	\label{tab:personal}
 \end{table}
 
-Los percentajes de cotización a la seguridad social se han calculado a partir del régimen general para 2018 como horas comunes (23.6\% empresa y 4.7\% trabajadores) \cite{misc:cotizacion}.
+Los percentajes de cotización a la seguridad social se han calculado a partir del régimen general para 2018 como horas comunes (23,6\% empresa y 4,7\% trabajadores) \cite{misc:cotizacion}.
 
 Además se sumará el sueldo de los dos tutores asignados al proyecto durante 4 meses, que corresponde a 0,5 créditos. \cite{misc:retribuciontutores}.
 
 \begin{itemize}
 	\item Ayudante de doctor. Sueldo mensual: \EUR{1.815,61}. Imparte 24 créditos anuales.
-	$$ \textup{\EUR{1.815,61}} * 12 meses / 24 créditos * 0.5 créditos = \textup{\EUR{453,90}} $$
+	$$ \dfrac{\textup{\EUR{1.815,61}} * 12 \;meses}{24 \;créditos * 0.5 \;créditos} = \textup{\EUR{453,90}} $$
 	\item Doctor permanente. Sueldo mensual: \EUR{2.325,24}. Imparte 24 créditos anuales.
-	$$ \textup{\EUR{2.325,24}} * 12 meses / 24 créditos * 0.5 créditos = \textup{\EUR{581,31}} $$
+	$$ \dfrac{\textup{\EUR{2.325,24}} * 12 \;meses}{24 \;créditos * 0.5 \;créditos} = \textup{\EUR{581,31}} $$
 \end{itemize}
 
-Corresponde un total de \EUR{7592.59} de personal y \EUR{1035.21} de los tutores.
+Corresponde un total de \EUR{7592,59} de personal y \EUR{1035,21} de los tutores.
 
 \subsubsection{Costes de material}
 
 En esta sección se incluyen los costes de software y hardware.
 
-Como hardware se incluye el coste del equipo que se ha utilizado para desarrollar la aplicación (un único pago de \EUR{1000}) y el servidor web (\EUR{5} mensual). (Ver tabla \ref{tab:costeshardware})
+Como hardware se incluye el coste del servidor web (\EUR{5} mensual) y el equipo que se ha utilizado para desarrollar la aplicación (un único pago de \EUR{1000}) con amortización a 5 años. (Ver tabla \ref{tab:costeshardware})
+
+$$ \dfrac{\textup{\EUR{1.000}} * 4 \;meses}{5 \;años * 12 \;meses} = \textup{\EUR{66,67}} $$
 
 \begin{table}[H]
 	\centering
-	\begin{tabular}{@{}ll@{}}
+	\begin{tabular}{@{}lll@{}}
 		\toprule
-		Concepto & Coste (\euro) \\
+		Concepto & Coste (\euro) & Amortización\\
 		\midrule
-		Ordenador portátil & \EUR{1000}  \\
+		Ordenador portátil & \EUR{1000} & \EUR{66,67}  \\
 		Servidor web (mensual) & \EUR{5} \\
 		\midrule
-		Total 4 meses & \EUR{1020} \\
+		Total 4 meses & & \EUR{86,67} \\
 		\bottomrule
 	\end{tabular}
 	\caption{Costes de hardware}
@@ -207,10 +209,10 @@ Como software incluimos la licencia de Windows como único pago y las licencias 
 		Windows 10 Home  & \EUR{145} \\
 		GitHub Developer (mensual) & \EUR{7} \\
 		Codacy Pro Plan (mensual) & \EUR{15} \\
-		PyCharm (mensual) & \EUR{8.90} \\
+		PyCharm (mensual) & \EUR{8,90} \\
 		GitKraken Pro (anual) & \EUR{41} \\
 		\midrule
-		Total 4 meses & \EUR{309.60} \\
+		Total 4 meses & \EUR{309,60} \\
 		\bottomrule
 	\end{tabular}
 	\caption{Costes de software}
@@ -227,12 +229,12 @@ Sumando los costes de los apartados anteriores tendremos un coste total de \EUR{
 		\toprule
 		Concepto & Coste (\euro) \\
 		\midrule
-		Personal  & \EUR{7592.59} \\
-		Tutores & \EUR{1035.21} \\
+		Personal  & \EUR{7592,59} \\
+		Tutores & \EUR{1035,21} \\
 		Hardware & \EUR{1020} \\
-		Software & \EUR{309.60} \\
+		Software & \EUR{309,60} \\
 		\midrule
-		Total & \EUR{9957.4} \\
+		Total & \EUR{9024,07} \\
 		\bottomrule
 	\end{tabular}
 	\caption{Coste total}
