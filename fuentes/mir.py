@@ -15,10 +15,44 @@ class Mir(Fuente):
         'Código de Municipio': 'Codigo Municipio'
     }
 
+    posiciones = (
+        ('Izquierda', ['PODEMOS', 'EQUO', 'IC-V', 'PCE', 'EH Bildu', 'BLOC-EV', 'BLOC-IDPV-EV-EE', 'BLOC-VERDS',
+                       'COMPROMÍS-Q', 'EV-AE', 'EV-AV', 'EV-LV', 'ERC', 'ERC-CATSÍ', 'ESQUERRA', 'ERC-CATSI',
+                       'PCPE', 'CUP', 'aralar', 'IA', 'IU', 'ANC']),
+        ('Centroizquierda', ['PSOE', 'PSC', 'PS', 'PSA', 'PSA-PA', 'NC', 'EA']),
+        ('Centroderecha', ['ERC', 'PDeCAT', 'PNV', 'CDC', 'CCa-PNC', 'DC', 'PAR', 'UPL']),
+        ('Derecha', ['PP', 'C\'s', 'UPN', 'FAC'])
+    )
+
     def __init__(self, url, anios, tabla, descripcion):
         self.url_base = url
         self.anios = anios
         super().__init__('mir', tabla, descripcion)
+
+    @staticmethod
+    def categoriza_partidos(df, posicion, lista):
+        """
+        Categoriza partidos políticos según su posición
+        """
+        comunes = df.columns.intersection(lista)
+        df[posicion] = df[comunes].sum(axis=1)
+        df.drop(comunes, axis=1, inplace=True)
+        return df
+
+    @staticmethod
+    def categoriza_otros(df):
+        """
+        Categoriza los partidos políticos con posición desconocida
+        """
+        columnas = ['Nombre de Comunidad', 'Código de Provincia', 'Nombre de Provincia',
+                    'Código de Municipio', 'Nombre de Municipio', 'Población',
+                    'Número de mesas', 'Total censo electoral', 'Total votantes',
+                    'Votos válidos', 'Votos a candidaturas', 'Votos en blanco',
+                    'Votos nulos', 'Izquierda', 'Centroizquierda', 'Centroderecha', 'Derecha']
+        dif = df.columns.difference(columnas)
+        df['Otros'] = df[dif].sum(axis=1)
+        df.drop(dif, axis=1, inplace=True)
+        return df
 
     @staticmethod
     def procesa_datos(url, anio):
@@ -61,6 +95,10 @@ class Mir(Fuente):
             dataframes.append(df)
         df = pd.concat(dataframes)
         df.reset_index(inplace=True, drop=True)
+        # Categoriza los partidos
+        for pos, poslist in self.posiciones:
+            df = self.categoriza_partidos(df, pos, poslist)
+        df = self.categoriza_otros(df)
         return df
 
 
