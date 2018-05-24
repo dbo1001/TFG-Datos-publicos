@@ -15,7 +15,7 @@ class InterfazTest(unittest.TestCase):
         Antes de las pruebas
         """
         self.drivers = (
-            # webdriver.Firefox(executable_path='webdrivers/geckodriver'),
+            webdriver.Firefox(executable_path='webdrivers/geckodriver'),
             webdriver.Chrome(executable_path='webdrivers/chromedriver'),
         )
         self.url = 'http://localhost:5000/'

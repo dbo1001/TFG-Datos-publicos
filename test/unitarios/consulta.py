@@ -15,7 +15,6 @@ class ConsultaUnitTest(unittest.TestCase):
         """
         app.testing = True
         self.context = app.app_context()
-        # self.client = app.test_client(use_cookies=True)
 
     def test_fuentes(self):
         """
