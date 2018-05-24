@@ -47,6 +47,15 @@ class ConsultaUnitTest(unittest.TestCase):
             # No existe
             self.assertRaises(AttributeError, consulta.columnas_coleccion, 'no existe')
 
+    def test_todas_columnas(self):
+        """
+        Prueba que se devuelven las columnas de todas las fuentes
+        """
+        n_columnas = 106
+        with self.context:
+            columnas = consulta.todas_columnas()
+            self.assertEqual(len(columnas), n_columnas)
+
     def test_columna_calculada(self):
         """
         Prueba los métodos relacionados con columnas calculadas
