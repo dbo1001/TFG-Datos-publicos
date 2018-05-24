@@ -62,7 +62,7 @@ def columna_calculada(df, exp):
             # No se puede usar literal_eval porque estamos usando objetos de pandas
             series = eval(expandida)
             return series
-    except (NameError, SyntaxError):
+    except (AttributeError, NameError, SyntaxError, TypeError, ValueError):
         flash('Columna calculada no válida')
     return series
 
