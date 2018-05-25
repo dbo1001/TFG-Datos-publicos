@@ -1,12 +1,12 @@
 \capitulo{4}{Técnicas y herramientas}
 
-En esta sección se van a explicar, por un lado, las técnicas que se han seguido durante el desarrollo del proyecto y por otro, las herramientas utilizadas, que se han dividido en herramientas de desarrollo, gestión y documentación.
+En esta sección se van a explicar, por un lado, las técnicas que se han segueoshaperido durante el desarrollo del proyecto y por otro, las herramientas utilizadas, que se han dividido en herramientas de desarrollo, gestión y documentación.
 
 \section{Técnicas}
 
 \subsection{Metodología ágil}
 
-Este proyecto se ha realizado siguiendo los principios del manifiesto ágil \cite{art:agilemanifesto}. En concreto se ha seguido la metodología \textit{scrum} \cite{book:scrum} con sprints normalmente de una semana y reuniones semanales de planificación y revisión.
+Este proyecto se ha realizado siguiendo los principios del manifiesto ágil~\cite{art:agilemanifesto}. En concreto se ha seguido la metodología \textit{scrum} \cite{book:scrum} con sprints normalmente de una semana y reuniones semanales de planificación y revisión.
 
 Al utilizar esta metodología se persigue utilizar una estrategia de desarrollo incremental, en la que al final de cada sprint se tiene como resultado un incremento del software entregable. También se permite que los requisitos cambien a lo largo del proyecto, en lugar de fijarse al principio, consiguiendo un software de mejor calidad.
 
@@ -47,7 +47,7 @@ Tanto Riak como Cassandra son también bases de datos NoSQL, se descartaron porq
 
 LevelDB es una base de datos NoSQL de pares clave-valor, esta herramienta se descartó porque no se cree conveniente utilizar pares clave-valor para un proyecto como este y no hay tantos ejemplos en la documentación como en las otras herramientas.
 
-\subsubsection{DigitalOcean}
+\subsubsection{DigitalOcean} \label{digitalocean}
 
 \begin{itemize}
 	\tightlist
@@ -62,7 +62,7 @@ LevelDB es una base de datos NoSQL de pares clave-valor, esta herramienta se des
 	\href{https://www.digitalocean.com/}{DigitalOcean}.
 \end{itemize}
 
-\foothref{Digital Ocean}{https://www.digitalocean.com/} es un proveedor de servidores privados, por ello podemos hacer lo que queramos con el servidor sin limitaciones más allá de la capacidad de procesamiento y memoria RAM. Se ha elegido este servicio porque nos da total libertad y se puede probar gratuitamente con \foothref{GitHub Education}{https://education.github.com/} \cite{docs:digitalocean}.
+\foothref{Digital Ocean}{https://www.digitalocean.com/} es un proveedor de servidores privados, por ello podemos hacer lo que queramos con el servidor sin limitaciones más allá de la capacidad de procesamiento y memoria RAM. Se ha elegido este servicio porque nos da total libertad y se puede probar gratuitamente con \foothref{GitHub Education}{https://education.github.com/}~\cite{docs:digitalocean}.
 
 Una alternativa que se consideró y de hecho, se probó es Heroku, en este caso se instala el entorno necesario de forma automática. El problema es que la base de datos en la capa gratuita sólo puede pesar 500MB como máximo y no es suficiente para este proyecto.
 
@@ -107,7 +107,7 @@ Como uno de los objetivos del proyecto es el de crear una página web, se han co
 
 Además se incluyen herramientas para desplegar el servidor de desarrollo, para realizar pruebas de la aplicación y para hacer \textit{APIs REST}.
 
-\subsubsection{Folium}
+\subsubsection{Folium} \label{folium}
 
 \begin{itemize}
 	\tightlist
@@ -285,7 +285,7 @@ Esta memoria está escrita en \LaTeX. Se trata de un sistema de preparación de 
 
 Para utilizar esta herramienta se ha utilizado \foothref{TeXstudio}{https://www.texstudio.org/}. Es un editor gratuito y multiplataforma para editar documentos escritos en Latex. Incluye iconos para localizar los comandos más comunes, corrector ortográfico, visor de PDF y descarga los paquetes de forma automática.
 
-Este documento se ha escrito utilizando la siguiente plantilla de Latex \cite{misc:plantillalatex}.
+Este documento se ha escrito utilizando la siguiente plantilla de Latex~\cite{misc:plantillalatex}.
 
 \subsubsection{StarUML}
 
