@@ -1,7 +1,112 @@
 \capitulo{5}{Aspectos relevantes del desarrollo del proyecto}
 
-Este apartado pretende recoger los aspectos más interesantes del desarrollo del proyecto, comentados por los autores del mismo.
-Debe incluir desde la exposición del ciclo de vida utilizado, hasta los detalles de mayor relevancia de las fases de análisis, diseño e implementación.
-Se busca que no sea una mera operación de copiar y pegar diagramas y extractos del código fuente, sino que realmente se justifiquen los caminos de solución que se han tomado, especialmente aquellos que no sean triviales.
-Puede ser el lugar más adecuado para documentar los aspectos más interesantes del diseño y de la implementación, con un mayor hincapié en aspectos tales como el tipo de arquitectura elegido, los índices de las tablas de la base de datos, normalización y desnormalización, distribución en ficheros3, reglas de negocio dentro de las bases de datos (EDVHV GH GDWRV DFWLYDV), aspectos de desarrollo relacionados con el WWW...
-Este apartado, debe convertirse en el resumen de la experiencia práctica del proyecto, y por sí mismo justifica que la memoria se convierta en un documento útil, fuente de referencia para los autores, los tutores y futuros alumnos.
+Este apartado pretende recoger los aspectos más interesantes del desarrollo del proyecto. Se comenta el ciclo de vida utilizado, los problemas encontrados durante el desarrollo y los detalles que se consideran más relevantes.
+
+\section{Formación}
+
+Para realizar estre proyecto se necesitaban conocimientos de los que no se disponía. Se han utilizado los siguientes recursos para aprender antes o durante la realización del proyecto.
+
+Libros:
+
+\begin{itemize}
+	\item Flask Web Development: Developing Web Applications with Python~(Miguel Grinberg) \cite{book:flask}.
+	\item Scum Manager (Alexander Menzinsky, Gertrudis López, Juan Palacio)~\cite{book:scrum}.
+	\item Python Data Science Essentials (Alberto Boschetti, Luca Massaron)~\cite{book:pythondatascience}.
+	\item UML Distilled (Martin Fowler)~\cite{book:umldistilled}.
+	\item Mastering Python (Rick van Hattem)~\cite{book:masteringpython}.
+\end{itemize}
+
+Documentación oficial y cursos:
+
+\begin{itemize}
+	\item Documentación de Digital Ocean \cite{docs:digitalocean}.
+	\item Documentación de Dynatable \cite{docs:dynatable}.
+	\item Documentación de Folium \cite{docs:folium}.
+	\item Documentación de Nanobox \cite{docs:nanobox}.
+	\item Documentación de Pymongo \cite{docs:pymongo}.
+	\item Information Service Engineering (Harald Sack, Maria Koutraki) \cite{misc:informationserviceengineering}.
+\end{itemize}
+
+\section{Servidor en la nube}
+
+Como se trata de una aplicación web, un aspecto relevante es el despliegue de la aplicación en un servidor. Por lo que ya se comenzó a desplegar la aplicación desde un principio.
+
+Inicialmente se empezó a utilizar un servidor gratuito de \foothref{Heroku}{https://www.heroku.com/}, que al principio funcionaba bien, pero conforme se fueron añadiendo fuentes de datos, no se mostraban todos los datos.
+
+Esto se debe a que heroku no instala la base de datos en su propio servidor, si no que utiliza un servicio para almacenar la base de datos de forma externa, \foothref{mLab}{https://mlab.com/}. El problema con mLab es que tiene un límite de 500MB por base de datos y nuestra base de datos con todas las fuentes de datos ocupa al rededor de 3GB.
+
+Para solventar este problema no quedaba más opción que cambiar de servidor de despliegue. Primero se consideró utilizar \foothref{PythonAnywhere}{https://www.pythonanywhere.com/}, pero el problema es el mismo, utiliza también mLab para la base de datos.
+
+Como no se encontraron más servicios gratuitos que soporten bases de datos MongoDB que no utilicen mLab, tuvimos que pasarnos a una plataforma de pago.
+
+En este caso se consideraron las plataformas \foothref{Digital Ocean}{https://www.digitalocean.com/} y \foothref{Amazon Web Services ec2}{https://aws.amazon.com/es/ec2/}. Se escogió DigitalOcean por su simplicidad, aunque AWS debería funcionar también perfectamente.
+
+El servidor que se eligió fue el más básico de Digital Ocean (\ref{digitalocean}), un \textit{Droplet} con 1GB de memoria RAM, 1 CPU, 25GB de almacenamiento SSD Y 1TB de transferencia, suficiente para este proyecto. Con un coste de \EUR{5} mensual.
+
+Aunque el servidor, con el paquete de \foothref{Github Education}{https://education.github.com/} tenemos un cupón de \EUR{50} para gastar, con lo que podríamos mantener el servidor durante 10 meses. Se puede pedir un cupón por persona, no por proyecto, por lo que si se sigue con este proyecto en un TFG en el futuro, podría volver a pedirse un cupón para el despliegue.
+
+\section{Despliegue}
+
+Heroku ya nos facilitaba herramientas para desplegar el código directamente al servidor utilizando git, pero como tuvimos que abandonarlo, en un droplet no tenemos esta facilidad.
+
+Se decidió optar por utilizar \foothref{Nanobox}{https://nanobox.io/} (\ref{nanobox}). Esta herramienta nos permite centrarlos en desarrollar código y no en el despliegue.
+
+Desde nanobox creamos el droplet de DigitalOcean que hemos mencionado antes, de este modo ya no tenemos que preocuparnos por instalar el sistema operativo ni las dependecias o paquetes para hacer funcionar la aplicación.
+
+Para configurar todo esto, en la raíz del proyecto hay un fichero \textit{baxfile.yml} en el que se especifica el lenguaje de programación, la base de datos que vamos a utilizar, los paquetes adicionales a instalar y el ejecutable de la aplicación web.
+
+Las dependencias de la aplicación deberán estar contenidas en el archivo \textit{dependencies.txt}. De modo que en el momento del despliegue, estas dependencias se instalan automáticamente mediante pip.
+
+Nanobox además nos permite escalar la aplicación si en algún momento se cree que no es suficiente con el droplet más básico de Digital Ocean, agregar más servidores para añadir redundancia a la aplicación y nos muestra estadísticas del uso de los recursos del servidor.
+
+Otros aspecto relevante es que desde aquí se ha creado un certificado SSL para cifrar la conexión  desde y hacia el servidor mediante https para mejorar la seguridad.
+
+En los anexos, en el manual del programador, se explica con más detalle el proceso a seguir para desplegar la aplicación.
+
+\section{Mapas coropléticos}
+
+Uno de los requisitos del proyecto es el de mostrar datos en el mapa mediante mapas coropléticos (\ref{mapascoropleticos}). Para ello se optó por utilizar el paquete de python Folium (\ref{folium}).
+
+Para representar los límites geográficos se utilizaron dos archivos geojson, uno con los límites de las provincias y otro con los límites municipales de toda España.
+
+El primer problema encontrado fue que estos arquivos geojson eran demasiado grandes. La solución a este problema fue utilizar un herramienta, \foothref{mapshaper}{http://mapshaper.org/}. Con esta herramienta se consiguió suavizar los bordes de las regiones minimizando el tamaño de los archivos geojson.
+
+Otro problema encontrado es que al mostrar el mapa a nivel de municipios, no se consigue visualizar en Chrome. Esto se debe a que aunque los límites de municipio se han minimizado, se llega al límite establecido por el navegador para poder renderizar el mapa. No se puede minimizar más los límites de municipios porque se perderían algunos municipios, juntándose con los más grandes.
+
+No se ha encontrado una solución para este problema, puede que para solucionarlo haya que cambiar de librería.
+
+Por último, una funcionalidad que podría añadirse a los mapas es mostrar un dato al pasar el cursor sobre una región. Por ejemplo, al mostrar el mapa del paro y posicionarnos sobre Burgos, que se muestre el valor del paro en Burgos.
+
+No se puede mostrar valores en mapas coropléticos con folium, es una limitación de la librería. Podría considerarse cambiar la librería a \foothref{Plotly maps}{https://plot.ly/python/maps/}, que si puede hacer esto, pero el trabajo necesario para cambiar de librería en este punto es demasiado grande, puede considerarse en trabajos futuros.
+
+\section{Dimensionalidad de los datos}
+
+Anteriormente comentábamos que tenemos una base de datos de 3GB. Concretamente las fuentes de datos provenientes de sepe son especialmente grandes, porque tienen información de todos los municipios durante todos los meses del año a lo largo de 15 años.
+
+El problema viene al intentar mostrar información de una de estas fuentes grandes sin filtrar lo suficiente. Por ejemplo, elegir los datos de empleo del sepe sin filtrar los alguna columna.
+
+Como resultado devolvíamos una tabla con todos estos datos, lo que tarda demasiado en responder desde el servidor y en representarse. Incluso, en el servidor se quedaba sin memoria por la cantidad de datos a transferir.
+
+La solución fue añadir un campo `Filas a mostrar', por defecto 1000, en el que se especifica las filas que vamos a mostrar, por lo que ya no hay que transferir y representar todos los datos y la respuesta es mucho más rápida.
+
+Al exportar la consulta a csv o json si que se transfieren todos los datos, pero como no hace falta representarlo, el proceso es mucho más rápido y ya no supone un problema.
+
+\section{Almacenamiento de datos}
+
+En un primer momento se pensó en almacenar los datos en una única colección en MongoDB, diferenciando las fuentes de datos con un atributo. Como es una base de datos no relacional nos permite hacer esto sin ningún problema.
+
+El problema está en la consulta de datos, al tener que buscar en toda la colección cada vez que se haga una consulta, aunque sea muy simple, como la colección es tan grande la consulta tarda bastante. Se consideró que el timpo de carga no es aceptable.
+
+La solución fue almacenar cada fuente de datos en una colección diferente, de modo que si queremos acceder a nos datos del ine, accedemos sólo a la colección del ine; si hacemos una consulta conjunta entre datos del ine y la agencia tributaria, sólo tendremos que comparar los valores en estas dos colecciones.
+
+Como resultado obtenemos unas consultas mucho más rápidas, aunque complica un poco la consulta de datos y no es tan propio de las bases de datos no relacionales.
+
+\section{Seguridad}
+
+Un tema importante a estudiar es si puede haber algún problema de seguridad en la aplicación.
+
+Respecto a inyecciones NoSQL en la base de datos MongoDB. El plugin \textit{flask-wtforms}, que es el encargado de renderizar los formularios, ya se encarga de sanear los entradas para prevenir inyecciones. En todo caso, como las únicas operaciones que se pueden hacer desde la aplicación web son de lectura, no sería demasiado importante que se consultasen más datos de los permitidos porque son públicos y están disponibles abiertamente.
+
+En el peor de los casos, si se llegara a modificar o borrar la base de datos, sólamente habría que volver a ejecutar el script para actualizar las fuentes de datos para volver a generarla en buen estado.
+
+Otro tema de seguridad es la entrada al introducir consultas calculadas. Internamete se trata esta entrada con un \textit{eval} de python, lo que codacy considera como un problema de seguridad. Esta operación no se puede implementar con otros métodos como \textit{literal\_eval} porque se utilizan objetos de pandas. Como las únicas acciones que se pueden hacer son de escritura, no supone un gran problema, igual que en los párrafos anteriores, lo único que podría pasar es lanzar excepciones no tratadas.
