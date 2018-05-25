@@ -188,16 +188,16 @@ function autocompletarColumnaCalculada() {
         })
         .autocomplete({
             minLength: 0,
-            source: function(request, response) {
+            source(request, response) {
                 // delegate back to autocomplete, but extract the last term
                 response($.ui.autocomplete.filter(
                     listaMostrar, extractLast(request.term)));
             },
-            focus: function() {
+            focus() {
                 // prevent value inserted on focus
                 return false;
             },
-            select: function(event, ui) {
+            select(event, ui) {
                 var terms = split(this.value);
                 // remove the current input
                 terms.pop();
