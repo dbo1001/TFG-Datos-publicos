@@ -4,7 +4,7 @@
 
 var fuentes, columnas, comparadores, valores;
 var mostrar, descripcion, descripcionTitulo;
-
+var listaMostrar = [];
 
 /**
  * Actualiza las variables globales.
@@ -75,6 +75,7 @@ function datosFuente(nombreFuente, callback) {
 function actualizaColumnasMostrar() {
     var opciones = [];
     mostrar.empty();
+    listaMostrar = [];
 
     columnas.each(function(i, selFiltro){
         var filtro = $(selFiltro);
@@ -92,6 +93,7 @@ function actualizaColumnasMostrar() {
 
     // Añade las opciones a la lista
     opciones.forEach(function(valor) {
+        listaMostrar.push(valor);
         mostrar.append(new Option(valor));
     });
 }
@@ -161,6 +163,53 @@ function actualizaEventos() {
     });
 }
 
+/**
+ * Autocompleta la columna calculada con el valor de las columnas.
+ * Basado en: http://jqueryui.com/autocomplete/#categories
+ */
+function autocompletarColumnaCalculada() {
+    // Separa las columnas calculadas
+    function split(val) {
+        return val.split(/ \s*/);
+    }
+
+    // Extrae la seleccionada
+    function extractLast(term) {
+        return split(term).pop();
+    }
+
+    $("#columna_calculada")
+        // don't navigate away from the field on tab when selecting an item
+        .on("keydown", function(event) {
+            if (event.keyCode === $.ui.keyCode.TAB &&
+                $(this).autocomplete("instance").menu.active) {
+                event.preventDefault();
+            }
+        })
+        .autocomplete({
+            minLength: 0,
+            source: function(request, response) {
+                // delegate back to autocomplete, but extract the last term
+                response($.ui.autocomplete.filter(
+                    listaMostrar, extractLast(request.term)));
+            },
+            focus: function() {
+                // prevent value inserted on focus
+                return false;
+            },
+            select: function(event, ui) {
+                var terms = split(this.value);
+                // remove the current input
+                terms.pop();
+                // add the selected item
+                terms.push(ui.item.value);
+                // add placeholder to get the comma-and-space at the end
+                terms.push("");
+                this.value = terms.join(" ");
+                return false;
+            }
+        });
+}
 
 
 // Al cargar la página
@@ -172,6 +221,7 @@ $(function() {
 
     actualizaVariables();
     actualizaEventos();
+    autocompletarColumnaCalculada();
 
     // Llama primero al cargar la página
     columnas.each(function(id){
