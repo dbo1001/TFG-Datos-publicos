@@ -6,6 +6,36 @@ En este anexo se explica todo lo que tiene que conocer el programador tanto para
 
 \section{Estructura de directorios}
 
+A continuación se van a mencionar los directorios con una breve descripción de su contenido para ayudar a comprender la estructura del proyecto. Además de los directorios, también se van a incluir los archivos más importantes. \\
+
+\dirtree{%
+	.1 /.
+	.2 config/ \desc{Archivos de configuración}.
+	.3 config.py \desc{Fichero de configuración de la base de datos}.
+	.2 docs/ \desc{Documentación: memoria y anexos}.
+	.3 latex/ \desc{Código en Latex para generar la documentación}.
+	.4 img/ \desc{Imágenes de la documentación}.
+	.4 tex/ \desc{Secciones de la documentación en Latex}.
+	.2 fuentes/ \desc{Paquete para la carga de datos a partir de las fuentes. Un fichero por cada fuente de datos}.
+	.2 prototipos/ \desc{Notebooks de IPython utilizados en un principio para implementar las fuentes de datos antes de pasarlo a la aplicación. Es más fácil trabajar con notebooks porque se puede ver el resultado en cada paso}.
+	.2 test/ \desc{Pruebas de la aplicación}.
+	.3 iterfaz/ \desc{Pruebas de interfaz hechas con selenium}.
+	.3 unitarios/ \desc{Pruebas unitarias hechas con unittest}.
+	.2 web/ \desc{Raíz de la aplicación web hecha con Flask}.
+	.3 forms/ \desc{Formularios de Wtforms}.
+	.3 geojson/ \desc{Archivos GeoJSON que delimitan los límites geográficos en la representación de mapas}.
+	.3 static/ \desc{Ficheros estáticos}.
+	.4 css/ \desc{Hojas de estilo CSS}.
+	.4 imagenes/ \desc{Imágenes}.
+	.4 js/ \desc{Scripts en Javascript}.
+	.3 templates/ \desc{Plantillas para generar HTML en Jinja2}.
+	.2 actualiza-fuentes.py \desc{Script para actualizar las fuentes de datos en la base de datos}.
+	.2 boxfile.yml \desc{Archivo de configuración de Nanobox}.
+	.2 joincsv.py \desc{Aplicación para juntar ficheros CSV}.
+	.2 requirements.txt \desc{Dependencias de la aplicación (paquetes de Python)}.
+	.2 run.py \desc{Script para ejecutar la aplicación web}.
+}
+
 \section{Manual del programador}
 
 \section{Instalación y ejecución del proyecto}
