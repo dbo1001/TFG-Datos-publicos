@@ -27,7 +27,6 @@ class Fuente:
         """
         return '_'.join([self._fuente, self._tabla])
 
-    @abstractmethod
     def descripcion(self):
         """
         Devuelve la descripción de la fuente
