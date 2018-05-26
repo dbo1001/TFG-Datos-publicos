@@ -11,6 +11,7 @@
 \usepackage{listings}
 \usepackage{eurosym}
 \usepackage{longtable,booktabs}
+\usepackage[export]{adjustbox}
 
 \RequirePackage{booktabs}
 \RequirePackage[table]{xcolor}
@@ -58,6 +59,14 @@
 		\caption[#2]{#2 \cite{#3}}\label{fig:#1}
 	\end{figure}
 	\FloatBarrier
+}
+\newcommand{\imagengrande}[2]{
+	\begin{figure}[!h]
+		\centering
+		\includegraphics[width=1.2\textwidth,center]{#1}
+		\caption{#2}\label{fig:#1}
+	\end{figure}
+\FloatBarrier
 }
 
 \newcommand{\imagenflotante}[2]{
