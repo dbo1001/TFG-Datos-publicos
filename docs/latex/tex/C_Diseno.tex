@@ -16,8 +16,6 @@ Las fuentes de datos se almacenan cada una de ellas en una colección con sus ca
 
 Todas estas fuentes de datos tiene dos campos comunes: código de municipio y código de comunidad. Estos campos se utilizan para agregar varias fuentes de datos en la consulta y dibujar los mapas coropléticos por provincia o municipio.
 
-% TODO Diagrama entidad relación?
-
 \subsection{Fronteras geográficas}
 
 Para poder dibujar los mapas coropléticos es necesario tener almacenados los límites geográficos para pintar las porciones correspondientes.
@@ -32,4 +30,32 @@ En ambos casos se ha utilizado \foothref{mapshaper}{http://mapshaper.org/} \cite
 
 \section{Diseño arquitectónico}
 
+El diseño de esta aplicación está dividido en dos partes, las fuentes de datos y la aplicación web. Cada una de ellas situada en un paquete.
 
+A continuación se explicará con más detalle cada uno de estos apartados.
+
+\subsection{Fuentes de datos}
+
+Este paquete contiene los ficheros necesarios para guardar los datos desde cada una de las fuentes en la base de datos.
+
+En primer lugar hay una clase abstracta \textit{Fuente} que contiene las operaciones comunes a todas las fuentes de datos y métodos para acceder a el nombre de la colección y la descripción.
+
+De esta clase \textit{Fuente} heredan todas las fuentes de datos, en el diagrama se muestra la clase \textit{Sepe} para no complicarlo demasiado mostrando todas. Esta clase implementa la lógica común a todos los datos obtenidos de esta fuente, en este caso el SEPE. Se implementa el método \textit{carga()} heredado de Fuente, en este método se guarda en un dataframe de Pandas los datos procesados de esta fuente.
+
+De la clase de cada fuente de datos heredan las diferentes consultas que vayamos a almacenar. Por ejemplo para el SEPE tenemos datos de contratos, empleo y paro; cada una en una clase. Esta clase lo que hace es parametrizar a su superclase, por ejemplo, con información de la url base donde se consulta y la lista de años que se usará para acceder a varias urls con la misma estructura dependiendo del año.
+
+Por último, hay que explicar que la función \textit{actualiza\_fuentes} es la encargada de acceder a todas las fuentes, recoge el dataframe de Pandas con la función \textit{carga()} y guarda estos dataframes en la base de datos.
+
+En la figura \ref{fig:diagramas/fuentes} se muestra un diagrama de clases explicado anteriormente.
+
+\imagengrande{diagramas/fuentes}{Diagrama de clases del paquete Fuentes}
+
+\subsection{Aplicación web}
+
+Este paquete está situado en el directorio `web'.
+
+Para el diseño de la aplicación web se ha seguido un patrón Modelo--Vista--Controlador. Al utilizar este patrón conseguimos tener una separación entre la vista, que es la parte con la que interactúa el usuario; la lógica que interacciona con la aplicación y el modelo.
+
+\imagencite{diagramas/mvc}{Diagrama Modelo--Vista--Controlador}{misc:mvc}
+
+Se ha seguido la estructura seguida en el libro Flask \textit{Web Development de Miguel Grinberg} \cite{book:flask}. En este proyecto los modelos se encuentra en la carpeta \textit{forms}, las vistas en la subcarpeta \textit{template} y los controlador en la raíz de la aplicación web.
