@@ -43,9 +43,11 @@ A continuación se van a explicar las herramientas utilizadas para desarrollar e
 
 \foothref{MongoDB}{https://www.mongodb.com/} \cite{misc:mongodb} es un sistema de bases de datos NoSQL. En esta herramienta los datos se guardan en forma de documentos con un esquema similar a JSON. Con este sistema se consigue una consulta de datos más rápida. Además se ha usado PyMongo \cite{docs:pymongo} como herramienta para integrar MongoDB en Python.
 
-Tanto Riak como Cassandra son también bases de datos NoSQL, se descartaron porque no ofrecen soporte para equipos con sistema operativo Windows y no son bases de datos de documentos. 
+Tanto Riak como Cassandra son también bases de datos NoSQL, se descartaron porque no ofrecen soporte para equipos con sistema operativo Windows y no son bases de datos de documentos, que se cree es lo más conveniente para este proyecto. 
 
-LevelDB es una base de datos NoSQL de pares clave-valor, esta herramienta se descartó porque no se cree conveniente utilizar pares clave-valor para un proyecto como este y no hay tantos ejemplos en la documentación como en las otras herramientas.
+LevelDB es una base de datos NoSQL de pares clave-valor, al igual que Riak, esta herramienta se descartó porque no se cree conveniente utilizar pares clave-valor para un proyecto como este y no hay tantos ejemplos en la documentación como en las otras herramientas.
+
+Podría haberse utilizado bases de datos Relacionales, pero la razón por la que se eligió MongoDB es por la facilidad de almacenar los dataframes de Pandas y, sobre todo, la motivación principal fue la inquietud por formarme en esta tecnología por lo extendida que está y porque no se ve nada en la carrera.
 
 \subsubsection{DigitalOcean} \label{digitalocean}
 
