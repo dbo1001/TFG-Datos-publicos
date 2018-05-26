@@ -19,7 +19,7 @@ Libros:
 Documentación oficial y cursos:
 
 \begin{itemize}
-	\item Documentación de Digital Ocean \cite{docs:digitalocean}.
+	\item Documentación de DigitalOcean \cite{docs:digitalocean}.
 	\item Documentación de Dynatable \cite{docs:dynatable}.
 	\item Documentación de Folium \cite{docs:folium}.
 	\item Documentación de Nanobox \cite{docs:nanobox}.
@@ -39,9 +39,9 @@ Para solventar este problema no quedaba más opción que cambiar de servidor de 
 
 Como no se encontraron más servicios gratuitos que soporten bases de datos MongoDB que no utilicen mLab, tuvimos que pasarnos a una plataforma de pago.
 
-En este caso se consideraron las plataformas \foothref{Digital Ocean}{https://www.digitalocean.com/} y \foothref{Amazon Web Services ec2}{https://aws.amazon.com/es/ec2/}. Se escogió DigitalOcean por su simplicidad, aunque AWS debería funcionar también perfectamente.
+En este caso se consideraron las plataformas \foothref{DigitalOcean}{https://www.digitalocean.com/} y \foothref{Amazon Web Services ec2}{https://aws.amazon.com/es/ec2/}. Se escogió DigitalOcean por su simplicidad, aunque AWS debería funcionar también perfectamente.
 
-El servidor que se eligió fue el más básico de Digital Ocean (\ref{digitalocean}), un \textit{Droplet} con 1GB de memoria RAM, 1 CPU, 25GB de almacenamiento SSD Y 1TB de transferencia, suficiente para este proyecto. Con un coste de \EUR{5} mensual.
+El servidor que se eligió fue el más básico de DigitalOcean (\ref{digitalocean}), un \textit{Droplet} con 1GB de memoria RAM, 1 CPU, 25GB de almacenamiento SSD Y 1TB de transferencia, suficiente para este proyecto. Con un coste de \EUR{5} mensual.
 
 Aunque el servidor, con el paquete de \foothref{Github Education}{https://education.github.com/} tenemos un cupón de \EUR{50} para gastar, con lo que podríamos mantener el servidor durante 10 meses. Se puede pedir un cupón por persona, no por proyecto, por lo que si se sigue con este proyecto en un TFG en el futuro, podría volver a pedirse un cupón para el despliegue.
 
@@ -57,7 +57,7 @@ Para configurar todo esto, en la raíz del proyecto hay un fichero \textit{baxfi
 
 Las dependencias de la aplicación deberán estar contenidas en el archivo \textit{dependencies.txt}. De modo que en el momento del despliegue, estas dependencias se instalan automáticamente mediante pip.
 
-Nanobox además nos permite escalar la aplicación si en algún momento se cree que no es suficiente con el droplet más básico de Digital Ocean, agregar más servidores para añadir redundancia a la aplicación y nos muestra estadísticas del uso de los recursos del servidor.
+Nanobox además nos permite escalar la aplicación si en algún momento se cree que no es suficiente con el droplet más básico de DigitalOcean, agregar más servidores para añadir redundancia a la aplicación y nos muestra estadísticas del uso de los recursos del servidor.
 
 Otros aspecto relevante es que desde aquí se ha creado un certificado SSL para cifrar la conexión  desde y hacia el servidor mediante https para mejorar la seguridad.
 

@@ -41,9 +41,9 @@ A continuación se van a explicar las herramientas utilizadas para desarrollar e
 	\href{https://www.mongodb.com/}{MongoDB}.
 \end{itemize}
 
-\foothref{MongoDB}{https://www.mongodb.com/} \cite{misc:mongodb} es un sistema de bases de datos NoSQL. En esta herramienta los datos se guardan en forma de documentos con un esquema similar a json. Con este sistema se consigue una consulta de datos más rápida. Además se ha usado PyMongo \cite{docs:pymongo} como herramienta para integrar MongoDB en python.
+\foothref{MongoDB}{https://www.mongodb.com/} \cite{misc:mongodb} es un sistema de bases de datos NoSQL. En esta herramienta los datos se guardan en forma de documentos con un esquema similar a JSON. Con este sistema se consigue una consulta de datos más rápida. Además se ha usado PyMongo \cite{docs:pymongo} como herramienta para integrar MongoDB en Python.
 
-Tanto Riak como Cassandra son también bases de datos NoSQL, se descartaron porque no ofrecen soporte para equipos con sistema operativo Windows. 
+Tanto Riak como Cassandra son también bases de datos NoSQL, se descartaron porque no ofrecen soporte para equipos con sistema operativo Windows y no son bases de datos de documentos. 
 
 LevelDB es una base de datos NoSQL de pares clave-valor, esta herramienta se descartó porque no se cree conveniente utilizar pares clave-valor para un proyecto como este y no hay tantos ejemplos en la documentación como en las otras herramientas.
 
@@ -62,11 +62,11 @@ LevelDB es una base de datos NoSQL de pares clave-valor, esta herramienta se des
 	\href{https://www.digitalocean.com/}{DigitalOcean}.
 \end{itemize}
 
-\foothref{Digital Ocean}{https://www.digitalocean.com/} es un proveedor de servidores privados, por ello podemos hacer lo que queramos con el servidor sin limitaciones más allá de la capacidad de procesamiento y memoria RAM. Se ha elegido este servicio porque nos da total libertad y se puede probar gratuitamente con \foothref{GitHub Education}{https://education.github.com/}~\cite{docs:digitalocean}.
+\foothref{DigitalOcean}{https://www.digitalocean.com/} es un proveedor de servidores privados, por ello podemos hacer lo que queramos con el servidor sin limitaciones más allá de la capacidad de procesamiento y memoria RAM. Se ha elegido este servicio porque nos da total libertad y se puede probar gratuitamente con \foothref{GitHub Education}{https://education.github.com/}~\cite{docs:digitalocean}.
 
 Una alternativa que se consideró y de hecho, se probó es Heroku, en este caso se instala el entorno necesario de forma automática. El problema es que la base de datos en la capa gratuita sólo puede pesar 500MB como máximo y no es suficiente para este proyecto.
 
-PythonAnywhere es un hosting para aplicaciones web en python, el problema con este proveedor es que no ofrece bases de datos locales, por lo que habría que utilizar una remota. La única gratuita que se ha encontrado es \foothref{mLab}{https://mlab.com/}, la misma que usa Heroku, por lo que volvemos al mismo problema del límite de tamaño.
+PythonAnywhere es un hosting para aplicaciones web en Python, el problema con este proveedor es que no ofrece bases de datos locales, por lo que habría que utilizar una remota. La única gratuita que se ha encontrado es \foothref{mLab}{https://mlab.com/}, la misma que usa Heroku, por lo que volvemos al mismo problema del límite de tamaño.
 
 Por último, se consideró utilizar una instancia de \foothref{Amazon AWS EC2}{https://aws.amazon.com/es/ec2/}. Es muy similar a DigitalOcean, se eligió el primero porque es más sencillo de utilizar.
 
@@ -101,9 +101,9 @@ Heroku es un servicio muy similar, con la diferencia de que no podemos utilizar 
 	\href{http://flask.pocoo.org/}{Flask}.
 \end{itemize}
 
-Como uno de los objetivos del proyecto es el de crear una página web, se han considerado varios frameworks web para python. Entre ellos se ha seleccionado Flask.
+Como uno de los objetivos del proyecto es el de crear una página web, se han considerado varios frameworks web para Python. Entre ellos se ha seleccionado Flask.
 
-\foothref{Flask}{http://flask.pocoo.org/} es un framework fáciles de utilizar y muy flexible. No nos fuerza a utilizar una metodología específica y podemos organizar la aplicación con la estructura que queramos (a diferencia de \textit{Django}) \cite{book:flask}.
+\foothref{Flask}{http://flask.pocoo.org/} es un framework fácil de utilizar y muy flexible. No nos fuerza a utilizar una metodología específica y podemos organizar la aplicación con la estructura que queramos (a diferencia de \textit{Django}) \cite{book:flask}.
 
 Además se incluyen herramientas para desplegar el servidor de desarrollo, para realizar pruebas de la aplicación y para hacer \textit{APIs REST}.
 
@@ -125,7 +125,7 @@ Un aspecto importante de este proyecto es la representación de datos en el mapa
 
 Para ello se han considerado varias herramientas, de las cuales se ha elegido \foothref{Folium}{http://python-visualization.github.io/folium/} \cite{docs:folium}. Este paquete nos permite visualizar datos manipulados con Python y visualizarlos como mapas utilizando para ello \textit{LeafletJS} \cite{docs:leaflet}.
 
-Se ha elegido esta herramienta porque nos permite representar mapas coropléticos (\ref{mapascoropleticos}) y mapas con clusters de datos \cite{misc:foliumcluster} utilizando estructuras de datos geográficas personalizadas (\textit{geojson}) \cite{docs:geojson}.
+Se ha elegido esta herramienta porque nos permite representar mapas coropléticos (\ref{mapascoropleticos}) y mapas con clusters de datos \cite{misc:foliumcluster} utilizando estructuras de datos geográficas personalizadas (\textit{GeoJSON}) \cite{docs:geojson}.
 
 \subsubsection{Dynatable}
 
@@ -140,7 +140,7 @@ Se ha elegido esta herramienta porque nos permite representar mapas coroplético
 	\href{https://www.dynatable.com/}{Dynatable}.
 \end{itemize}
 
-\foothref{Dynatable}{https://www.dynatable.com/} es un framework de javascript para visualizar tablas de una manera más clara y ordenadas \cite{docs:dynatable}.
+\foothref{Dynatable}{https://www.dynatable.com/} es un framework de javascript para visualizar tablas de una manera más clara y ordenada \cite{docs:dynatable}.
 
 Este framework nos permite paginar los resultados, ordenar por alguna columna y buscar por cualquier campo dentro de la tabla. Todo esto sin tener que recargar la página.
 
@@ -262,7 +262,7 @@ Tiene métricas para medir la complegidad ciclomática, código duplicado, cubri
 
 Durante el desarrollo de este proyecto se ha intentado mantener siempre una Certificación A en Codacy con todas las métricas al 100\% para asegurar la calidad del código.
 
-\imagencite{herramientas/codacy}{Certificado de codacy del proyecto}{misc:codacycertificado}
+\imagencite{herramientas/codacy}{Certificado de Codacy del proyecto}{misc:codacycertificado}
 
 \subsection {Herramientas de documentación}
 
