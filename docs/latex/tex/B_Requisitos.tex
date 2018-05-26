@@ -34,7 +34,7 @@ En este apéndice se describirán los objetivos de la aplicación y se detallar�
 		\item \textbf{RF-3.3}: Los datos de una columna se agregarán utilizando varios métodos (media, suma y cuenta).
 	\end{itemize}
 	\item \textbf{RF-4 Exportar}: Los usuarios deben poder exportar datos en varios formatos.
-	\item \textbf{RF-5 Juntar csv}: Los usuarios deben poder juntar varios archivos csv.
+	\item \textbf{RF-5 Juntar CSV}: Los usuarios deben poder juntar varios archivos CSV.
 		\begin{itemize}
 		\item \textbf{RF-5.1}: Juntar los archivos mediante una columna común.
 		\item \textbf{RF-5.2}: Utilizando varios tipos de join (\textit{inner}, \textit{outer}, \textit{left}, \textit{right}).
@@ -139,24 +139,24 @@ A continuación se desarrolla la tabla de cada uno de los casos de uso.
 
 % Caso de uso 5
 
-\casoDeUso{5}{Juntar ficheros csv}
+\casoDeUso{5}{Juntar ficheros CSV}
 {RF-5, RF-5.1, RF-5.2, RF-5.3}
-{Junta dos o más ficheros csv en uno solo.}
-{Se tienen al menos dos ficheros csv con al menos una columna común.}
+{Junta dos o más ficheros CSV en uno solo.}
+{Se tienen al menos dos ficheros CSV con al menos una columna común.}
 {
-	\item El usuario abre la aplicación para juntar csv.
-	\item Sube al menos dos ficheros csv.
+	\item El usuario abre la aplicación para juntar CSV.
+	\item Sube al menos dos ficheros CSV.
 	\item Selecciona la columna por la que juntarlos.
 	\item Selecciona el tipo de \textit{join} (\textit{inner}, \textit{outer}, \textit{left}, \textit{right})
 	\item Pulsa el botón `Join'.
 	\item Seleccionar la ruta donde guardar el archivo resultante.
 }
-{Descarga un único fichero csv con la combinación de los anteriores en la ruta seleccionada.}
+{Descarga un único fichero CSV con la combinación de los anteriores en la ruta seleccionada.}
 {
 	\item Hay menos de dos ficheros.
 	\item No tienen columnas en común.
 	\item No se puede acceder a alguno de los ficheros.
-	\item Alguno de los archivos no está en formato csv.
+	\item Alguno de los archivos no está en formato CSV.
 	\item No se puede escribir en la ruta seleccionada.
 }
 {Media}
@@ -166,7 +166,7 @@ A continuación se desarrolla la tabla de cada uno de los casos de uso.
 Actores que utilizan la aplicación:
 
 \begin{itemize}
-	\item \textbf{Usuario}: usuario final de la aplicación. Interactúa con la aplicación web y la herramienta para juntar csv.
+	\item \textbf{Usuario}: usuario final de la aplicación. Interactúa con la aplicación web y la herramienta para juntar CSV.
 	\item \textbf{Administrador de datos}: Encargado de mantener los datos en la aplicación. Actualiza las y añade fuentes de datos.
 \end{itemize}
 
