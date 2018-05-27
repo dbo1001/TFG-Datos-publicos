@@ -1,5 +1,7 @@
 import folium
 import json
+import os
+from web import app
 
 
 COORDENADAS = [40, -3]
@@ -30,7 +32,8 @@ def visualiza_mapa(df, columna_valores, territorio, metodo):
                       zoom_start=ZOOM,
                       tiles='cartodbpositron')
 
-    geo_json = 'web/geojson/{}.geojson'.format(territorio)
+    geo_json_url = 'geojson/{}.geojson'.format(territorio)
+    geo_json = os.path.join(app.root_path, geo_json_url)
     file = open(geo_json, encoding='utf-8')
     geo_data = json.load(file)
     file.close()

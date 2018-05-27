@@ -109,3 +109,7 @@ class ConsultaUnitTest(unittest.TestCase):
             entrada['valor'] = ['no existe']
             c = consulta.consulta(entrada)
             self.assertTrue(c.empty)
+
+
+if __name__ == '__main__':
+    unittest.main()
