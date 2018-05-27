@@ -2,9 +2,44 @@
 
 \section{Introducción}
 
+En este apéndice se explica cuáles son los requisitos que deberá cumplir el usuario para ejecutar la aplicación, como instalarla y cómo utilizarla.
+
 \section{Requisitos de usuarios}
 
+Como se trata de una aplicación web, el único requisito que necesita el usuario es un navegador web que soporte, \textit{Javascript}, \textit{cookies} y hojas de estilo \textit{CSS}. Como nuestra aplicación también utiliza \textit{jQuery}, nuestros navegadores soportados serán los mismos \cite{misc:jquerybrowsers}:
+
+\begin{itemize}
+	\item Google Chrome.
+	\item Microsoft Edge.
+	\item Mozilla Firefox.
+	\item Internet Explorer 9 o superior.
+	\item Safari para Mac.
+	\item Opera.
+	\item Navegador de Android 4.0 o superior.
+	\item Safari para iOS 7 o superior.
+\end{itemize}
+
+En el caso de la aplicación para juntar ficheros CSV, haría falta tener instalado Python 3 y \textit{Pandas 0.23}.
+
 \section{Instalación}
+
+\subsection{Aplicación web}
+
+Como se trata de una aplicación web, los usuarios no tendrán que realizar ninguna instalación. Sólo serían necesario acceder a la aplicación desde la siguiente url:
+
+\href{https://tfg-datos-publicos.nanoapp.io}{https://tfg-datos-publicos.nanoapp.io}
+
+En caso de que se quisiera instalar la aplicación en local habría que seguir los pasos explicados en la documentación para programador (\ref{instalacionprogramador}). 
+
+\subsection{Aplicación para juntar CSV}
+
+La otra herramienta proporcionada en este trabajo es la aplicación para juntar ficheros CSV. En este caso, tampoco haría falta instalación como tal, pero si tener instalado Python 3 y Pandas 0.23. Una forma rápida de instalarlo es usando el instalador de \textit{Anaconda}\footnote{Anaconda: \href{https://www.anaconda.com/download/}{https://www.anaconda.com/download/}} con \textit{Python 3.6}.
+
+Para ejecutar la aplicación:
+
+\begin{lstlisting}
+python joincsv.py
+\end{lstlisting}
 
 \section{Manual del usuario}
 
