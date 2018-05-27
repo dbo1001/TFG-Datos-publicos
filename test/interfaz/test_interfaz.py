@@ -14,9 +14,12 @@ class InterfazTest(unittest.TestCase):
         """
         Antes de las pruebas
         """
+        ruta = path.join(path.dirname(__file__), 'webdrivers')
+        firefox_path = path.join(ruta, 'geckodriver')
+        chrome_path = path.join(ruta, 'chromedriver')
         self.drivers = (
-            webdriver.Firefox(executable_path='webdrivers/geckodriver'),
-            webdriver.Chrome(executable_path='webdrivers/chromedriver'),
+            webdriver.Firefox(executable_path=firefox_path),
+            webdriver.Chrome(executable_path=chrome_path),
         )
         self.url = 'http://localhost:5000/'
 
