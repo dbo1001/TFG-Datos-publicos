@@ -38,7 +38,102 @@ A continuación se van a mencionar los directorios con una breve descripción de
 
 \section{Manual del programador}
 
-\section{Instalación y ejecución del proyecto}
+Esta sección tiene como objetivo explicar los puntos más importantes a tener en cuenta por desarrolladores que puedan seguir ampliando este proyecto.
+
+\subsection{Añadir fuentes de datos}
+
+El funcionamiento de esta aplicación se basa en los datos obtenidos de fuentes públicas, por lo que un punto importante es explicar cómo añadir más fuentes a nuestra aplicación.
+
+La lógica de esta parte de la aplicación se encuentra en el paquete \textit{Fuentes}.
+
+Lo primero que tenemos que hacer al añadir una fuente es crear un nuevo fichero con el nombre de la fuente. En este fichero crearemos una clase con el mismo nombre. Esta clase heredará de \textit{Fuente} (situado en \textit{Fuente.py}).
+
+Esta clase tiene que implementar el método \textit{carga()}. La funcionalidad de este método es devolver un dataframe de Pandas a partir de los datos realizando una consulta a la fuente que se está implementando. Esta clase tiene que tener un constructor para parametrizar las diferentes consultas que se puedan realizar a la misma fuente de datos.
+
+Por ejemplo, observamos que en el SEPE, la url para consultar el número de contratos en 2018 es la siguiente:
+
+\begin{lstlisting}
+https://sede.sepe.gob.es/es/portaltrabaja/resources/sede/
+datos_abiertos/datos/Contratos_por_municipios_2018_csv.csv
+\end{lstlisting}
+Y la url para consultar los datos del paro en 2018 es la siguiente:
+
+\begin{lstlisting}
+https://sede.sepe.gob.es/es/portaltrabaja/resources/sede/
+datos_abiertos/datos/Paro_por_municipios_2018_csv.csv
+\end{lstlisting}
+
+Observamos que el principio de la url es el mismo, por lo que lo guardaremos en una variable. Podemos observar que lo único que cambia es el nombre del fichero, en el que también aparece el año. De modo que podemos dividirlo como dos parámetros en el constructor: nombre de fichero y año. Además se incluirá la descripción, que depende de cada consulta.
+
+\begin{lstlisting}[caption=Ejemplo de fuente de datos (Sepe)]
+class Sepe(Fuente):
+	"""
+	Fuente de datos para el Servicio Público de Empleo Estatal
+	"""
+
+	def __init__(self, url, anios, tabla, descripcion_):
+		url_sepe = 'https://sede.sepe.gob.es/es/portaltrabaja/resources/sede/datos_abiertos/datos/'
+		self.url = url_sepe + url
+		self.anios = anios
+		descripcion = descripcion_ + " Servicio Público de Empleo Estatal."
+		super().__init__('sepe', tabla, descripcion)
+
+    @staticmethod
+	def procesa_datos(url):
+		# Procesa los datos
+		df = pd.read_csv(url, sep=';', encoding='latin1', header=1)
+		return df
+
+	def carga(self):
+		dataframes = []
+		for anio in self.anios:
+			url = self.url.format(anio)
+			df = self.procesa_datos(url)
+			dataframes.append(df)
+		df = pd.concat(dataframes)
+		return df
+\end{lstlisting}
+
+Heredando de la clase \textit{Sepe} crearemos una subclase por cada una de las consultas que queramos realizar. En esta subclase añadiremos un constructor sin parámetros, en el que se llamará al constructor de su superclase parametrizándolo.
+
+Por ejemplo, se crearía la subclase \textit{SepeContratos}, parametrizando el constructor del padre con el nombre del fichero y los años disponibles. Así quedaría la clase \textit{SepeContratos}:
+
+\begin{lstlisting}[caption=Ejemplo de fuente de datos (SepeContratos)]
+class SepeContratos(Sepe):
+	"""
+	Contratos por sexo y por edades por cada municipio
+	"""
+	
+	def __init__(self):
+		url = 'Contratos_por_municipios_{}_csv.csv'
+		anios = range(2006, 2019)
+		descripcion = 'Contratos por sexo y por edades.'
+		super().__init__(url, anios, 'contratos', descripcion)
+\end{lstlisting}
+
+Una vez implementadas estas clases hay que añadirlas a la lista de fuentes de datos para que se carguen al ejecutar el script de actualizar fuentes. Esta lista está en el fichero \textit{\_\_init\_\_.py} del paquetes \textit{Fuentes}.
+
+\begin{lstlisting}[caption=Lista con todas las fuentes]
+from fuentes.aeat import AeatRenta
+from fuentes.municipios import Municipios
+from fuentes.ine import InePoblacion
+from fuentes.sepe import SepeContratos, SepeEmpleo, SepeParo
+from fuentes.mir import MirCongreso
+
+
+# Lista de todas las fuentes disponibles
+fuentes = [
+	Municipios,
+	AeatRenta,
+	InePoblacion,
+	SepeContratos,
+	SepeEmpleo,
+	SepeParo,
+	MirCongreso
+]
+\end{lstlisting}
+
+\section{Instalación y ejecución del proyecto} \label{instalacionprogramador}
 
 \subsection{Instalación}
 
@@ -122,3 +217,45 @@ nanobox deploy
 Con esto, de forma transparente para nosotros, se crea una máquina virtual con nuestro proyecto en la que se instalan la base de datos, el entorno de ejecución y los paquetes y se ejecuta la aplicación en el servidor.
 
 \section{Pruebas del sistema}
+
+Se ha realizado una batería de pruebas para verificar el correcto funcionamiento de la aplicación.
+
+\subsection{Pruebas unitarias}
+
+Se han realizado pruebas de cada módulo para comprobar su funcionamiento. Estas pruebas están situadas en la carpeta \textit{/test/unitarios} y se han realizado con el framework de pruebas \textit{Unittest} \cite{misc:unittest}.
+
+Estas pruebas se han centrado en la ejecución de todos los métodos utilizados en la consulta (\textit{consulta.py}) y en la representación de mapas \textit{mapas.py}.
+
+Unittest está integrado en la librería estándar de Python, por lo que no hará falta instalar ningún paquete adicional. 
+
+Para ejecutar los test utilizamos el siguiente comando en la consola:
+
+\begin{lstlisting}
+python -m unittest discover test.unitarios
+\end{lstlisting}
+
+\subsection{Pruebas de interfaz}
+
+Para probar la interfaz web se ha utilizado \textit{Selenium} con la API que proporciona para Python \cite{misc:seleniumpython}, en lugar de grabar las acciones mediante el plugin de Firefox.
+
+Estas pruebas están situadas en la carpeta \textit{/test/interfaz} y se ejecutan de manera similar a las pruebas unitarias, ya que también están hechas con el framework \textit{unittest}.
+
+Para poder ejecutar estas pruebas primero tenemos que instalar el paquete de Selenium:
+
+\begin{lstlisting}
+pip install selenium
+\end{lstlisting}
+
+Una vez instalado podemos ejecutar las pruebas con el siguiente comando:
+
+\begin{lstlisting}
+python -m unittest discover test.interfaz
+\end{lstlisting}
+
+\subsection{Todas las pruebas}
+
+También podemos ejecutar todas las pruebas al mismo tiempo:
+
+\begin{lstlisting}
+python -m unittest discover
+\end{lstlisting}
