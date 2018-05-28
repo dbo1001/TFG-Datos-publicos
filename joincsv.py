@@ -39,13 +39,15 @@ def actualiza_columnas_comunes():
         columnas.extend(df.columns.values)
     columnas_comunes = set([col for col in columnas if columnas.count(col) == len(ficheros)])
     columnas_comunes = tuple(columnas_comunes)
-    columna_join_entry['values'] = columnas_comunes
+    columna_join.delete(0, END)
+    for col in columnas_comunes:
+        columna_join.insert(END, col)
     # Si Codigo Municipio es una columna, seleccionarla
     try:
         index = columnas_comunes.index('Codigo Municipio')
     except ValueError:
         index = 0
-    columna_join_entry.current(index)
+    columna_join.select_set(index)
 
 
 def selecciona_ficheros():
@@ -81,7 +83,7 @@ def join():
         return
     try:
         dataframes = [pd.read_csv(f) for f in ficheros]
-        join_on = columna_join.get()
+        join_on = columna_join.selection_get().split('\n')
         if join_on == '':
             join_on = None
         how = how_join.get()
@@ -105,7 +107,6 @@ mainframe.columnconfigure(0, weight=1)
 mainframe.rowconfigure(0, weight=1)
 
 # Variables
-columna_join = StringVar()
 how_join = StringVar()
 ficheros_text = StringVar()
 
@@ -113,14 +114,9 @@ ficheros_text = StringVar()
 ttk.Button(mainframe, text="Subir csv", command=selecciona_ficheros).grid(row=0, columnspan=2, pady=5)
 
 # Columna por la que hacer join
-ttk.Label(mainframe, text="Columna:").grid(row=1, column=0)
-columna_join_entry = ttk.Entry(mainframe, textvariable=columna_join)
-columna_join_entry.grid(row=1, column=1, pady=5)
-
-# Columna por la que hacer join
-ttk.Label(mainframe, text="Columna:").grid(row=1, column=0)
-columna_join_entry = ttk.Combobox(mainframe, textvariable=columna_join, state='readonly')
-columna_join_entry.grid(row=1, column=1, pady=3)
+ttk.Label(mainframe, text="Columnas:").grid(row=1, column=0)
+columna_join = Listbox(mainframe, selectmode='multiple')
+columna_join.grid(row=1, column=1, pady=3)
 
 # Forma de hacer el join
 how_join_box = ttk.Combobox(mainframe, textvariable=how_join, state='readonly')
