@@ -100,7 +100,10 @@ def consulta(entrada):
                 # "$and": [{columna: busqueda}]
             }
 
-        cursor = mongo.db[fuente].find(filtro, mostrar)
+        limite = 500000
+        cursor = mongo.db[fuente].find(filtro, mostrar, limit=limite)
+        if cursor.count() >= limite:
+            flash('Has llegado al límite de columnas ({}).'.format(limite))
         df = pd.DataFrame.from_records(cursor, exclude=['_id'])
         df_fuentes.append(df)
 
