@@ -88,5 +88,10 @@ def visualiza_mapa(metodo, territorio, columna):
     if not form_data:
         return abort(403)
     df = web.consulta.consulta(form_data)
-    mapa = web.mapa.visualiza_mapa(df, columna, territorio, metodo)
+    try:
+        mapa = web.mapa.visualiza_mapa(df, columna, territorio, metodo)
+    except KeyError as ex:
+        key = ex.args[0].split('[')[1].split(']')[0]
+        flash('Selecciona {} en columnas a mostrar'.format(key))
+        return redirect(url_for('consulta'))
     return render_template('visualiza-mapa.html', mapa=mapa)
