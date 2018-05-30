@@ -91,11 +91,10 @@ def consulta(entrada):
             filtro = {}
         else:
             if comparador == '$eq':
-                valor = ast.literal_eval(valor)
-                if isinstance(valor, str):
+                try:
+                    busqueda = ast.literal_eval(valor)
+                except ValueError:
                     busqueda = re.compile(valor, re.IGNORECASE)
-                else:
-                    busqueda = valor
             else:
                 valor = float(valor)
                 busqueda = {comparador: valor}
