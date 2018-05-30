@@ -149,8 +149,6 @@ El tercer desplegable `Visualizar mapa', es la columna que se quiere visualizar,
 
 \imagen{manual/mapas-consulta-desplegable}{Desplegable para seleccionar la columna a visualizar}
 
-Es importante que si queremos visualizar el mapa por provincia hayamos seleccionado `Codigo Provincia' en columnas a mostrar, y si se va a representar el mapa a nivel de municipio, se deberá haber seleccionado `Codigo Municipio'. 
-
 En este caso visualizaremos la consulta calculada que habíamos elegido en la sección \ref{calculada}, agrupando por media (\textit{mean}).
 
 Mapa por provincias (Figura \ref{fig:manual/mapa-provincias}).
@@ -161,7 +159,13 @@ Mapa por municipios (Figura \ref{fig:manual/mapa-municipios}).
 
 \imagen{manual/mapa-municipios}{Mapa por municipios de la columna calculada}
 
+Es importante mencionar que si queremos visualizar el mapa por provincia hayamos seleccionado `Codigo Provincia' en columnas a mostrar, y si se va a representar el mapa a nivel de municipio, se deberá haber seleccionado `Codigo Municipio'. 
+
+\imagen{manual/mapa-error}{Error al intentar visualizar un mapa sin haber seleccionado la clave correspondiente}
+
 En el caso de mostrar el mapa por municipios, esta opción sólo funciona el Firefox, en Chrome no funciona por limitaciones del framework (lineas futuras).
+
+\newpage
 
 \subsection{Juntar ficheros CSV}
 
@@ -173,7 +177,13 @@ Para iniciarla:
 python joincsv.py
 \end{lstlisting}
 
-\imagen{manual/join-inicial}{Aplicación de escritorio para juntar ficheros CSV}
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=0.7\textwidth]{manual/join-inicial}
+	\caption{Aplicación de escritorio para juntar ficheros CSV}
+	\label{fig:manual/join-inicial}
+\end{figure}
+\FloatBarrier
 
 Una vez iniciada, habrá que pulsar el botón `Subir csv' y seleccionar todos los ficheros que quiera juntar. Otra opción es seleccionarlos de uno en uno, pulsando varias veces `Subir csv'.
 
