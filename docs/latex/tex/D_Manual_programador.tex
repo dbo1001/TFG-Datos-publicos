@@ -133,6 +133,13 @@ fuentes = [
 ]
 \end{lstlisting}
 
+En el fichero \textit{Fuente.py} tenemos además dos decoradores que se pueden utilizar sobre la función \textit{carga()} (o cualquier otra función que devuelva un dataframe) para realizar ciertas acciones comunes.
+
+\begin{itemize}
+	\item @to\_numeric: convierte todos las columnas con datos numéricos almacenados como cademas a tipos de datos numéricos.
+	\item @rename(dict): renombra las columnas de un dataframe de Pandas a las pasadas en el diccionario. Siendo la clave el nombre actual y el valor el nuevo nombre.
+\end{itemize}
+
 \section{Instalación y ejecución del proyecto} \label{instalacionprogramador}
 
 \subsection{Instalación}
@@ -159,6 +166,16 @@ pip install -r requirements.txt
 \end{lstlisting}
 
 \subsection{Ejecución}
+
+\subsection{Configuración}
+
+Para configurar los datos de acceso a la base de dato podemos utilizar las variables de entorno: \textit{DATA\_DB\_HOST}, \textit{DATA\_DB\_PORT}, \textit{DATA\_DB\_NAME}, \textit{DATA\_DB\_USER}, \textit{DATA\_DB\_PASS}.
+
+En caso de usar Nanobox estas variables estarán configuradas por defecto, por lo que no tendríamos que hacer nada.
+
+Si no dejamos los valores por defecto al instalar MongoDB, tampoco hará falta hacer nada, se cogerán estos valores automáticamente.
+
+El el archivo \textit{config/config.py} también podemos modificar esta configuración. Si se añade alguna característica más en el futuro que requiera algún tipo de configuración debería añadirse una variable a esta clase.
 
 \subsubsection{Actualización de la base de datos}
 
