@@ -10,7 +10,8 @@
 {# Lista de páginas en el menú #}
 {% set navigation_bar = [
     ('index', 'Inicio'),
-    ('consulta', 'Consulta')
+    ('consulta', 'Consulta'),
+    ('https://github.com/IvanArjona/TFG-Datos-publicos/releases/latest', 'Juntar CSV')
 ] -%}
 
 {# Página por defecto para marcar la pestaña activa en el menú #}
@@ -32,7 +33,7 @@
             <ul class="nav navbar-nav">
                 {% for pagina, texto in navigation_bar %}
                 <li{% if active_page == pagina %} class="active"{% endif %}>
-                    <a href="{{ url_for(pagina) }}">{{ texto }}</a>
+                    <a href="{{ pagina if pagina.startswith('http') else url_for(pagina) }}">{{ texto }}</a>
                 </li>
                 {% endfor %}
             </ul>
