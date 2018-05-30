@@ -1,3 +1,4 @@
+import ast
 import re
 import pandas as pd
 from flask import flash
@@ -90,14 +91,17 @@ def consulta(entrada):
             filtro = {}
         else:
             if comparador == '$eq':
-                busqueda = re.compile(valor, re.IGNORECASE)
+                valor = ast.literal_eval(valor)
+                if isinstance(valor, str):
+                    busqueda = re.compile(valor, re.IGNORECASE)
+                else:
+                    busqueda = valor
             else:
                 valor = float(valor)
                 busqueda = {comparador: valor}
 
             filtro = {
                 columna: busqueda
-                # "$and": [{columna: busqueda}]
             }
 
         limite = 500000
