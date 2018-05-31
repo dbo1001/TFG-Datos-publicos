@@ -114,8 +114,11 @@ def consulta(entrada):
         df_fuentes.append(df)
 
     # Combina las consultaslo
-    df = reduce(lambda x, y: merge_dataframes(x, y, join), df_fuentes)
-
+    try:
+        df = reduce(lambda x, y: merge_dataframes(x, y, join), df_fuentes)
+    except KeyError:
+        flash('Error al combinar subconsultas')
+        return pd.DataFrame()
     # Añade la columna calculada
     calculada = columna_calculada(df, exp_calculada)
     if calculada is not None:
