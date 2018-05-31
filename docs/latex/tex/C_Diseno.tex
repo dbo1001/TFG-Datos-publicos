@@ -20,7 +20,7 @@ Todas estas fuentes de datos tiene dos campos comunes: código de municipio y c�
 
 Para poder dibujar los mapas coropléticos es necesario tener almacenados los límites geográficos para pintar las porciones correspondientes.
 
-Estos límites geográficos están almacenados an archivos \textit{GeoJSON} \cite{misc:geojson}, que son estructuras siguiendo el formato \textit{JSON} para representar elementos geográficos sencillos.
+Estos límites geográficos están almacenados en archivos \textit{GeoJSON} \cite{misc:geojson}, que son estructuras siguiendo el formato \textit{JSON} para representar elementos geográficos sencillos.
 
 Los GeoJSON utilizados se han obtenido de \cite{misc:limitesmunicipales} en el caso de los límites geográficos por provincias y \cite{misc:carto} para los límites municipales.
 
@@ -33,6 +33,8 @@ El caso más interesante respecto a la ejecución de los algoritmos es el caso d
 En la figura \ref{fig:diagramas/secuencia} se muestra un diagrama de secuencia al actualizar las fuentes de datos.
 
 \imagengrande{diagramas/secuencia}{Diagrama de secuencia para actualizar fuentes de datos}
+
+\textit{Actualiza\_fuentes} es una función en el fichero \textit{actualiza.py}, aunque debería haber una clase en el diagrama, como no pertenece a ninguna clase, he decidio poner directamente la función.
 
 \section{Diseño arquitectónico}
 

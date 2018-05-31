@@ -16,6 +16,8 @@ A continuación se van a mencionar los directorios con una breve descripción de
 	.3 latex/ \desc{Código en Latex para generar la documentación}.
 	.4 img/ \desc{Imágenes de la documentación}.
 	.4 tex/ \desc{Secciones de la documentación en Latex}.
+	.3 memoria.pdf \desc{Memoria}.
+	.3 anexos.pdf \desc{Anexos}.
 	.2 fuentes/ \desc{Paquete para la carga de datos a partir de las fuentes. Un fichero por cada fuente de datos}.
 	.2 prototipos/ \desc{Notebooks de IPython utilizados en un principio para implementar las fuentes de datos antes de pasarlo a la aplicación. Es más fácil trabajar con notebooks porque se puede ver el resultado en cada paso}.
 	.2 test/ \desc{Pruebas de la aplicación}.
@@ -136,7 +138,7 @@ fuentes = [
 En el fichero \textit{Fuente.py} tenemos además dos decoradores que se pueden utilizar sobre la función \textit{carga()} (o cualquier otra función que devuelva un dataframe) para realizar ciertas acciones comunes.
 
 \begin{itemize}
-	\item @to\_numeric: convierte todos las columnas con datos numéricos almacenados como cademas a tipos de datos numéricos.
+	\item @to\_numeric: convierte todos las columnas con datos numéricos almacenados como cadenas a tipos de datos numéricos.
 	\item @rename(dict): renombra las columnas de un dataframe de Pandas a las pasadas en el diccionario. Siendo la clave el nombre actual y el valor el nuevo nombre.
 \end{itemize}
 

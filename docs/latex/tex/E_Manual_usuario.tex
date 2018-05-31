@@ -101,7 +101,14 @@ Hay que tener en cuenta que al seleccionar las columnas a mostrar, tenemos que s
 
 Una vez rellenados los campos de todas las subconsultas, elegiremos cómo queremos que se juntes. Para ello en el campo \textit{join}, que habrá aparecido al presionar `+' por primera vez, seleccionamos el método por el que queremos que se junten.
 
-Los posibles métodos son: \textit{inner}, \textit{inner join}, \textit{outer join}, \textit{left join}, \textit{right join}.
+Los posibles métodos son: \textit{inner join}, \textit{outer join}, \textit{left join}, \textit{right join}.
+
+\begin{itemize}
+	\item \textit{inner}: Intersección de todos los municipios entre las fuentes.
+	\item \textit{outer}: Unión de los municipios entre fuentes.
+	\item \textit{left}: Todas las entradas de la primera subconsulta unidas con las demás subconsultas.
+	\item \textit{right}: Todas las entradas de la última subconsulta unidas con las demás subconsultas.
+\end{itemize}
 
 \imagen{manual/subconsulta-join}{Método para juntar subconsultas}
 
@@ -127,6 +134,13 @@ Número de declaraciones / Número de habitantes * 100
 
 \imagen{manual/calculada-resultado}{Visualización de una consulta con una columna calculada}
 
+
+Número de declaraciones entre el valor máximo de declaraciones:
+
+\begin{lstlisting}
+Número de declaraciones / Número de declaraciones.max()
+\end{lstlisting}
+
 Es importante destacar que hay que seleccionar todas las columnas que usemos en una consulta calculada en el campo `columnas a mostrar'.
 
 Si la consulta calculada no es válida, nos mostrará un mensaje y no se mostrará, pero sí que se mostrará el resto de la consulta.
@@ -143,7 +157,7 @@ En la página donde se muestra el resultado de la consulta, aparece una serie de
 
 El primer desplegable indica el método por el que agrupar los datos. Posibilidades: \textit{mean}, \textit{sum}, \textit{count}.
 
-El segundo desplegable es el nivel al que se representa el mapa. Puede ser a nivel de provincia o a nivel de municipio.
+El segundo desplegable es el nivel al que se representa el mapa. Puede ser a nivel de provincia o a nivel de municipio. Cuando se selecciona provincia, se agrupan todos los registros de cada provincia y cuando se selecciona municipio, se agrupan todos los registros del mismo municipio.
 
 El tercer desplegable `Visualizar mapa', es la columna que se quiere visualizar, se mostrarán sólo las columnas numéricas. Al pulsarlo nos abrirá el mapa visualizando la columna que pulsemos, con las configuración de los dos desplegables anteriores.
 

@@ -9,7 +9,7 @@ Para realizar estre proyecto se necesitaban conocimientos de los que no se dispo
 Libros:
 
 \begin{itemize}
-	\item Flask Web Development: Developing Web Applications with Python~(Miguel Grinberg) \cite{book:flask}.
+	\item Flask Web Development: Developing Web Applications with Python (Miguel Grinberg)~\cite{book:flask}.
 	\item Scum Manager (Alexander Menzinsky, Gertrudis López, Juan Palacio)~\cite{book:scrum}.
 	\item Python Data Science Essentials (Alberto Boschetti, Luca Massaron)~\cite{book:pythondatascience}.
 	\item UML Distilled (Martin Fowler)~\cite{book:umldistilled}.
@@ -33,7 +33,7 @@ Como se trata de una aplicación web, un aspecto relevante es el despliegue de l
 
 Inicialmente se empezó a utilizar un servidor gratuito de \foothref{Heroku}{https://www.heroku.com/}, que al principio funcionaba bien, pero conforme se fueron añadiendo fuentes de datos, no se mostraban todos los datos.
 
-Esto se debe a que heroku no instala la base de datos en su propio servidor, si no que utiliza un servicio para almacenar la base de datos de forma externa, \foothref{mLab}{https://mlab.com/}. El problema con mLab es que tiene un límite de 500MB por base de datos y nuestra base de datos con todas las fuentes de datos ocupa al rededor de 3GB.
+Esto se debe a que heroku no instala la base de datos en su propio servidor, si no que utiliza un servicio para almacenar la base de datos de forma externa, \foothref{mLab}{https://mlab.com/}. El problema con mLab es que tiene un límite de 500MB por base de datos y nuestra base de datos con todas las fuentes de datos ocupa alrededor de 3GB.
 
 Para solventar este problema no quedaba más opción que cambiar de servidor de despliegue. Primero se consideró utilizar \foothref{PythonAnywhere}{https://www.pythonanywhere.com/}, pero el problema es el mismo, utiliza también mLab para la base de datos.
 
@@ -41,7 +41,7 @@ Como no se encontraron más servicios gratuitos que soporten bases de datos Mong
 
 En este caso se consideraron las plataformas \foothref{DigitalOcean}{https://www.digitalocean.com/} y \foothref{Amazon Web Services ec2}{https://aws.amazon.com/es/ec2/}. Se escogió DigitalOcean por su simplicidad, aunque AWS debería funcionar también perfectamente.
 
-El servidor que se eligió fue el más básico de DigitalOcean (\ref{digitalocean}), un \textit{Droplet} con 1GB de memoria RAM, 1 CPU, 25GB de almacenamiento SSD Y 1TB de transferencia, suficiente para este proyecto. Con un coste de \EUR{5} mensual.
+El servidor que se eligió fue el más básico de DigitalOcean (\ref{digitalocean}), un \textit{Droplet}\footnote{Droplet: un servidor en la nube de DigitalOcean.} con 1GB de memoria RAM, 1 CPU, 25GB de almacenamiento SSD Y 1TB de transferencia, suficiente para este proyecto. Con un coste de \EUR{5} mensual.
 
 Aunque el servidor, con el paquete de \foothref{Github Education}{https://education.github.com/} tenemos un cupón de \EUR{50} para gastar, con lo que podríamos mantener el servidor durante 10 meses. Se puede pedir un cupón por persona, no por proyecto, por lo que si se sigue con este proyecto en un TFG en el futuro, podría volver a pedirse un cupón para el despliegue.
 
@@ -81,9 +81,9 @@ No se puede mostrar valores en mapas coropléticos con folium, es una limitació
 
 \section{Dimensionalidad de los datos}
 
-Anteriormente comentábamos que tenemos una base de datos de 3GB. Concretamente las fuentes de datos provenientes de sepe son especialmente grandes, porque tienen información de todos los municipios durante todos los meses del año a lo largo de 15 años.
+Anteriormente comentábamos que tenemos una base de datos de 3GB. Concretamente las fuentes de datos provenientes de SEPE (Servicio Público de Empleo Estatal) son especialmente grandes, porque tienen información de todos los municipios durante todos los meses del año a lo largo de 15 años.
 
-El problema viene al intentar mostrar información de una de estas fuentes grandes sin filtrar lo suficiente. Por ejemplo, elegir los datos de empleo del sepe sin filtrar los alguna columna.
+El problema viene al intentar mostrar información de una de estas fuentes grandes sin filtrar lo suficiente. Por ejemplo, elegir los datos de empleo del SEPE sin filtrar por alguna columna.
 
 Como resultado devolvíamos una tabla con todos estos datos, lo que tarda demasiado en responder desde el servidor y en representarse. Incluso, en el servidor se quedaba sin memoria por la cantidad de datos a transferir.
 
