@@ -29,11 +29,12 @@ def consulta():
             return redirect(url_for('consulta'))
         # Guarda los datos del formulario para la descarga
         session['consulta'] = form_data
-        mostrar = form_data['mostrar']
+        mostrar_form = form_data['mostrar']
+        mostrar = float('Inf') if not mostrar_form or mostrar_form < 0 else mostrar_form
         if len(datos) >= mostrar:
             flash('Mostrando {} de {} filas'.format(mostrar, len(datos)))
         columnas_numericas = list(datos.select_dtypes(exclude=['object']).columns.values)
-        datos_mostrar = datos.head(mostrar)
+        datos_mostrar = datos.head(mostrar) if mostrar != float('Inf') else datos
         return render_template('resultados-consulta.html',
                                datos=datos_mostrar,
                                columnas_numericas=columnas_numericas)
