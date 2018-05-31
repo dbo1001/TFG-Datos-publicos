@@ -14,5 +14,7 @@
 
 {# Botón para descargar la consulta en cierto formato #}
 {% macro descarga_consulta(formato) %}
-<a class="btn btn-default" href="{{ url_for('descarga_consulta', formato=formato) }}">{{ formato }}</a>
+<a href="{{ url_for('descarga_consulta', formato=formato) }}">
+    <img src="{{ url_for('.static', filename='imagenes/{}.svg'.format(formato)) }}" width="25" alt="{{ formato }}">
+</a>
 {% endmacro %}
