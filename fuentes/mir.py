@@ -1,7 +1,7 @@
 import pandas as pd
 import requests
 import io
-from fuentes.Fuente import Fuente, rename
+from fuentes.Fuente import Fuente, rename, to_numeric
 from zipfile import ZipFile
 
 
@@ -20,8 +20,8 @@ class Mir(Fuente):
                        'COMPROMÍS-Q', 'EV-AE', 'EV-AV', 'EV-LV', 'ERC', 'ERC-CATSÍ', 'ESQUERRA', 'ERC-CATSI',
                        'PCPE', 'CUP', 'aralar', 'IA', 'IU', 'ANC']),
         ('Centroizquierda', ['PSOE', 'PSC', 'PS', 'PSA', 'PSA-PA', 'NC', 'EA']),
-        ('Centroderecha', ['ERC', 'PDeCAT', 'PNV', 'CDC', 'CCa-PNC', 'DC', 'PAR', 'UPL']),
-        ('Derecha', ['PP', 'C\'s', 'UPN', 'FAC'])
+        ('Centroderecha', ['CIU', 'PDP', 'ERC', 'PDeCAT', 'PNV', 'CDC', 'CCa-PNC', 'DC', 'PAR', 'UPL']),
+        ('Derecha', ['PP', 'C\'s', 'AP', 'UPN', 'FAC'])
     )
 
     def __init__(self, url, anios, tabla, descripcion):
@@ -47,11 +47,11 @@ class Mir(Fuente):
         columnas = ['Nombre de Comunidad', 'Código de Provincia', 'Nombre de Provincia',
                     'Código de Municipio', 'Nombre de Municipio', 'Población',
                     'Número de mesas', 'Total censo electoral', 'Total votantes',
-                    'Votos válidos', 'Votos a candidaturas', 'Votos en blanco',
-                    'Votos nulos', 'Izquierda', 'Centroizquierda', 'Centroderecha', 'Derecha']
-        dif = df.columns.difference(columnas)
-        df['Otros'] = df[dif].sum(axis=1)
-        df.drop(dif, axis=1, inplace=True)
+                    'Votos válidos', 'Papeletas a candidaturas', 'Votos en blanco',
+                    'Votos nulos', 'Izquierda', 'Centroizquierda', 'Centroderecha',
+                    'Derecha', 'Año']
+        df['Otros'] = df.drop(columnas).sum(axis=1)
+        df = df[columnas + ['Otros']]
         return df
 
     @staticmethod
@@ -64,16 +64,19 @@ class Mir(Fuente):
             try:
                 r = requests.get(url)
                 comprimido = ZipFile(io.BytesIO(r.content))
-                nombre_excel = '02_{}_1.xlsx'.format(anio)
+                nombre_excel = '04_{}_1.xlsx'.format(anio)
                 excel = comprimido.open(nombre_excel)
-                df = pd.read_excel(excel, header=header)
+                df = pd.read_excel(excel, header=header, skipfooter=6)
+                df.fillna(0, inplace=True)
                 # Comvierte los códigos a string
                 df['Código de Provincia'] = df['Código de Provincia'].astype(str).str.zfill(2)
                 df['Código de Municipio'] = df['Código de Municipio'].astype(str).str.zfill(3)
+                df['Nombre de Provincia'] = df['Nombre de Provincia'].str.strip()
+                df['Nombre de Municipio'] = df['Nombre de Municipio'].str.strip()
                 # Añade el año
                 df['Año'] = int(str(anio)[:4])
                 # Sustituye los puntos en los nombres de columnas (no soportado por Mongo)
-                df.columns = df.columns.str.replace('.', '-')
+                df.columns = df.columns.str.replace('.', '')
                 df.columns = df.columns.str.strip()
                 break
             # Puede tener varias filas en blanco por encima de la tabla
@@ -92,25 +95,24 @@ class Mir(Fuente):
         for anio in self.anios:
             url = self.url_base.format(anio)
             df = self.procesa_datos(url, anio)
+            # Categoriza los partidos
+            for pos, poslist in self.posiciones:
+                df = self.categoriza_partidos(df, pos, poslist)
+            df = self.categoriza_otros(df)
+            print('Elecciones {}', anio)
             dataframes.append(df)
         df = pd.concat(dataframes)
         df.reset_index(inplace=True, drop=True)
-        # Categoriza los partidos
-        for pos, poslist in self.posiciones:
-            df = self.categoriza_partidos(df, pos, poslist)
-        df = self.categoriza_otros(df)
         return df
 
 
-class MirCongreso(Mir):
+class MirElecciones(Mir):
     """
     Resultados electorales del congreso
     """
 
     def __init__(self):
-        url_base = 'http://www.infoelectoral.mir.es/infoelectoral/docxl/02_{}_1.zip'
-        anios = [197706, 197903, 198210, 198606, 198910,
-                 199306, 199603, 200003, 200403, 200803,
-                 201111, 201512, 201606]
-        descripcion = 'Resultados electorales del congreso por año por partido del Ministerio del Interior.'
-        super().__init__(url_base, anios, 'congreso', descripcion)
+        url_base = 'http://www.infoelectoral.mir.es/infoelectoral/docxl/04_{}_1.zip'
+        anios = [198706, 199105, 199505, 199906, 200305, 200705, 201105]
+        descripcion = 'Resultados de elecciones municipales por año por partido del Ministerio del Interior.'
+        super().__init__(url_base, anios, 'elecciones', descripcion)
