@@ -7,7 +7,7 @@ class Consulta(FlaskForm):
     """
     Formulario para la consulta de datos
     """
-    comparadores = [('$eq', '='), ('$ne', '!='), ('$lt', '<'), ('$lte', '<='), ('$gt', '>'), ('$gte', '>=')]
+    comparadores = [('$eq', '='), ('$not', '!='), ('$lt', '<'), ('$lte', '<='), ('$gt', '>'), ('$gte', '>=')]
     join_choices = [('inner', 'inner'), ('outer', 'outer'), ('left', 'left'), ('right', 'right')]
     entradas = 1
 

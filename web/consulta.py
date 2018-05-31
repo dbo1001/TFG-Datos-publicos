@@ -1,5 +1,6 @@
 import re
 import pandas as pd
+from pymongo.errors import OperationFailure
 from flask import flash
 from web import mongo
 from fuentes import fuentes
@@ -90,14 +91,13 @@ def consulta(entrada):
                 # Mustra todas las filas
                 filtro = {}
             else:
-                if comparador == '$eq':
-                    try:
-                        busqueda = float(valor)
-                    except ValueError:
-                        busqueda = re.compile(valor, re.IGNORECASE)
-                else:
+                try:
                     valor = float(valor)
-                    busqueda = {comparador: valor}
+                    if comparador == '$not':
+                        comparador = '$ne'
+                except ValueError:
+                    valor = re.compile(valor, re.IGNORECASE)
+                busqueda = {comparador: valor} if comparador != '$eq' else valor
 
                 filtro = {
                     columna: busqueda
@@ -112,7 +112,7 @@ def consulta(entrada):
         except re.error:
             flash('Expresión no válida')
             return pd.DataFrame()
-        except ValueError:
+        except (ValueError, OperationFailure):
             flash('El comparador y el valor que has introducido no son compatibles')
             return pd.DataFrame()
 
