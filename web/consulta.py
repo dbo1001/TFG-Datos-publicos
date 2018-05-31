@@ -1,4 +1,3 @@
-import ast
 import re
 import pandas as pd
 from flask import flash
@@ -92,9 +91,13 @@ def consulta(entrada):
         else:
             if comparador == '$eq':
                 try:
-                    busqueda = ast.literal_eval(valor)
+                    busqueda = float(valor)
                 except ValueError:
-                    busqueda = re.compile(valor, re.IGNORECASE)
+                    try:
+                        busqueda = re.compile(valor, re.IGNORECASE)
+                    except re.error:
+                        flash('Expresión no válida')
+                        return pd.DataFrame()
             else:
                 valor = float(valor)
                 busqueda = {comparador: valor}

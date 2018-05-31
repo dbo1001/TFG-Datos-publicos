@@ -57,6 +57,12 @@ En la primera columna, seleccionaremos la fuente de datos de la que queramos con
 
 Podemos filtrar por cualquier columna de la fuente, utilizando los siguientes comparadores: igual (=), distinto (!=), menor (<), mayor (>), menor o igual (<=), mayor o igual (>=).
 
+En el campo valor podemos introducir datos numéricos o cadenas. En el caso de utilizar cadenas, se pueden introducir expresiones regulares. La búsqueda no es sensible a mayúsculas y minúsculas. Ejemplo: Ciudades que empiezan por una palabra y acaban por `de Ebro'.
+
+\begin{lstlisting}
+^[a-z]+ de ebro$
+\end{lstlisting}
+
 En la columna de la derecha nos mostrará la descripción de la fuente que hayamos seleccionado y podremos seleccionar las columnas que queramos ver.
 
 Por último, elegiremos el número de filas a mostrar, este es el número máximo de filas que se pueden ver en la previsualización de la tabla, al descargar la consulta o mostrar el mapa, aparecerán todos los datos (por defecto 1000).
