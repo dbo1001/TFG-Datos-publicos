@@ -1,7 +1,7 @@
 import pandas as pd
 import requests
 import io
-from fuentes.Fuente import Fuente, rename, to_numeric
+from fuentes.Fuente import Fuente, rename
 from zipfile import ZipFile
 
 
