@@ -85,33 +85,36 @@ def consulta(entrada):
         mostrar = None
 
     for fuente, columna, comparador, valor in zip(fuentes_entrada, columnas, comparadores, valores):
-        if columna == 'Todas':
-            # Mustra todas las filas
-            filtro = {}
-        else:
-            if comparador == '$eq':
-                try:
-                    busqueda = float(valor)
-                except ValueError:
-                    try:
-                        busqueda = re.compile(valor, re.IGNORECASE)
-                    except re.error:
-                        flash('Expresión no válida')
-                        return pd.DataFrame()
+        try:
+            if columna == 'Todas':
+                # Mustra todas las filas
+                filtro = {}
             else:
-                valor = float(valor)
-                busqueda = {comparador: valor}
+                if comparador == '$eq':
+                    try:
+                        busqueda = float(valor)
+                    except ValueError:
+                        busqueda = re.compile(valor, re.IGNORECASE)
+                else:
+                    valor = float(valor)
+                    busqueda = {comparador: valor}
 
-            filtro = {
-                columna: busqueda
-            }
+                filtro = {
+                    columna: busqueda
+                }
 
-        limite = 500000
-        cursor = mongo.db[fuente].find(filtro, mostrar, limit=limite)
-        if cursor.count() >= limite:
-            flash('Has llegado al límite de columnas ({}).'.format(limite))
-        df = pd.DataFrame.from_records(cursor, exclude=['_id'])
-        df_fuentes.append(df)
+            limite = 500000
+            cursor = mongo.db[fuente].find(filtro, mostrar, limit=limite)
+            if cursor.count() >= limite:
+                flash('Has llegado al límite de columnas ({}).'.format(limite))
+            df = pd.DataFrame.from_records(cursor, exclude=['_id'])
+            df_fuentes.append(df)
+        except re.error:
+            flash('Expresión no válida')
+            return pd.DataFrame()
+        except ValueError:
+            flash('El comparador y el valor que has introducido no son compatibles')
+            return pd.DataFrame()
 
     # Combina las consultaslo
     try:
