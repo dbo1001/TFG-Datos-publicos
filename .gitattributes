@@ -1,0 +1,4 @@
+# Ignora estas carpetas en las estadísticas
+prototipos/* linguist-vendored
+docs/* linguist-vendored
+web/geojson/* linguist-vendored
