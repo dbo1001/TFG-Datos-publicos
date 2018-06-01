@@ -33,13 +33,13 @@ Como se trata de una aplicación web, un aspecto relevante es el despliegue de l
 
 Inicialmente se empezó a utilizar un servidor gratuito de \foothref{Heroku}{https://www.heroku.com/}, que al principio funcionaba bien, pero conforme se fueron añadiendo fuentes de datos, no se mostraban todos los datos.
 
-Esto se debe a que heroku no instala la base de datos en su propio servidor, si no que utiliza un servicio para almacenar la base de datos de forma externa, \foothref{mLab}{https://mlab.com/}. El problema con mLab es que tiene un límite de 500MB por base de datos y nuestra base de datos con todas las fuentes de datos ocupa alrededor de 3GB.
+Esto se debe a que Heroku no instala la base de datos en su propio servidor, si no que utiliza un servicio para almacenar la base de datos de forma externa, \foothref{mLab}{https://mlab.com/}. El problema con mLab es que tiene un límite de 500MB por base de datos y nuestra base de datos con todas las fuentes de datos ocupa alrededor de 3GB.
 
 Para solventar este problema no quedaba más opción que cambiar de servidor de despliegue. Primero se consideró utilizar \foothref{PythonAnywhere}{https://www.pythonanywhere.com/}, pero el problema es el mismo, utiliza también mLab para la base de datos.
 
 Como no se encontraron más servicios gratuitos que soporten bases de datos MongoDB que no utilicen mLab, tuvimos que pasarnos a una plataforma de pago.
 
-En este caso se consideraron las plataformas \foothref{DigitalOcean}{https://www.digitalocean.com/} y \foothref{Amazon Web Services ec2}{https://aws.amazon.com/es/ec2/}. Se escogió DigitalOcean por su simplicidad, aunque AWS debería funcionar también perfectamente.
+En este caso se consideraron las plataformas \foothref{DigitalOcean}{https://www.digitalocean.com/} y \foothref{Amazon Web Services EC2}{https://aws.amazon.com/es/ec2/}. Se escogió DigitalOcean por su simplicidad, aunque AWS debería funcionar también perfectamente.
 
 El servidor que se eligió fue el más básico de DigitalOcean (\ref{digitalocean}), un \textit{Droplet}\footnote{Droplet: un servidor en la nube de DigitalOcean.} con 1GB de memoria RAM, 1 CPU, 25GB de almacenamiento SSD Y 1TB de transferencia, suficiente para este proyecto. Con un coste de \EUR{5} mensual.
 
@@ -47,37 +47,37 @@ Aunque el servidor, con el paquete de \foothref{Github Education}{https://educat
 
 \section{Despliegue}
 
-Heroku ya nos facilitaba herramientas para desplegar el código directamente al servidor utilizando git, pero como tuvimos que abandonarlo, en un droplet no tenemos esta facilidad.
+Heroku ya nos facilitaba herramientas para desplegar el código directamente al servidor utilizando \textit{git}, pero como tuvimos que abandonarlo, en un \textit{droplet} no tenemos esta facilidad.
 
-Se decidió optar por utilizar \foothref{Nanobox}{https://nanobox.io/} (\ref{nanobox}). Esta herramienta nos permite centrarlos en desarrollar código y no en el despliegue.
+Se decidió optar por utilizar \foothref{Nanobox}{https://nanobox.io/} (\ref{nanobox}). Esta herramienta nos permite centrarnos en desarrollar código y no en el despliegue.
 
-Desde nanobox creamos el droplet de DigitalOcean que hemos mencionado antes, de este modo ya no tenemos que preocuparnos por instalar el sistema operativo ni las dependecias o paquetes para hacer funcionar la aplicación.
+Desde Nanobox creamos el \textit{droplet} de DigitalOcean que hemos mencionado antes, de este modo, ya no tenemos que preocuparnos por instalar el sistema operativo ni las dependecias o paquetes para hacer funcionar la aplicación.
 
 Para configurar todo esto, en la raíz del proyecto hay un fichero \textit{baxfile.yml} en el que se especifica el lenguaje de programación, la base de datos que vamos a utilizar, los paquetes adicionales a instalar y el ejecutable de la aplicación web.
 
-Las dependencias de la aplicación deberán estar contenidas en el archivo \textit{dependencies.txt}. De modo que en el momento del despliegue, estas dependencias se instalan automáticamente mediante pip.
+Las dependencias de la aplicación deberán estar contenidas en el archivo \textit{dependencies.txt}. De modo que en el momento del despliegue, estas dependencias se instalan automáticamente mediante \textit{pip}.
 
-Nanobox además nos permite escalar la aplicación si en algún momento se cree que no es suficiente con el droplet más básico de DigitalOcean, agregar más servidores para añadir redundancia a la aplicación y nos muestra estadísticas del uso de los recursos del servidor.
+Nanobox además nos permite escalar la aplicación si en algún momento se cree que no es suficiente con el \textit{droplet} más básico de DigitalOcean, agregar más servidores para añadir redundancia a la aplicación y nos muestra estadísticas del uso de los recursos del servidor.
 
-Otros aspecto relevante es que desde aquí se ha creado un certificado SSL para cifrar la conexión  desde y hacia el servidor mediante https para mejorar la seguridad.
+Otros aspecto relevante es que desde aquí se ha creado un certificado \textit{SSL} para cifrar la conexión  desde y hacia el servidor mediante \textit{HTTPS} para mejorar la seguridad.
 
 En los anexos, en el manual del programador, se explica con más detalle el proceso a seguir para desplegar la aplicación.
 
 \section{Mapas coropléticos}
 
-Uno de los requisitos del proyecto es el de mostrar datos en el mapa mediante mapas coropléticos (\ref{mapascoropleticos}). Para ello se optó por utilizar el paquete de python Folium (\ref{folium}).
+Uno de los requisitos del proyecto es el de mostrar datos en el mapa mediante mapas coropléticos (\ref{mapascoropleticos}). Para ello se optó por utilizar el paquete de Python Folium (\ref{folium}).
 
-Para representar los límites geográficos se utilizaron dos archivos geojson, uno con los límites de las provincias y otro con los límites municipales de toda España.
+Para representar los límites geográficos se utilizaron dos archivos \textit{GeoJSON}, uno con los límites de las provincias y otro con los límites municipales de toda España.
 
-El primer problema encontrado fue que estos arquivos geojson eran demasiado grandes. La solución a este problema fue utilizar un herramienta, \foothref{mapshaper}{http://mapshaper.org/}. Con esta herramienta se consiguió suavizar los bordes de las regiones minimizando el tamaño de los archivos geojson.
+El primer problema encontrado fue que estos arquivos \textit{GeoJSON} eran demasiado grandes. La solución a este problema fue utilizar un herramienta, \foothref{mapshaper}{http://mapshaper.org/}. Con esta herramienta se consiguió suavizar los bordes de las regiones minimizando el tamaño de los archivos \textit{GeoJSON}.
 
-Otro problema encontrado es que al mostrar el mapa a nivel de municipios, no se consigue visualizar en Chrome. Esto se debe a que aunque los límites de municipio se han minimizado, se llega al límite establecido por el navegador para poder renderizar el mapa. No se puede minimizar más los límites de municipios porque se perderían algunos municipios, juntándose con los más grandes.
+Otro problema encontrado es que al mostrar el mapa a nivel de municipios, no se consigue visualizar en \textit{Chrome}. Esto se debe a que, aunque los límites de municipio se han minimizado, se llega al límite establecido por el navegador para poder renderizar el mapa. No se puede minimizar más los límites municipales porque se perderían algunos municipios, juntándose con los más grandes.
 
 No se ha encontrado una solución para este problema, puede que para solucionarlo haya que cambiar de librería.
 
 Por último, una funcionalidad que podría añadirse a los mapas es mostrar un dato al pasar el cursor sobre una región. Por ejemplo, al mostrar el mapa del paro y posicionarnos sobre Burgos, que se muestre el valor del paro en Burgos.
 
-No se puede mostrar valores en mapas coropléticos con folium, es una limitación de la librería. Podría considerarse cambiar la librería a \foothref{Plotly maps}{https://plot.ly/python/maps/}, que si puede hacer esto, pero el trabajo necesario para cambiar de librería en este punto es demasiado grande, puede considerarse en trabajos futuros.
+No se puede mostrar valores en mapas coropléticos con \textit{Folium}, es una limitación de la librería. Podría considerarse cambiar la librería a \foothref{Plotly maps}{https://plot.ly/python/maps/}, que si puede hacer esto, pero el trabajo necesario para cambiar de librería en este punto es demasiado grande, puede considerarse en trabajos futuros.
 
 \section{Dimensionalidad de los datos}
 
@@ -89,7 +89,7 @@ Como resultado devolvíamos una tabla con todos estos datos, lo que tarda demasi
 
 La solución fue añadir un campo `Filas a mostrar', por defecto 1000, en el que se especifica las filas que vamos a mostrar, por lo que ya no hay que transferir y representar todos los datos y la respuesta es mucho más rápida.
 
-Al exportar la consulta a csv o json si que se transfieren todos los datos, pero como no hace falta representarlo, el proceso es mucho más rápido y ya no supone un problema.
+Al exportar la consulta a CSV o JSON si que se transfieren todos los datos, pero como no hace falta representarlo, el proceso es mucho más rápido y ya no supone un problema.
 
 \section{Almacenamiento de datos}
 
@@ -97,7 +97,7 @@ En un primer momento se pensó en almacenar los datos en una única colección e
 
 El problema está en la consulta de datos, al tener que buscar en toda la colección cada vez que se haga una consulta, aunque sea muy simple, como la colección es tan grande la consulta tarda bastante. Se consideró que el timpo de carga no es aceptable.
 
-La solución fue almacenar cada fuente de datos en una colección diferente, de modo que si queremos acceder a nos datos del ine, accedemos sólo a la colección del ine; si hacemos una consulta conjunta entre datos del ine y la agencia tributaria, sólo tendremos que comparar los valores en estas dos colecciones.
+La solución fue almacenar cada fuente de datos en una colección diferente, de modo que si queremos acceder a los datos del INE (Instituo Nacional de Estadística), accedemos sólo a la colección del INE; si hacemos una consulta conjunta entre datos del INE y la Agencia Tributaria, sólo tendremos que comparar los valores en estas dos colecciones.
 
 Como resultado obtenemos unas consultas mucho más rápidas, aunque complica un poco la consulta de datos y no es tan propio de las bases de datos no relacionales.
 
@@ -105,8 +105,8 @@ Como resultado obtenemos unas consultas mucho más rápidas, aunque complica un 
 
 Un tema importante a estudiar es si puede haber algún problema de seguridad en la aplicación.
 
-Respecto a inyecciones NoSQL en la base de datos MongoDB. El plugin \textit{flask-wtforms}, que es el encargado de renderizar los formularios, ya se encarga de sanear los entradas para prevenir inyecciones. En todo caso, como las únicas operaciones que se pueden hacer desde la aplicación web son de lectura, no sería demasiado importante que se consultasen más datos de los permitidos porque son públicos y están disponibles abiertamente.
+Respecto a inyecciones NoSQL en la base de datos MongoDB. El plugin \textit{flask-wtforms}, que es el encargado de renderizar los formularios, ya se encarga de sanear las entradas para prevenir inyecciones. En todo caso, como las únicas operaciones que se pueden hacer desde la aplicación web son de lectura, no sería demasiado importante que se consultasen más datos de los permitidos porque son públicos y están disponibles abiertamente.
 
 En el peor de los casos, si se llegara a modificar o borrar la base de datos, sólamente habría que volver a ejecutar el script para actualizar las fuentes de datos para volver a generarla en buen estado.
 
-Otro tema de seguridad es la entrada al introducir consultas calculadas. Internamete se trata esta entrada con un \textit{eval} de python, lo que codacy considera como un problema de seguridad. Esta operación no se puede implementar con otros métodos como \textit{literal\_eval} porque se utilizan objetos de pandas. Como las únicas acciones que se pueden hacer son de escritura, no supone un gran problema, igual que en los párrafos anteriores, lo único que podría pasar es lanzar excepciones no tratadas.
+Otro tema de seguridad es la entrada al introducir consultas calculadas. Internamete se trata esta entrada con un \textit{eval} de Python, lo que \textit{Codacy} considera como un problema de seguridad. Esta operación no se puede implementar con otros métodos como \textit{literal\_eval} porque se utilizan objetos de \textit{Pandas}. Como las únicas acciones que se pueden hacer son de escritura, no supone un gran problema, igual que en los párrafos anteriores, lo único que podría pasar es lanzar excepciones no tratadas.
