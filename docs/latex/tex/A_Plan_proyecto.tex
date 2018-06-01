@@ -12,13 +12,13 @@ El desarrollo del proyecto se ha llevado a cabo utilizando metodologias ágiles,
 
 Se aplicó una estrategia de desarrollo incremental, con iteraciones que llamaremos \textit{sprints}.
 
-El resultado de cada iteración es un entregable, sobre el que se discute en la reunión posterior a cada sprint.
+El resultado de cada iteración es un entregable, sobre el que se discute en la reunión posterior a cada \textit{sprint}.
 
 Se realizó, en principio, una reunión a la semana con los tutores para exponer las modificaciones realizadas en el sprint anterior y planificar los cambios a realizar en la siguiente iteración. 
 
-Estas tareas están priorizadas por el tiempo estimado de su realización, se puede ver esta estimación en el enlace de cada sprint a sus tareas. 
+Estas tareas están priorizadas por el tiempo estimado de su realización, se puede ver esta estimación en el enlace de cada \textit{sprint} a sus tareas. 
 
-A continuación se va a realizar un breve resumen de las tareas realizadas en cada una de las iteraciones, así como la duración de cada sprint y el gráfico \textit{burndown} correspondiente.
+A continuación se va a realizar un breve resumen de las tareas realizadas en cada una de las iteraciones, así como la duración de cada \textit{sprint} y el gráfico \textit{burndown} correspondiente.
 
 \subsection{Sprint 0 (16/02/2018 - 02/03/2018)}
 
@@ -36,9 +36,9 @@ La duración fue de dos semanas en lugar de una para poder documentarse sobre to
 
 \subsection{Sprint 1 (03/03/2018 - 08/03/2018)}
 
-Un objetivo de este sprint es investigar alternativas de bases de datos no relacionades que se podrían utilizar. Se ha elegido MongoDB.
+Un objetivo de este sprint es investigar alternativas de \textit{bases de datos no relacionades} que se podrían utilizar. Se ha elegido \textit{MongoDB}.
 
-El otro objetivo es empezar a implementar prototipos con las fuentes de datos que se habían encontrado en el sprint anterior. Se implementaron prototipos del INE, de la agencia tributaria y del SEPE.
+El otro objetivo es empezar a implementar prototipos con las fuentes de datos que se habían encontrado en el sprint anterior. Se implementaron prototipos del INE, de la Agencia Yributaria y del SEPE.
 
 \imagen{sprints/sprint1}{Burndown del sprint 1}
 
@@ -46,7 +46,7 @@ El otro objetivo es empezar a implementar prototipos con las fuentes de datos qu
 
 \subsection{Sprint 2 (09/03/2018 - 15/03/2018)}
 
-El primer objetivo de este sprint es crear la estructura de la página web con Flask. Utilizando un modelo vista-controlador. También se utiliza Bootstrap para ahorrar trabajo en el diseño.
+El primer objetivo de este sprint es crear la estructura de la página web con \textit{Flask}. Utilizando un \textit{modelo vista-controlador}. También se utiliza \textit{Bootstrap} para ahorrar trabajo en el diseño.
 
 Se implementó un prototipo de la carga de datos hacia la base de datos y otro para la descarga de datos desde la base de datos para ser mostrados.
 
@@ -58,9 +58,9 @@ Se hizo una implementación de las fuentes de datos a partir de los prototipos d
 
 \subsection{Sprint 3 (16/03/2018 - 22/03/2018)}
 
-En este sprint se sopesaron varias plataformas para hacer el despliegue de la web. De ellas se eligió DigitalOcean y Nanobox.
+En este sprint se sopesaron varias plataformas para hacer el despliegue de la web. De ellas se eligieron DigitalOcean y Nanobox.
 
-Se realizó el despliegue utilizando estas plataformas. \href{http://tfg-datos-publicos.nanoapp.io/}{Web desplegada}.
+Se realizó el despliegue utilizando estas plataformas. \foothref{Web desplegada}{http://tfg-datos-publicos.nanoapp.io/}.
 
 Se investigaron los posibles riesgos de seguridad como inyecciones NoSQL.
 
@@ -88,7 +88,7 @@ Se modificaron las fuentes de datos para corregir errores y añadir el código d
 
 \subsection{Sprint 5 (14/04/2018 - 25/04/2018)}
 
-Este sprint se dedicó a empezar a documentar la memoria y corregir algunos errores en la página de consulta como el reenvio de formularios en firefox y la descarga de consultas en JSON y CSV.
+Este sprint se dedicó a empezar a documentar la memoria y corregir algunos errores en la página de consulta como el reenvio de formularios en \textit{Firefox} y la descarga de consultas en JSON y CSV.
 
 También se añadió una descripción a la fuente de datos para explicar de qué se trata cada una en la interfaz web.
 
@@ -130,7 +130,7 @@ Se añadió una funcionalidad de poder mostrar mapas coropléticos a nivel de mu
 
 En este sprint se añadió un campo para introducir columnas calculadas a partir de los campos de una consulta. 
 
-Se añadió otra fuente de datos, resultados electorales del congreso, utilizando los datos del ministerio del interior.
+Se añadió otra fuente de datos, resultados electorales por municipio, utilizando los datos del Ministerio del Interior.
 
 Se añadió un campo para seleccionar la columna por la que se quieren juntar varios CSV a partir de las columnas comunes.
 
@@ -146,13 +146,23 @@ Se añadió un desplegable para seleccionar las columnas al escribir una consult
 
 En el programa para juntar ficheros CSV, se cambió el campo para seleccionar la columna por la que se van a juntar por un campo de selección multiple para permitir juntarlos por varias columnas.
 
-Se realizaron test unitarios con unittest y de interfaz con Selenium.
+Se realizaron test unitarios con \textit{unittest} y de interfaz con \textit{Selenium}.
 
 Se modificó la fuente de datos del Ministerio del Interior para agrupar los partidos políticos según su posición.
 
 \imagen{sprints/sprint10}{Burndown del sprint 10}
 
 \foothref{Tareas del sprint 10 en Github}{https://github.com/IvanArjona/TFG-Datos-publicos/milestone/11?closed=1}
+
+\subsection{Sprint 11 (31/05/2018 - 03/06/2018)}
+
+Último sprint del proyecto.
+
+En este sprint se corrigieron errores en la aplicación y se introdujeron algunas mejoras estéticas en la aplicación web. Por último, se acabó de escribir la memoria y los anexos.
+
+%\imagen{sprints/sprint11}{Burndown del sprint 11}
+
+\foothref{Tareas del sprint 11 en Github}{https://github.com/IvanArjona/TFG-Datos-publicos/milestone/12?closed=1}
 
 \newpage
 
@@ -220,7 +230,7 @@ $$ \dfrac{\textup{\EUR{1.000}} * 4 \;meses}{5 \;años * 12 \;meses} = \textup{\E
 	\label{tab:costeshardware}
 \end{table}
 
-Como software incluimos la licencia de Windows como único pago y las licencias de Github developer, Codacy Pro y PyCharm como pago mensual. Gitkraken Pro supone un coste de \EUR{41} anual, como no hay pago mensual, se considerará el pago completo. (Ver tabla \ref{tab:costessoftware})
+Como software incluimos la licencia de \textit{Windows} como único pago y las licencias de \textit{Github developer}, \textit{Codacy Pro} y \textit{PyCharm} como pago mensual. \textit{Gitkraken Pro} supone un coste de \EUR{41} anual, como no hay pago mensual, se considerará el pago completo. (Ver tabla \ref{tab:costessoftware})
 
 \begin{table}[H]
 	\centering
@@ -243,7 +253,7 @@ Como software incluimos la licencia de Windows como único pago y las licencias 
 
 \subsubsection{Costes totales}
 
-Sumando los costes de los apartados anteriores tendremos un coste total de \EUR{9957.4}. (Ver tabla \ref{tab:costestotal})
+Sumando los costes de los apartados anteriores tendremos un coste total de \EUR{9957,4}. (Ver tabla \ref{tab:costestotal})
 
 \begin{table}[H]
 	\centering
@@ -275,7 +285,7 @@ Si se quisiera rentabilizar el proyecto se pueden considerar varias alternativas
 
 \subsection{Viabilidad legal}
 
-Con la ayuda de VersionEye \cite{misc:versioneye} se han listado las dependencias del proyecto, con sus correspondientes licencias (Ver tabla \ref{tab:dependencias}). 
+Con la ayuda de \textit{VersionEye} \cite{misc:versioneye} se han listado las dependencias del proyecto, con sus correspondientes licencias (Ver tabla \ref{tab:dependencias}). 
 
 \begin{table}[]
 	\centering

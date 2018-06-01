@@ -2,7 +2,7 @@
 
 \section{Introducción}
 
-En este apéndice se explica cuáles son los requisitos que deberá cumplir el usuario para ejecutar la aplicación, como instalarla y cómo utilizarla.
+En este apéndice se explica cuáles son los requisitos que deberá cumplir el usuario para ejecutar la aplicación, cómo instalarla y cómo utilizarla.
 
 \section{Requisitos de usuarios}
 
@@ -40,6 +40,8 @@ Para ejecutar la aplicación:
 \begin{lstlisting}
 python joincsv.py
 \end{lstlisting}
+
+\newpage
 
 \section{Manual del usuario}
 
@@ -87,7 +89,7 @@ En caso de que hayamos superado el número de filas a mostrar, nos aparecerá un
 
 Para exportar una consulta, simplemente presionamos el icono correspondiente de CSV o JSON, dependiendo del formato que nos interese.
 
-Se descargará los datos de la consulta completa. Pueden ser más de los que aparecen en la tabla si ha superado el número de filas a mostrar que hemos elegido al realizar la consulta.
+Se descargarán los datos de la consulta completa. Pueden ser más de los que aparecen en la tabla si ha superado el número de filas a mostrar que hemos elegido al realizar la consulta.
 
 \imagen{manual/exportar}{Exportar consulta}
 
@@ -105,7 +107,7 @@ Las consultas se rellenan independientemente igual que en \ref{consulta}. Podemo
 
 Hay que tener en cuenta que al seleccionar las columnas a mostrar, tenemos que seleccionar `Codigo Municipio', que es la columna común entre todas las subconsultas por la que se agruparán.
 
-Una vez rellenados los campos de todas las subconsultas, elegiremos cómo queremos que se juntes. Para ello en el campo \textit{join}, que habrá aparecido al presionar `+' por primera vez, seleccionamos el método por el que queremos que se junten.
+Una vez rellenados los campos de todas las subconsultas, elegiremos cómo queremos que se junten. Para ello en el campo \textit{join}, que habrá aparecido al presionar `+' por primera vez, seleccionamos el método por el que queremos que se junten.
 
 Los posibles métodos son: \textit{inner join}, \textit{outer join}, \textit{left join}, \textit{right join}.
 
@@ -141,7 +143,7 @@ Número de declaraciones / Número de habitantes * 100
 \imagen{manual/calculada-resultado}{Visualización de una consulta con una columna calculada}
 
 
-Número de declaraciones entre el valor máximo de declaraciones:
+Otro ejemplo: número de declaraciones entre el valor máximo de declaraciones:
 
 \begin{lstlisting}
 Número de declaraciones / Número de declaraciones.max()
@@ -159,7 +161,7 @@ Para visualizar los mapas coropléticos, primero tendremos que haber realizado u
 
 En la página donde se muestra el resultado de la consulta, aparece una serie de desplegable para mostrar los mapas. 
 
-\imagen{manual/mapas-consulta-botones}{Desplegables para visualizar el mapa}
+\imagen{manual/mapas-consulta-botones}{Desplegables para visualizar los mapas}
 
 El primer desplegable indica el método por el que agrupar los datos. Posibilidades: \textit{mean}, \textit{sum}, \textit{count}.
 
@@ -183,7 +185,7 @@ Es importante mencionar que si queremos visualizar el mapa por provincia hayamos
 
 \imagen{manual/mapa-error}{Error al intentar visualizar un mapa sin haber seleccionado la clave correspondiente}
 
-En el caso de mostrar el mapa por municipios, esta opción sólo funciona el Firefox, en Chrome no funciona por limitaciones del framework (lineas futuras).
+En el caso de mostrar el mapa por municipios, esta opción sólo funciona en Firefox, en Chrome no funciona por limitaciones del framework (lineas futuras).
 
 \newpage
 
@@ -205,7 +207,7 @@ python joincsv.py
 \end{figure}
 \FloatBarrier
 
-Una vez iniciada, habrá que pulsar el botón `Subir csv' y seleccionar todos los ficheros que quiera juntar. Otra opción es seleccionarlos de uno en uno, pulsando varias veces `Subir csv'.
+Una vez iniciada, habrá que pulsar el botón `Subir csv' y seleccionar todos los ficheros que se quieran juntar. Otra opción es seleccionarlos de uno en uno, pulsando varias veces `Subir csv'.
 
 Podemos usar los ficheros resultantes de exportar como CSV de nuestra aplicación (\ref{exportar}) junto con algún fichero del usuario.
 
@@ -215,7 +217,7 @@ Tras subir los ficheros, nos mostrará cuales son los ficheros mostrados (Figura
 
 Si nos hemos confundido y queremos volver a empezar, pulsamos el boton `Vaciar' y volveremos al principio de la aplicación.
 
-Se mostrará una lista de selección múltiple con las columnas comunes a todos los ficheros. Ahora tendremos que seleccionar cuáles son las columnas por las que queremos hacer join (por defecto se seleccionar `Codigo Municipio', si existe en todos los ficheros) y el tipo de join que queramos utilizar (\textit{inner}, \textit{outer}, \textit{left}, \textit{right}).
+Se mostrará una lista de selección múltiple con las columnas comunes a todos los ficheros. Ahora tendremos que seleccionar cuáles son las columnas por las que queremos hacer join (por defecto se selecciona `Codigo Municipio', si existe en todos los ficheros) y el tipo de \textit{join} que queramos utilizar (\textit{inner}, \textit{outer}, \textit{left}, \textit{right}).
 
 Cuando hayamos terminado, pulsamos `Join' y nos aparecerá una ventana para seleccionar la ruta donde guardar el fichero resultante.
 

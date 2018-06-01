@@ -21,16 +21,16 @@ A continuación se van a mencionar los directorios con una breve descripción de
 	.2 fuentes/ \desc{Paquete para la carga de datos a partir de las fuentes. Un fichero por cada fuente de datos}.
 	.2 prototipos/ \desc{Notebooks de IPython utilizados en un principio para implementar las fuentes de datos antes de pasarlo a la aplicación. Es más fácil trabajar con notebooks porque se puede ver el resultado en cada paso}.
 	.2 test/ \desc{Pruebas de la aplicación}.
-	.3 iterfaz/ \desc{Pruebas de interfaz hechas con selenium}.
-	.3 unitarios/ \desc{Pruebas unitarias hechas con unittest}.
-	.2 web/ \desc{Raíz de la aplicación web hecha con Flask}.
-	.3 forms/ \desc{Formularios de Wtforms}.
+	.3 iterfaz/ \desc{Pruebas de interfaz hechas con \textit{Selenium}}.
+	.3 unitarios/ \desc{Pruebas unitarias hechas con \textit{unittest}}.
+	.2 web/ \desc{Raíz de la aplicación web hecha con \textit{Flask}}.
+	.3 forms/ \desc{Formularios de \textit{Wtforms}}.
 	.3 geojson/ \desc{Archivos GeoJSON que delimitan los límites geográficos en la representación de mapas}.
 	.3 static/ \desc{Ficheros estáticos}.
 	.4 css/ \desc{Hojas de estilo CSS}.
 	.4 imagenes/ \desc{Imágenes}.
-	.4 js/ \desc{Scripts para el comportamiento dinámico en Javascript}.
-	.3 templates/ \desc{Plantillas para generar HTML en Jinja2}.
+	.4 js/ \desc{Scripts para el comportamiento dinámico en \textit{Javascript}}.
+	.3 templates/ \desc{Plantillas para generar HTML en \textit{Jinja2}}.
 	.2 actualiza-fuentes.py \desc{Script para actualizar las fuentes de datos en la base de datos}.
 	.2 boxfile.yml \desc{Archivo de configuración de Nanobox}.
 	.2 joincsv.py \desc{Aplicación para juntar ficheros CSV}.
@@ -66,6 +66,8 @@ datos_abiertos/datos/Paro_por_municipios_2018_csv.csv
 \end{lstlisting}
 
 Observamos que el principio de la url es el mismo, por lo que lo guardaremos en una variable. Podemos observar que lo único que cambia es el nombre del fichero, en el que también aparece el año. De modo que podemos dividirlo como dos parámetros en el constructor: nombre de fichero y año. Además se incluirá la descripción, que depende de cada consulta.
+
+\newpage
 
 \begin{lstlisting}[caption=Ejemplo de fuente de datos (Sepe)]
 class Sepe(Fuente):
@@ -175,7 +177,7 @@ Para configurar los datos de acceso a la base de dato podemos utilizar las varia
 
 En caso de usar Nanobox estas variables estarán configuradas por defecto, por lo que no tendríamos que hacer nada.
 
-Si no dejamos los valores por defecto al instalar MongoDB, tampoco hará falta hacer nada, se cogerán estos valores automáticamente.
+Si dejamos los valores por defecto al instalar MongoDB, tampoco hará falta hacer nada, se cogerán estos valores automáticamente.
 
 El el archivo \textit{config/config.py} también podemos modificar esta configuración. Si se añade alguna característica más en el futuro que requiera algún tipo de configuración debería añadirse una variable a esta clase.
 
@@ -185,7 +187,7 @@ Antes de ejecutar la aplicación tendremos que construir la base de datos con el
 
 Para ello simplemente hay que ejecutar el fichero \textit{actualiza-fuentes.py}. Puede tardar un rato debido a la gran cantidad de datos que se van a cargar.
 
-Este paso puede repetirse cada vez que se quiera actualizar las fuentes de datos. Puede ser utilizar ejecutarlo una vez al mes para mantener al día las fuentes con datos mensuales.
+Este paso puede repetirse cada vez que se quiera actualizar las fuentes de datos. Puede ser ejecutado una vez al mes para mantener al día las fuentes con datos mensuales.
 
 \begin{lstlisting}
 python actualiza-fuentes.py
@@ -241,11 +243,11 @@ Se ha realizado una batería de pruebas para verificar el correcto funcionamient
 
 \subsection{Pruebas unitarias}
 
-Se han realizado pruebas de cada módulo para comprobar su funcionamiento. Estas pruebas están situadas en la carpeta \textit{/test/unitarios} y se han realizado con el framework de pruebas \textit{Unittest} \cite{misc:unittest}.
+Se han realizado pruebas de cada módulo para comprobar su funcionamiento. Estas pruebas están situadas en la carpeta \textit{/test/unitarios} y se han realizado con el framework de pruebas \textit{unittest} \cite{misc:unittest}.
 
-Estas pruebas se han centrado en la ejecución de todos los métodos utilizados en la consulta (\textit{consulta.py}) y en la representación de mapas \textit{mapas.py}.
+Estas pruebas se han centrado en la ejecución de todos los métodos utilizados en la consulta (\textit{consulta.py}) y en la representación de mapas (\textit{mapas.py}).
 
-Unittest está integrado en la librería estándar de Python, por lo que no hará falta instalar ningún paquete adicional. 
+\textit{Unittest} está integrado en la librería estándar de Python, por lo que no hará falta instalar ningún paquete adicional. 
 
 Para ejecutar los test utilizamos el siguiente comando en la consola:
 

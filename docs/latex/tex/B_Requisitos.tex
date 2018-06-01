@@ -26,6 +26,7 @@ En este apéndice se describirán los objetivos de la aplicación y se detallar�
 		\item \textbf{RF-2.1}: Podrán realizarse varias subconsultas al mismo tiempo.
 		\item \textbf{RF-2.2}: Se podrá seleccionar las columnas resultantes a mostrar.
 		\item \textbf{RF-2.3}: Se podrá filtrar según los campos de una de las fuentes de datos.
+		\item \textbf{RF-2.4}: Podrán realizar búsquedas avanzadas mediante una columna calculada a partir de datos del resto de columnas.
 	\end{itemize}
 	\item \textbf{RF-3 Visualizar datos}: Los usuarios deben poder visualizar los datos de una consulta en forma de mapa coroplético.
 	\begin{itemize}
@@ -36,7 +37,7 @@ En este apéndice se describirán los objetivos de la aplicación y se detallar�
 	\item \textbf{RF-4 Exportar}: Los usuarios deben poder exportar datos en varios formatos.
 	\item \textbf{RF-5 Juntar CSV}: Los usuarios deben poder juntar varios archivos CSV.
 		\begin{itemize}
-		\item \textbf{RF-5.1}: Juntar los archivos mediante una columna común.
+		\item \textbf{RF-5.1}: Juntar los archivos mediante columnas comunes.
 		\item \textbf{RF-5.2}: Utilizando varios tipos de join (\textit{inner}, \textit{outer}, \textit{left}, \textit{right}).
 		\item \textbf{RF-5.3}: Seleccionar la ruta donde se exporta el resultado.
 	\end{itemize}
@@ -83,7 +84,7 @@ A continuación se desarrolla la tabla de cada uno de los casos de uso.
 % Caso de uso 2
 
 \casoDeUso{2}{Consulta de datos}
-{RF-2, RF-2.1, RF-2.2, RF-2.3}
+{RF-2, RF-2.1, RF-2.2, RF-2.3, RF-2.4}
 {Permite al usuario consultar una o varias fuentes de datos.}
 {Los datos están cargados en la base de datos.}
 {
@@ -93,12 +94,15 @@ A continuación se desarrolla la tabla de cada uno de los casos de uso.
 	\item Si quiere añadir más fuentes pulsa `+' y repite desde el paso 2.
 	\item Selecciona el tipo de \textit{join} (\textit{inner}, \textit{outer}, \textit{left}, \textit{right})
 	\item Escoge las columnas a mostrar y el número de filas.
+	\item Escribir una expresión como columna calculada (opcional).
 	\item Pulsa el botón consultar.
 }
 {Se muestra la consulta realizada por el usuario.}
 {
 	\item No hay ningún dato que concuerde con el filtro.
 	\item El número de filas totales es menor que el número a mostrar (avisa al usuario).
+	\item El comparador y el valor no son compatibles.
+	\item La columna calculada contiene datos no válidos.
 }
 {Alta}
 
@@ -110,7 +114,7 @@ A continuación se desarrolla la tabla de cada uno de los casos de uso.
 {Se ha realizado una consulta (CU-2 \ref{CU:2}).}
 {
 	\item El usuario realiza una consulta.
-	\item Selecciona el método de agregación (mean, sum, count).
+	\item Selecciona el método de agregación (\textit{mean}, \textit{sum}, \textit{count}).
 	\item Selecciona el nivel al que mostrar el mapa (Municipios o provincias).
 	\item Escoge la columna de datos a representar.
 }
@@ -118,6 +122,7 @@ A continuación se desarrolla la tabla de cada uno de los casos de uso.
 {
 	\item Error al cargar las divisiones geográficas.
 	\item No hay datos suficientes.
+	\item El código de provincia o municipio no está en el conjunto de datos.
 }
 {Media}
 
@@ -129,7 +134,7 @@ A continuación se desarrolla la tabla de cada uno de los casos de uso.
 {Se ha realizado una consulta (CU-2 \ref{CU:2}).}
 {
 	\item El usuario realiza una consulta.
-	\item Pulsa el botón correspondiente al formato en el que quiere descargar el resultado de la consulta.
+	\item Pulsa el icono correspondiente al formato en el que quiere descargar el resultado de la consulta.
 }
 {Descarga un archivo con los datos de la consulta en el formato seleccionado.}
 {
@@ -146,7 +151,7 @@ A continuación se desarrolla la tabla de cada uno de los casos de uso.
 {
 	\item El usuario abre la aplicación para juntar CSV.
 	\item Sube al menos dos ficheros CSV.
-	\item Selecciona la columna por la que juntarlos.
+	\item Selecciona la columna o columnas por las que juntarlos.
 	\item Selecciona el tipo de \textit{join} (\textit{inner}, \textit{outer}, \textit{left}, \textit{right})
 	\item Pulsa el botón `Join'.
 	\item Seleccionar la ruta donde guardar el archivo resultante.
@@ -167,7 +172,7 @@ Actores que utilizan la aplicación:
 
 \begin{itemize}
 	\item \textbf{Usuario}: usuario final de la aplicación. Interactúa con la aplicación web y la herramienta para juntar CSV.
-	\item \textbf{Administrador de datos}: Encargado de mantener los datos en la aplicación. Actualiza las y añade fuentes de datos.
+	\item \textbf{Administrador de datos}: Encargado de mantener los datos en la aplicación. Actualiza y añade las fuentes de datos.
 \end{itemize}
 
 \subsection{Diagrama de casos de uso}
