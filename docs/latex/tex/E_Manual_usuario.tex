@@ -51,7 +51,7 @@ En esta sección se va a explicar al usuario cómo utilizar la aplicación.
 
 Para empezar, nos dirigiremos a la \foothref{página de consulta}{https://tfg-datos-publicos.nanoapp.io/consulta}.
 
-\imagen{manual/consulta}{Página de consulta}
+\imagengrande{manual/consulta}{Página de consulta}
 
 En la primera columna, seleccionaremos la fuente de datos de la que queramos consultar la información y los filtros que queramos. Por ejemplo, si queremos consultar los datos de la renta en Miranda de Ebro, seleccionaremos rellenaríamos lo siguiente:
 
@@ -69,7 +69,8 @@ En la columna de la derecha nos mostrará la descripción de la fuente que hayam
 
 Por último, elegiremos el número de filas a mostrar, este es el número máximo de filas que se pueden ver en la previsualización de la tabla, al descargar la consulta o mostrar el mapa, aparecerán todos los datos (por defecto 1000).
 
-\imagen{manual/consulta-basica-2}{Seleccionar columnas a mostrar}
+% \imagen{manual/consulta-basica-2}{Seleccionar columnas a mostrar}
+\imagencustom{manual/consulta-basica-2}{Seleccionar columnas a mostrar}{0.5}
 
 Una vez rellenados todos los datos para la consulta, le damos al botón `Consultar' y nos llevará a la visualización.
 
@@ -91,7 +92,7 @@ Para exportar una consulta, simplemente presionamos el icono correspondiente de 
 
 Se descargarán los datos de la consulta completa. Pueden ser más de los que aparecen en la tabla si ha superado el número de filas a mostrar que hemos elegido al realizar la consulta.
 
-\imagen{manual/exportar}{Exportar consulta}
+\imagencustom{manual/exportar}{Exportar consulta}{0.7}
 
 \subsection{Consulta de varias fuentes}
 
@@ -99,9 +100,9 @@ Empezamos de nuevo en la \foothref{página de consulta}{https://tfg-datos-public
 
 Una vez rellenado la primera consulta, como se ha explicado en \ref{consulta}, pulsaremos el botón `+' y nos aparecerá otra pestaña con una nueva consulta.
 
-\imagen{manual/subconsulta-boton}{Botón para añadir una subconsulta}
+\imagencustom{manual/subconsulta-boton}{Botón para añadir una subconsulta}{0.4}
 
-\imagen{manual/subconsulta-tab}{Pestañas con varias subconsultas}
+\imagencustom{manual/subconsulta-tab}{Pestañas con varias subconsultas}{0.7}
 
 Las consultas se rellenan independientemente igual que en \ref{consulta}. Podemos cambiar de subconsulta pulsando su pestaña.
 
@@ -118,7 +119,7 @@ Los posibles métodos son: \textit{inner join}, \textit{outer join}, \textit{lef
 	\item \textit{right}: Todas las entradas de la última subconsulta unidas con las demás subconsultas.
 \end{itemize}
 
-\imagen{manual/subconsulta-join}{Método para juntar subconsultas}
+\imagencustom{manual/subconsulta-join}{Método para juntar subconsultas}{0.5}
 
 Cuando hayamos terminado pulsamos `Consultar' y el resultado aparecerá de igual modo que en \ref{visualizacion}.
 
@@ -130,9 +131,9 @@ Para ello, utilizaremos el campo `Columna calculada'.
 
 Al empezar a escribir el nombre de una columna existente, se autocompletará con las columnas que contengan esos carácteres. Para que esto funcione, habrá que escribir un espacio antes de cada campo.
 
-\imagen{manual/calculada-autocompletar}{Autocompletar en columnas calculadas}
+\imagencustom{manual/calculada-autocompletar}{Autocompletar en columnas calculadas}{0.8}
 
-En este campo podemos utilizar cualquier operador matemático. Incluyendo sumas, restas, divisiones, multiplicaciones, potencias, mínimo (\textit{.min()}), máximo (\textit{.max()}), media (\textit{.mean()}), entre otros.
+En este campo podemos utilizar cualquier operador matemático. Incluyendo sumas, restas, divisiones, multiplicaciones, potencias, mínimo (\textit{.min()}), máximo (\textit{.max()}), media (\textit{.mean()}), entre otros. Para cálculos mas complejos la regla es ajustarse a expresiones válidas en Python y Pandas.
 
 Por ejemplo, usando la fuente `aeat\_renta', si queremos saber el porcentaje de habitantes que han hecho declaraciones, usaremos la siguiente consulta calculada:
 
@@ -140,7 +141,7 @@ Por ejemplo, usando la fuente `aeat\_renta', si queremos saber el porcentaje de 
 Número de declaraciones / Número de habitantes * 100
 \end{lstlisting}
 
-\imagen{manual/calculada-resultado}{Visualización de una consulta con una columna calculada}
+\imagencustom{manual/calculada-resultado}{Visualización de una consulta con una columna calculada}{1}
 
 
 Otro ejemplo: número de declaraciones entre el valor máximo de declaraciones:
@@ -161,7 +162,7 @@ Para visualizar los mapas coropléticos, primero tendremos que haber realizado u
 
 En la página donde se muestra el resultado de la consulta, aparece una serie de desplegable para mostrar los mapas. 
 
-\imagen{manual/mapas-consulta-botones}{Desplegables para visualizar los mapas}
+\imagencustom{manual/mapas-consulta-botones}{Desplegables para visualizar los mapas}{0.8}
 
 El primer desplegable indica el método por el que agrupar los datos. Posibilidades: \textit{mean}, \textit{sum}, \textit{count}.
 
@@ -199,13 +200,7 @@ Para iniciarla:
 python joincsv.py
 \end{lstlisting}
 
-\begin{figure}[!h]
-	\centering
-	\includegraphics[width=0.7\textwidth]{manual/join-inicial}
-	\caption{Aplicación de escritorio para juntar ficheros CSV}
-	\label{fig:manual/join-inicial}
-\end{figure}
-\FloatBarrier
+\imagencustom{manual/join-inicial}{Aplicación de escritorio para juntar ficheros CSV}{0.6}
 
 Una vez iniciada, habrá que pulsar el botón `Subir csv' y seleccionar todos los ficheros que se quieran juntar. Otra opción es seleccionarlos de uno en uno, pulsando varias veces `Subir csv'.
 
