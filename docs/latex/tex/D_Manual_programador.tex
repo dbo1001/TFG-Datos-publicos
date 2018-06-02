@@ -22,7 +22,7 @@ A continuación se van a mencionar los directorios con una breve descripción de
 	.2 prototipos/ \desc{Notebooks de IPython utilizados en un principio para implementar las fuentes de datos antes de pasarlo a la aplicación. Es más fácil trabajar con notebooks porque se puede ver el resultado en cada paso}.
 	.2 test/ \desc{Pruebas de la aplicación}.
 	.3 iterfaz/ \desc{Pruebas de interfaz hechas con \textit{Selenium}}.
-	.3 unitarios/ \desc{Pruebas unitarias hechas con \textit{unittest}}.
+	.3 unitarios/ \desc{Pruebas unitarias hechas con \textit{Unittest}}.
 	.2 web/ \desc{Raíz de la aplicación web hecha con \textit{Flask}}.
 	.3 forms/ \desc{Formularios de \textit{Wtforms}}.
 	.3 geojson/ \desc{Archivos GeoJSON que delimitan los límites geográficos en la representación de mapas}.
@@ -102,6 +102,7 @@ Heredando de la clase \textit{Sepe} crearemos una subclase por cada una de las c
 
 Por ejemplo, se crearía la subclase \textit{SepeContratos}, parametrizando el constructor del padre con el nombre del fichero y los años disponibles. Así quedaría la clase \textit{SepeContratos}:
 
+\begin{minipage}{\linewidth}
 \begin{lstlisting}[caption=Ejemplo de fuente de datos (SepeContratos)]
 class SepeContratos(Sepe):
 	"""
@@ -114,9 +115,11 @@ class SepeContratos(Sepe):
 		descripcion = 'Contratos por sexo y por edades.'
 		super().__init__(url, anios, 'contratos', descripcion)
 \end{lstlisting}
+\end{minipage}
 
 Una vez implementadas estas clases hay que añadirlas a la lista de fuentes de datos para que se carguen al ejecutar el script de actualizar fuentes. Esta lista está en el fichero \textit{\_\_init\_\_.py} del paquetes \textit{Fuentes}.
 
+\begin{minipage}{\linewidth}
 \begin{lstlisting}[caption=Lista con todas las fuentes]
 from fuentes.aeat import AeatRenta
 from fuentes.municipios import Municipios
@@ -136,6 +139,7 @@ fuentes = [
 	MirCongreso
 ]
 \end{lstlisting}
+\end{minipage}
 
 En el fichero \textit{Fuente.py} tenemos además dos decoradores que se pueden utilizar sobre la función \textit{carga()} (o cualquier otra función que devuelva un dataframe) para realizar ciertas acciones comunes.
 
@@ -222,7 +226,7 @@ Después nos registraremos en \foothref{Nanobox}{https://nanobox.io/} y creamos 
 
 Ahora elegiremos el plan que queramos contratar. Para este proyecto será suficiente con el plan más basico de \EUR{5}, 1 CPU y 1GB de ram.
 
-Tras crear la aplicación instalamos el \foothref{cliente de nanobox}{https://docs.nanobox.io/install/}. La primera vez que lancemos un comando nos pedirá los datos para iniciar sesión en nuestra cuenta.
+Tras crear la aplicación instalamos el \foothref{cliente de Nanobox}{https://docs.nanobox.io/install/}. La primera vez que lancemos un comando nos pedirá los datos para iniciar sesión en nuestra cuenta.
 
 En el fichero \textit{nanobox.yml} tenemos la configuración con los componentes que se van a instalar y los comandos que se ejecutan al desplegar la aplicación.
 
@@ -243,7 +247,7 @@ Se ha realizado una batería de pruebas para verificar el correcto funcionamient
 
 \subsection{Pruebas unitarias}
 
-Se han realizado pruebas de cada módulo para comprobar su funcionamiento. Estas pruebas están situadas en la carpeta \textit{/test/unitarios} y se han realizado con el framework de pruebas \textit{unittest} \cite{misc:unittest}.
+Se han realizado pruebas de cada módulo para comprobar su funcionamiento. Estas pruebas están situadas en la carpeta \textit{/test/unitarios} y se han realizado con el framework de pruebas \textit{Unittest} \cite{misc:unittest}.
 
 Estas pruebas se han centrado en la ejecución de todos los métodos utilizados en la consulta (\textit{consulta.py}) y en la representación de mapas (\textit{mapas.py}).
 
@@ -259,7 +263,7 @@ python -m unittest discover test.unitarios
 
 Para probar la interfaz web se ha utilizado \textit{Selenium} con la API que proporciona para Python \cite{misc:seleniumpython}, en lugar de grabar las acciones mediante el plugin de Firefox.
 
-Estas pruebas están situadas en la carpeta \textit{/test/interfaz} y se ejecutan de manera similar a las pruebas unitarias, ya que también están hechas con el framework \textit{unittest}.
+Estas pruebas están situadas en la carpeta \textit{/test/interfaz} y se ejecutan de manera similar a las pruebas unitarias, ya que también están hechas con el framework \textit{Unittest}.
 
 Para poder ejecutar estas pruebas primero tenemos que instalar el paquete de Selenium:
 
