@@ -103,7 +103,7 @@ def consulta(entrada):
                     columna: busqueda
                 }
 
-            limite = 500000
+            limite = 3000000
             cursor = mongo.db[fuente].find(filtro, mostrar, limit=limite)
             if cursor.count() >= limite:
                 flash('Has llegado al límite de columnas ({}).'.format(limite))
