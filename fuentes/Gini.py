@@ -8,18 +8,21 @@ import numpy as np
 def gini(list_of_values):
     
  
-    list_of_values = [ elem for elem in list_of_values if elem > 774360 ]
+    list_of_values = [ elem for elem in list_of_values if elem > 0 ]
 
    
-    print(min(list_of_values))
-    print(len(list_of_values))
-    sorted_list = sorted(list_of_values)
-    height, area = 0, 0
-    for value in sorted_list:
-        height += value
-        area += height - value / 2.
-    fair_area = height * len(list_of_values) / 2.
-    return (fair_area - area) / fair_area
+    #print(min(list_of_values))
+    #print(len(list_of_values))
+    sol = 0
+    if(len(list_of_values)>0):
+        sorted_list = sorted(list_of_values)
+        height, area = 0, 0
+        for value in sorted_list:
+            height += value
+            area += height - value / 2.
+        fair_area = height * len(list_of_values) / 2.
+        sol = (fair_area - area) / fair_area
+    return sol
 
         
 def gini2(array):

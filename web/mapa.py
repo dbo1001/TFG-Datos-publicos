@@ -5,7 +5,7 @@ from web import app
 
 
 COORDENADAS = [40, -3]
-ZOOM = 3.5
+ZOOM = 4.5
 
 
 def agrupa_df(df, metodo):
@@ -33,6 +33,7 @@ def visualiza_mapa(df, columna_valores, territorio, metodo):
                       tiles='cartodbpositron')
 
     geo_json_url = 'geojson/{}.geojson'.format(territorio)
+    
     geo_json = os.path.join(app.root_path, geo_json_url)
     file = open(geo_json, encoding='utf-8')
     geo_data = json.load(file)
@@ -43,7 +44,7 @@ def visualiza_mapa(df, columna_valores, territorio, metodo):
 
     df = df[[columna_codigo, columna_valores]]
     df = agrupa_df(df, metodo)
-
+    
     # Añade el maoa coroplético encima del mapa de España
     mapa.choropleth(geo_data=geo_data,
                     data=df,
@@ -54,5 +55,5 @@ def visualiza_mapa(df, columna_valores, territorio, metodo):
                     fill_opacity=0.6,
                     highlight=True,
                     fill_color='OrRd')
-
+    
     return mapa
