@@ -108,8 +108,7 @@ class Epa(Fuente):
     
         
         print('Guardando paro municipios')
-        url= 'C:\\Users\\Sergio\\Desktop\\TFG-Datos-publicos-master\\fuentes\\Municipios.csv'
-        muniDF = pd.read_csv(url, sep=';', header=0, encoding = "ISO-8859-1")
+        muniDF = leerMunicipiosCSV() #-----------------------------------------------------------------------
         html_page = list()
         listaMuni = list()
         import locale
@@ -178,5 +177,11 @@ class Epa(Fuente):
         df_F.to_csv(r'C:\Users\Sergio\Desktop\epaMunicipios.csv', sep=';', encoding = "ISO-8859-1")
         print('ok epa')
         return df_F
+
+def leerMunicipiosCSV():
+    url = 'C:\\Users\\Sergio\\Desktop\\TFG-Datos-publicos-master\\fuentes\\Municipios.csv'
+    muniDF = pd.read_csv(url, sep=';', header=0, encoding="ISO-8859-1")
+    return muniDF
+
         
         

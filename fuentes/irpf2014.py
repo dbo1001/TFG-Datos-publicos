@@ -46,12 +46,22 @@ class Irpf2014(Fuente):
     def obtenerActividadEmpresarial(self, df):
         
         url = 'C:\\Users\\Sergio\\Desktop\\TFG-Datos-publicos-master\\fuentes\\ActividadEmpresarial.csv'
-        actividad = pd.read_csv(url, sep=';', header=0, encoding = "ISO-8859-1", dtype={'Sección': str,'División': str,'Agrupación': str,
+        actividadEm = pd.read_csv(url, sep=';', header=0, encoding = "ISO-8859-1", dtype={'Sección': str,'División': str,'Agrupación': str,
                                                                                          'Grupo': str, 'Epígrafe' : str})
-        #print(df.head(5))
-        #print(actividad.head(30))
-        nombresActividades = [None] * len(df)
-        print('v1')
+        
+        actividadEm['Epígrafe'] = actividadEm['Epígrafe'].str.replace(',','')
+        
+        actividadEm['Agrupación'] =  actividadEm['Agrupación'].str.zfill(2)
+        actividadEm['Grupo'] =  actividadEm['Grupo'].str.zfill(3)
+        
+        actividadEm['Epígrafe'] = actividadEm['Epígrafe'].str.zfill(4)
+        
+        actividadEm = actividadEm.replace(np.nan, '', regex = True)
+        
+        actividadEm = actividadEm.set_index(['Sección', 'División', 'Agrupación','Grupo','Epígrafe' ] )
+        
+       
+        nombresActividades = ['-'] * len(df)
         for i in range(len(df)):
             secciones = list()
             if df['P087_1'][i] > 0:
@@ -68,53 +78,50 @@ class Irpf2014(Fuente):
                                     secciones.append(df['P087_6'][i]) 
             
             numActiv = len(secciones)
-            #print('-------')
-            #print(numActiv)
-            print('v2')
+
             for j in range(numActiv):
-                seccion = str(int(secciones[j]))
-                grupo = df['P088_'+str(int(j + 1))].astype(str)
-                grupo = grupo[i]
-                aux = actividad[actividad['Sección'] == seccion]
-                if len(grupo) > 0 and len(aux) > 1:
-                    aux = aux[aux['División'] == grupo[0]]
-                if len(grupo) > 1 and len(aux) > 1:
-                    aux = aux[aux['Agrupación'] == grupo[0:2]]
-                if len(grupo) > 2 and len(aux) > 1:
-                    aux = aux[aux['Grupo'] == grupo[0:3]] 
-                if len(grupo) > 3 and len(aux) > 1:
-                    aux = aux[aux['Epígrafe'] == (grupo[0:3]+','+grupo[3])]
-                    
-            if numActiv > 0:
-                nombresActividades[i] = aux['Denominación']
-            else:
-                nombresActividades[i] = '-'      
-            
-            if i == 4:
-                print('AQUI')
-                print(secciones)
-                print('AQUI')
-                print(aux)
-                print('AQUI')
-                print(grupo)
-                print('AQUI fin')  
-            
-            if i == 5:
-                print('AQUI2')
-                print(secciones)
-                print('AQUI2')
-                print(aux)
-                print('AQUI2')
-                print(grupo)
-                print('AQUI2')     
-            
-            if i%10 == 0:
-                print(i,'/',len(df))
-                if i == 20:
-                    break  
+                seccion = secciones[j]
+                grupo = df['P088_'+str(int(j + 1))][i].astype(int)
+                grupo = str(grupo)
+                #grupo = grupo[i]
+                allSections = list()
+                allSections.append(str(int(seccion)))
+                #print(seccion)
+                #print(grupo)
+                if len(grupo) > 0:
+                    allSections.append(grupo[0])
+                    if len(grupo) > 1:
+                        allSections.append(grupo[0:2])
+                        if len(grupo) > 2:
+                            allSections.append(grupo[0:3])
+                            if len(grupo) > 3:
+                                allSections.append(grupo[0:4])
                 
-        #print(nombresActividades)
-        print('v3')
+                if len(allSections) < 5:
+                    for k in range(5-len(allSections)):
+                        allSections.append('')    
+                
+                if numActiv > 0 and seccion < 4 and len(allSections) > 0 and len(grupo) < 6:
+                    tupla = tuple(allSections)
+                    if nombresActividades[i] == '-':
+                        try:
+                            nombresActividades[i] = actividadEm.loc[tupla]['Denominación']
+                        except:
+                            #print(i, tupla, len(grupo), grupo, 'tipo1')
+                            nombresActividades[i] = ''
+                    else:
+                        try:
+                            nombresActividades[i] = nombresActividades[i] + '\n' + actividadEm.loc[tupla]['Denominación']
+                        except:
+                           #print(i, tupla, len(grupo), grupo, 'tipo2')
+                           nombresActividades[i] = '' 
+                else:
+                    nombresActividades[i] = ''      
+            
+            if i%10000 == 0:
+                print(i,'/',len(df))
+  
+                
         return nombresActividades
         
     @rename(renombrar)   
@@ -134,8 +141,11 @@ class Irpf2014(Fuente):
         print('Irpf2014: csv leido')
         print('Irpf2014: Obteniendo actividades empresariales')
 
-        #actividades = self.obtenerActividadEmpresarial(df)
-        #df['Actividad Empresarial'] = actividades
+        actividades = self.obtenerActividadEmpresarial(df)
+        df['Actividad Empresarial'] = actividades
+        
+        
+        
         
         print('Irpf2014: Calculando Rentas')
 

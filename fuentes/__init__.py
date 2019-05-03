@@ -5,6 +5,7 @@ from fuentes.sepe import SepeContratos, SepeEmpleo, SepeParo
 from fuentes.mir import MirElecciones
 from fuentes.irpf2014 import Irpf2014
 from fuentes.epa import Epa
+from fuentes.turismo import Turismo
 
 
 # Lista de todas las fuentes disponibles
@@ -17,5 +18,6 @@ fuentes = [
     #SepeContratos,
     #SepeEmpleo,
     #SepeParo,
-    #MirElecciones
+    #MirElecciones,
+    #Turismo
 ]
