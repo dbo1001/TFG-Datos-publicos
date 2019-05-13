@@ -56,3 +56,7 @@ def aniade_codigo_municipio(df, codigos):
             and 'Municipio' in df:
         df = pd.merge(df, codigos, how='left')
     return df
+
+
+    
+    

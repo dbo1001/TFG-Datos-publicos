@@ -4,6 +4,7 @@ from fuentes.Fuente import Fuente, rename
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import re
+import os
 
 from fuentes.epa import leerMunicipiosCSV 
 class Turismo(Fuente):
@@ -18,7 +19,9 @@ class Turismo(Fuente):
     
 
     def obtenerDestinosPopulares(self):
-        driver = webdriver.Firefox(executable_path=r"C:\Users\Sergio\My Documents\LiClipse Workspace\TFG-Datos-publicos\TFG-Datos-publicos\fuentes\datos\geckodriver.exe")
+        dir = os.path.dirname(__file__)
+        url = os.path.join(dir, 'datos\geckodriver.exe')
+        driver = webdriver.Firefox(executable_path=url)
         url = 'https://www.tripadvisor.es/Tourism-g2361626-Province_of_Seville_Andalucia-Vacations.html'
         driver.set_page_load_timeout(10)
         driver.get(url)
@@ -48,7 +51,9 @@ class Turismo(Fuente):
     def carga(self):
         t = time.clock()
         #a = self.obtenerDestinosPopulares()
-        driver = webdriver.Firefox(executable_path=r"C:\Users\Sergio\My Documents\LiClipse Workspace\TFG-Datos-publicos\TFG-Datos-publicos\fuentes\datos\geckodriver.exe")
+        dir = os.path.dirname(__file__)
+        url = os.path.join(dir, 'datos\geckodriver.exe')
+        driver = webdriver.Firefox(executable_path=url)
         url = 'https://www.booking.com/index.es.html'
         driver.set_page_load_timeout(15)
         driver.get(url)                

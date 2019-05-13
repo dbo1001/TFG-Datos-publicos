@@ -8,6 +8,7 @@ import numpy as np
 import datetime
 from fuentes.Fuente import Fuente, rename
 from fuentes.Gini import *
+import os
 
 class Irpf2014(Fuente):
     
@@ -20,7 +21,8 @@ class Irpf2014(Fuente):
     }
      
     def __init__(self):
-        self.url = 'C:\\Users\\Sergio\\Desktop\\TFG-Datos-publicos-master\\fuentes\\MuestraIRPF_2014.csv'
+        dir = os.path.dirname(__file__)
+        self.url = os.path.join(dir, 'datos\MuestraIRPF_2014.csv')
         
         descripcion = 'Datos de irpf 2014'
         super().__init__('irpf2014', 'irpf', descripcion)
@@ -44,8 +46,9 @@ class Irpf2014(Fuente):
         return correcto
     
     def obtenerActividadEmpresarial(self, df):
+        dir = os.path.dirname(__file__)
+        url = os.path.join(dir, 'datos\ActividadEmpresarial.csv')
         
-        url = 'C:\\Users\\Sergio\\Desktop\\TFG-Datos-publicos-master\\fuentes\\ActividadEmpresarial.csv'
         actividadEm = pd.read_csv(url, sep=';', header=0, encoding = "ISO-8859-1", dtype={'Sección': str,'División': str,'Agrupación': str,
                                                                                          'Grupo': str, 'Epígrafe' : str})
         
@@ -212,7 +215,8 @@ class Irpf2014(Fuente):
     
     
     def obtenerNombreMunicipio(self, df):
-        url= 'C:\\Users\\Sergio\\Desktop\\TFG-Datos-publicos-master\\fuentes\\Municipios.csv'
+        dir = os.path.dirname(__file__)
+        url = os.path.join(dir, 'datos\Municipios.csv')
         muniDF = pd.read_csv(url, sep=';', header=0, encoding = "ISO-8859-1")
         print('Irpf2014: Obteniendo nombres municipio')
         nombres = list()

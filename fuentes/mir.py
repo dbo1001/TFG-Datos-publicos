@@ -3,7 +3,8 @@ import requests
 import io
 from fuentes.Fuente import Fuente, rename
 from zipfile import ZipFile
-
+from fuentes import Database
+from config import Config as config
 
 class Mir(Fuente):
     """
@@ -64,8 +65,14 @@ class Mir(Fuente):
             try:
                 r = requests.get(url)
                 comprimido = ZipFile(io.BytesIO(r.content))
-                nombre_excel = '04_{}_1.xlsx'.format(anio)
-                excel = comprimido.open(nombre_excel)
+                try:
+                    nombre_excel = '04_{}_1.xlsx'.format(anio)
+                    excel = comprimido.open(nombre_excel)
+                    tipo = False
+                except:
+                    nombre_excel = '02_{}_1.xlsx'.format(anio)
+                    excel = comprimido.open(nombre_excel)
+                    tipo = True
                 df = pd.read_excel(excel, header=header, skipfooter=6)
                 df.fillna(0, inplace=True)
                 # Comvierte los códigos a string
@@ -84,7 +91,7 @@ class Mir(Fuente):
                 header += 1
                 if header == 10:
                     raise ex
-        return df
+        return df, tipo
 
     @rename(renombrar)
     def carga(self):
@@ -92,27 +99,62 @@ class Mir(Fuente):
         Devuelve un dataframe después de descargar los datos
         """
         dataframes = []
+        dataframes2 = []
+        print('1')
         for anio in self.anios:
             url = self.url_base.format(anio)
-            df = self.procesa_datos(url, anio)
+            df, tipo = self.procesa_datos(url, anio)
+
             # Categoriza los partidos
-            for pos, poslist in self.posiciones:
-                df = self.categoriza_partidos(df, pos, poslist)
-            df = self.categoriza_otros(df)
+            if tipo == False:
+                for pos, poslist in self.posiciones:
+                    df = self.categoriza_partidos(df, pos, poslist)
+                df = self.categoriza_otros(df)
             print('Elecciones {}', anio)
             dataframes.append(df)
         df = pd.concat(dataframes)
         df.reset_index(inplace=True, drop=True)
+        
+        
         return df
 
-
+    def guardar_datos(self, df):
+        print('guardando')
+        db = Database.Database(
+            database=config.MONGO_DBNAME,
+            host=config.MONGO_HOST,
+            port=config.MONGO_PORT,
+            username=config.MONGO_USERNAME,
+            password=config.MONGO_PASSWORD,
+            authSource=config.MONGO_DBNAME
+        )
+        db.carga_datos(df, 'datosElecciones')
+        print('guardado')
+        
+        
+        
+        
 class MirElecciones(Mir):
     """
-    Resultados electorales del congreso
+    Resultados elecciones municipales
     """
 
     def __init__(self):
         url_base = 'http://www.infoelectoral.mir.es/infoelectoral/docxl/04_{}_1.zip'
-        anios = [198706, 199105, 199505, 199906, 200305, 200705, 201105]
+        #anios = [198706, 199105, 199505, 199906, 200305, 200705]
+        anios = [198706]
+
         descripcion = 'Resultados de elecciones municipales por año por partido del Ministerio del Interior.'
         super().__init__(url_base, anios, 'elecciones', descripcion)
+
+class MirEleccionesGenerales(Mir):
+    """
+    Resultados eleciones generales
+    """
+    def __init__(self):
+        url_base = 'http://www.infoelectoral.mir.es/infoelectoral/docxl/02_{}_1.zip'
+        anios = [201512, 201606]
+        descripcion = 'Resultados de elecciones generales por año.'
+        super().__init__(url_base, anios, 'eleccionesGenerales', descripcion)
+    
+    

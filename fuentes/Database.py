@@ -25,6 +25,13 @@ class Database:
 
         # Inserta los datos en el documetno de la base de datos
         db.insert_many(df_json)
+        
+    
+    def lee_datos(self, coleccion):
+        
+        tabla = self.database[coleccion]
+        
+        return tabla
 
     def close(self):
         """
