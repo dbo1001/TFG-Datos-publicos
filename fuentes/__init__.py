@@ -11,16 +11,16 @@ from fuentes.sklearn import Sklearn
 
 # Lista de todas las fuentes disponibles
 fuentes = [
-    Municipios,
-    Irpf2014,
-    Epa,
-    AeatRenta,
-    InePoblacion,
-    SepeContratos,
-    SepeEmpleo,
-    SepeParo,
-    MirElecciones,
-    MirEleccionesGenerales,
-    Sklearn,
+    #Municipios,
+    #Irpf2014,
+    #Epa,
+    #AeatRenta,
+    #InePoblacion,
+    #SepeContratos,
+    #SepeEmpleo,
+    #SepeParo,
+    #MirElecciones,
+    #MirEleccionesGenerales,
     Turismo
+    #Sklearn
 ]

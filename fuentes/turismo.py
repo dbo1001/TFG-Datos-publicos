@@ -3,6 +3,9 @@ import time
 from fuentes.Fuente import Fuente, rename
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import re
 import os
 
@@ -49,13 +52,12 @@ class Turismo(Fuente):
         return urls
     @rename(renombrar)
     def carga(self):
-        t = time.clock()
         #a = self.obtenerDestinosPopulares()
         dir = os.path.dirname(__file__)
         url = os.path.join(dir, 'datos\geckodriver.exe')
         driver = webdriver.Firefox(executable_path=url)
         url = 'https://www.booking.com/index.es.html'
-        driver.set_page_load_timeout(15)
+        driver.set_page_load_timeout(30)
         driver.get(url)                
         
         muniDF = leerMunicipiosCSV()
@@ -63,40 +65,59 @@ class Turismo(Fuente):
         municipios = list(municipiosDF)
         alojamientos = [-1] * len(municipios)
         print(len(municipios))
+        t = time.clock()
+
         for i in range (len(municipios)):
-            elemento = driver.find_element_by_id('ss')
+            MaxIntent = 3
+            flag = True
+            intentos = 0
+            while(flag):
+                try:
+                    elemento = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'ss')))
+                    flag = False
+                    #elemento = driver.find_element_by_id('ss')
+                except TimeoutException:
+                    if intentos < MaxIntent:
+                        intentos += 1
+                        driver.get(url)
+                    else:
+                        alojamientos[i] = "-1"
+                        driver.get(url)
+                        continue
             elemento.clear()
             elemento.send_keys(municipios[i])
-            time.sleep(1)
             elemento.send_keys(Keys.ENTER)
-            
-            try:
-                time.sleep(1)
-                elemento = driver.find_element_by_class_name('sorth1')
-            except Exception as ex:
+            flag = True
+            intentos = 0
+            while (flag):
                 try:
-                    time.sleep(1)
-                    elemento = driver.find_element_by_class_name('sorth1')
-                except Exception as ex2:
-                    alojamientos[i] = 0
-                    continue
-                
-
-            
+                    elemento = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "sorth1")))
+                    flag = False
+                    #elemento = driver.find_element_by_class_name('sorth1')
+                except TimeoutException:
+                    if intentos < MaxIntent:
+                        intentos += 1
+                    else:
+                        alojamientos[i] = "-1"
+                        driver.get(url)
+                        continue
+                       
+                        
             texto = elemento.text.upper()
             texto = self.normalize(texto)
             munitexto = self.normalize(municipios[i])
             
             if munitexto in texto:
                 print(elemento.text)
-                print(re.findall(r'\d+', elemento.text))
+                #print(re.findall(r'\d+', elemento.text))
                 alojamientos[i] = (re.findall(r'\d+', elemento.text))[0]
             else:
                 print(elemento.text, municipios[i], '-')
-                alojamientos[i] = "-1"
+                alojamientos[i] = -1
             driver.back()
-            if i == 20:
+            if i == 5:
                 break
+
         print(time.clock() - t)
         #municipiosDF = municipiosDF.to_frame()
         muniDF['Nº alojamientos'] = alojamientos
@@ -105,7 +126,9 @@ class Turismo(Fuente):
         print(municipiosDF)
         muniDF['Código'] = muniDF['Código'].astype(str).str.zfill(5)
         muniDF['Codigo Provincia'] = muniDF['Código'].str[0:2]
-        muniDF.to_csv(r'C:\Users\Sergio\Desktop\turismoMunicipios.csv', sep=';', encoding = "ISO-8859-1")
+        #dir = os.path.dirname(__file__)
+        url = os.path.join(dir, 'datos\\turismoMunicipios.csv')
+        muniDF.to_csv(url, sep=';', encoding = "ISO-8859-1")
         
         return muniDF
         

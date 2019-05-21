@@ -5,6 +5,7 @@ Created on 5 mar. 2019
 '''
 import pandas as pd
 from fuentes.Fuente import Fuente, rename
+import os
 
 class Epa(Fuente):
     
@@ -173,13 +174,16 @@ class Epa(Fuente):
         print(len(listaMuni))
         print(len(df_F))
         df_F['Municipio'] = listaMuni
-       
-        df_F.to_csv(r'C:\Users\Sergio\Desktop\epaMunicipios.csv', sep=';', encoding = "ISO-8859-1")
+        
+        dir = os.path.dirname(__file__)
+        url = os.path.join(dir, 'datos\epaMunicipios.csv')
+        df_F.to_csv(url, sep=';', encoding = "ISO-8859-1")
         print('ok epa')
         return df_F
 
 def leerMunicipiosCSV():
-    url = 'C:\\Users\\Sergio\\Desktop\\TFG-Datos-publicos-master\\fuentes\\Municipios.csv'
+    dir = os.path.dirname(__file__)
+    url = os.path.join(dir, 'datos\Municipios.csv')
     muniDF = pd.read_csv(url, sep=';', header=0, encoding="ISO-8859-1")
     return muniDF
 

@@ -1,12 +1,24 @@
 import pandas as pd
 from fuentes.Fuente import Fuente
 from fuentes.ine import Ine
+from fuentes.irpf2014 import Irpf2014
 from fuentes import Database
 from config import Config as config
 from fuentes.ine import InePoblacion
 from fuentes.mir import MirEleccionesGenerales
+from sklearn.ensemble import RandomForestRegressor
+from sklearn import tree
+from sklearn.model_selection import cross_val_predict
+from sklearn.linear_model import LinearRegression
 import numpy as np
 import math
+import os
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
 class Sklearn(Fuente):
     
     def __init__(self):        
@@ -56,6 +68,13 @@ class Sklearn(Fuente):
         
         #print(df.columns.values)
         return df
+    
+    def obtenerDatosGini(self):
+        dfo = self.lee_dataframe(Irpf2014)
+        
+        df = dfo[['Codigo Municipio', 'Gini despues imp', 'Renta despues imp']]
+        #print(df.head(5))
+        return df
        
     def lee_dataframe(self, fuente):
         db = Database.Database(
@@ -74,7 +93,8 @@ class Sklearn(Fuente):
     def carga(self):
 
         df_Ine = self.obtenerDatosIne()
-        df_Mir = self.obtenerDatosMir() #hacer escalas 
+        df_Mir = self.obtenerDatosMir()
+        df_Gini = self.obtenerDatosGini() 
         enero16 ={ # Modificado, a las coaliciones les doy la media aritmetica
         "PP": 8.28,
         "PSOE": 4.49,
@@ -94,12 +114,94 @@ class Sklearn(Fuente):
         
         df_Mir = df_Mir.apply(lambda x: self.procesa_municipio(x,enero16),axis=1)
         
-        df_Ine = pd.merge(df_Ine, df_Mir, on='Codigo Municipio')
-        print(df_Ine.head(3))
-        print(df_Ine.columns)
+        df = pd.merge(df_Ine, df_Mir, on='Codigo Municipio')
+        df = pd.merge(df, df_Gini, on='Codigo Municipio')
+        #print(df.columns)
         
+        regr = RandomForestRegressor()
+        #regr= tree.DecisionTreeRegressor()
+        #regr = LinearRegression()
+        
+        
+        dir = os.path.dirname(__file__)
+        url = os.path.join(dir, 'datos\para_predecir.csv')
+        
+        delitos = pd.read_csv(url, sep=';', header=0, encoding = "ISO-8859-1")
+        delitos.columns = ['Codigo Municipio', 'Nombre', 'Clase']
+        delitos = delitos.drop(['Nombre'], axis = 1)
+        delitos['Codigo Municipio'] = delitos['Codigo Municipio'].astype(str).str.zfill(5)
+        
+        df_train = pd.merge(df, delitos, on='Codigo Municipio')
+       
+        #Desordeno las filas de forma aleatoria
+        df_train = df_train.sample(frac=1).reset_index(drop=True) 
+
+        train_data = df_train.drop(["Provincia", "Municipio", "Codigo Municipio", "Codigo Provincia", "Nombre de Comunidad", "Clase"], axis=1)
+        mio = train_data
+        train_data = train_data.values
+        target_data = df_train["Clase"].values
+        
+        #regr = regr.fit(train_data, target_data)
+        print('W')
+        pred = cross_val_predict(regr, train_data, target_data, cv=4)
+        
+        regr.fit(train_data, target_data)
+        importances = regr.feature_importances_
+        
+        cont=0
+        for e in mio.columns:
+            print(cont, e)
+            cont += 1
+            
+        #print(importances)
+        
+        
+        
+        
+        
+        
+        
+        #print(pred[-20:-1])  
+        #print(target_data[-20:-1])     
+        df_train['Prediccion'] = pred
+        df_train['Error'] = abs(df_train['Prediccion'] - df_train['Clase'])
+        
+        errorMedio = df_train['Error'].abs().mean()
+        mediaDel = target_data.mean()
+        print(mediaDel)
+        print(errorMedio)
+        #print(df_train.head(5))                        
+        
+        
+        
+        
+        
+        std = np.std([tree.feature_importances_ for tree in regr.estimators_],
+             axis=0)
+        indices = np.argsort(importances)[::-1]
+        
+        # Print the feature ranking
+        print("Feature ranking:")
+        
+        for f in range(train_data.shape[1]):
+            print("%d. feature %d (%f)" % (f + 1, indices[f], importances[indices[f]]))
+        
+        # Plot the feature importances of the regr
+        plt.figure()
+        plt.title("Feature importances")
+        plt.bar(range(train_data.shape[1]), importances[indices],
+               color="r", yerr=std[indices], align="center")
+        plt.xticks(range(train_data.shape[1]), indices)
+        plt.xlim([-1, train_data.shape[1]])
+        plt.show()
+        
+        
+        df_train.rename(columns={'Clase':'Delitos', 'Prediccion':'Delitos Predichos'}, inplace=True)
+        
+        
+        #probar con delito por habitante
         #time.sleep(20)
-        return df_Ine
+        return df_train
     
 
 
@@ -157,4 +259,5 @@ class Sklearn(Fuente):
                 weighted_avg,weighted_std]
         
         return pd.Series(vals,index)
+    
                 
