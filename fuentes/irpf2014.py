@@ -17,7 +17,8 @@ class Irpf2014(Fuente):
         'prov': 'Codigo Provincia',
         'EjnacD': 'Edad Media',
         'ca': 'Comunidad Aut',
-        'sexo':'ratio sexo'        
+        'sexo':'ratio sexo',
+        'Codigos_Mapa': 'Codigo Municipio'     
     }
      
     def __init__(self):
@@ -144,8 +145,8 @@ class Irpf2014(Fuente):
         print('Irpf2014: csv leido')
         print('Irpf2014: Obteniendo actividades empresariales')
 
-        actividades = self.obtenerActividadEmpresarial(df)
-        df['Actividad Empresarial'] = actividades
+        #actividades = self.obtenerActividadEmpresarial(df)
+        #df['Actividad Empresarial'] = actividades
         
         
         
@@ -153,7 +154,6 @@ class Irpf2014(Fuente):
         print('Irpf2014: Calculando Rentas')
 
         df['Codigo Municipio'] = df['prov'].astype(str).str.zfill(2) + df['muni'].astype(str).str.zfill(3)
-        #df['Codigo Municipio'] = df['Codigo Municipio'].astype(float)
         
         df['Renta total'] = df.Par430 + df.Par445 + df.Par17 + df.Par18 +  df.Par19 +  df.Par20
         df['Renta despues imp'] = df['Renta total'] - df.Par589
@@ -194,22 +194,23 @@ class Irpf2014(Fuente):
         df['IRS'] = df['Gini antes imp'] -  df['Gini despues imp']
         df['IRS'] =  df['IRS'].round(6)
         
-        nombres = self.obtenerNombreMunicipio(df)
+        nombres, codigosMapa = self.obtenerNombreMunicipio(df)
 
         df['Nombre Municipio'] = nombres
+        df['Codigos_Mapa'] = codigosMapa
         
         anno = datetime.datetime.now()
         anno = int(anno.year)
         
         df['EjnacD'] = anno - df['EjnacD']       
-        df['Codigo Municipio'] = df['Codigo Municipio'].astype(str).str.zfill(5)
+        #df['Codigo Municipio'] = df['Codigo Municipio'].astype(str).str.zfill(5)
         df['sexo'] = df['sexo'] - 1
         df['prov'] = df['prov'].astype(int)
         df['muni'] = df['muni'].astype(int)
         df['prov'] = df['prov'].astype(str).str.zfill(2)
         df['muni'] = df['muni'].astype(str).str.zfill(3)
-        
-
+        df = df.drop(['Codigo Municipio' ], axis = 1)
+        df['Codigos_Mapa'] = df['Codigos_Mapa'].astype(str).str.zfill(5)
         return df
     
     
@@ -220,14 +221,18 @@ class Irpf2014(Fuente):
         muniDF = pd.read_csv(url, sep=';', header=0, encoding = "ISO-8859-1")
         print('Irpf2014: Obteniendo nombres municipio')
         nombres = list()
+        codigosMapa = list()
         for i in range(len(df)):
-            nombre = muniDF[muniDF.Código == df['Codigo Municipio'][i]]
-            nombre = list(nombre.Municipio)
+            nomDF = muniDF[muniDF.Código == df['Codigo Municipio'][i]]
+            nombre = list(nomDF.Municipio)
+            codigo = list(nomDF.Codigo_Mapa)
             try:
                 nombres.append(nombre[0])
+                codigosMapa.append(codigo[0])
             except IndexError:
                 nombres.append('-')
-        return nombres
+                codigosMapa.append('0')
+        return nombres, codigosMapa
     
     def obtenerCodigoMunicipio(self, df):
         listaMuni = list()

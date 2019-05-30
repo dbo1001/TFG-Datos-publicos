@@ -21,104 +21,128 @@ class Turismo(Fuente):
         super().__init__('Datos de turismo', 'turismo', descripcion)
     
 
-    def obtenerDestinosPopulares(self):
-        dir = os.path.dirname(__file__)
-        url = os.path.join(dir, 'datos\geckodriver.exe')
-        driver = webdriver.Firefox(executable_path=url)
-        url = 'https://www.tripadvisor.es/Tourism-g2361626-Province_of_Seville_Andalucia-Vacations.html'
-        driver.set_page_load_timeout(10)
-        driver.get(url)
-        time.sleep(2)
-        flag = True
-        while flag:
-            try:
-                elemento = driver.find_element_by_class_name("morePopularCitiesWrap")
-                print(elemento.location)
-                elemento.click()
-            except Exception as ex:
-                flag = False
-                print('ok')
-        
-        elemento = driver.find_element_by_class_name('popularCities')
-        urlsElements = elemento.find_elements_by_tag_name('a')
-        print(len(urlsElements))
-        urls = list()
-        for url in urlsElements:
-            #print(url.get_attribute('href'))
-            urls.append(url.get_attribute('href'))
-        
-        driver.quit()
-        time.sleep(30)
-        return urls
     @rename(renombrar)
     def carga(self):
-        #a = self.obtenerDestinosPopulares()
+        #si aparece este texto guardar para comprobar despues.
+        patron = re.compile('Echa un vistazo a estos otros .*')
         dir = os.path.dirname(__file__)
         url = os.path.join(dir, 'datos\geckodriver.exe')
         driver = webdriver.Firefox(executable_path=url)
         url = 'https://www.booking.com/index.es.html'
-        driver.set_page_load_timeout(30)
+        driver.set_page_load_timeout(20)
         driver.get(url)                
         
         muniDF = leerMunicipiosCSV()
         municipiosDF = muniDF.Municipio
+        provinciaDF = muniDF.Provincia
         municipios = list(municipiosDF)
-        alojamientos = [-1] * len(municipios)
-        print(len(municipios))
-        t = time.clock()
+        provincias = list(provinciaDF)
 
+        alojamientos = [-1] * len(municipios)
+        t = time.clock()
+        no_encontrados = list()
+        
         for i in range (len(municipios)):
-            MaxIntent = 3
+            print( i, '/', len(municipios))
+            MaxIntent = 2
             flag = True
+            salir = False
             intentos = 0
             while(flag):
                 try:
-                    elemento = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'ss')))
+                    elemento = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.ID, 'ss')))
                     flag = False
                     #elemento = driver.find_element_by_id('ss')
-                except TimeoutException:
+                except Exception:
                     if intentos < MaxIntent:
                         intentos += 1
+                        dir = os.path.dirname(__file__)
+                        url = os.path.join(dir, 'datos\geckodriver.exe')
+                        driver = webdriver.Firefox(executable_path=url)
+                        url = 'https://www.booking.com/index.es.html'
                         driver.get(url)
                     else:
-                        alojamientos[i] = "-1"
-                        driver.get(url)
-                        continue
+                        alojamientos[i] = "0"
+                        flag = False
+                        salir = True
+            if salir == True:
+                continue          
+            
             elemento.clear()
-            elemento.send_keys(municipios[i])
+            elemento.send_keys(municipios[i] + ' ' + provincias[i] )
             elemento.send_keys(Keys.ENTER)
             flag = True
+            salir = False
             intentos = 0
             while (flag):
                 try:
-                    elemento = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "sorth1")))
+                    elemento = WebDriverWait(driver, 2).until(EC.presence_of_element_located((By.CLASS_NAME, "sorth1")))
                     flag = False
                     #elemento = driver.find_element_by_class_name('sorth1')
-                except TimeoutException:
+                except Exception:
                     if intentos < MaxIntent:
                         intentos += 1
                     else:
-                        alojamientos[i] = "-1"
+                        alojamientos[i] = "0"
+                        flag = False
+                        salir = True
+                        dir = os.path.dirname(__file__)
+                        url = os.path.join(dir, 'datos\geckodriver.exe')
+                        driver = webdriver.Firefox(executable_path=url)
+                        url = 'https://www.booking.com/index.es.html'
                         driver.get(url)
-                        continue
-                       
                         
+            if salir == True:
+                continue
+            
+            elemento2 = None
+            
+             
+            try:
+                
+                elemento2temp = driver.find_element_by_class_name('sr_item ') 
+               
+                elemento2 = elemento2temp
+                
+            except Exception:
+                print('error')
+                elemento2 = None
+            
             texto = elemento.text.upper()
+            texto = texto.split(':', 1)[0]
             texto = self.normalize(texto)
             munitexto = self.normalize(municipios[i])
             
-            if munitexto in texto:
-                print(elemento.text)
-                #print(re.findall(r'\d+', elemento.text))
-                alojamientos[i] = (re.findall(r'\d+', elemento.text))[0]
+            if munitexto in texto or texto in munitexto:
+                if elemento2 == None:
+                    print(elemento.text, ((time.clock() - t)/(i+1))*len(municipios)/3600,'h')
+                    alojamientos[i] = (re.findall(r'\d+', elemento.text))[0]
+                #Si existe comprobar que no sean alojamientos fuera del municipio.
+                else:
+                    aloj = (re.findall(r'\d+', elemento.text))[0]
+                    otrosAlojamientos = (re.findall(r'\d+', elemento2.text))[0]
+                    if aloj != otrosAlojamientos:
+                        alojamientos[i] = (re.findall(r'\d+', elemento.text))[0]
+                        print(elemento.text, ((time.clock() - t)/(i+1))*len(municipios)/3600,'h')
+
+                    else:
+                        alojamientos[i] = "0"
             else:
-                print(elemento.text, municipios[i], '-')
-                alojamientos[i] = -1
-            driver.back()
-            if i == 5:
-                break
+                print(elemento.text, municipios[i])
+                no_encontrados.append(municipios[i])
+                alojamientos[i] = "0"
+            try:
+                driver.back()
+            except Exception:
+                dir = os.path.dirname(__file__)
+                url = os.path.join(dir, 'datos\geckodriver.exe')
+                driver = webdriver.Firefox(executable_path=url)
+                url = 'https://www.booking.com/index.es.html'
+                driver.get(url)
+
 
         print(time.clock() - t)
+        
         #municipiosDF = municipiosDF.to_frame()
         muniDF['Nº alojamientos'] = alojamientos
         muniDF['Nº alojamientos'] = muniDF['Nº alojamientos'].astype(int)
@@ -130,6 +154,10 @@ class Turismo(Fuente):
         url = os.path.join(dir, 'datos\\turismoMunicipios.csv')
         muniDF.to_csv(url, sep=';', encoding = "ISO-8859-1")
         
+        
+        url = os.path.join(dir, 'datos\\noEncontrados.csv')
+        noEncontrados = pd.Series(no_encontrados)
+        noEncontrados.to_csv(url, sep=';', encoding = "ISO-8859-1")
         return muniDF
         
         
@@ -146,6 +174,7 @@ class Turismo(Fuente):
             ("í", "i"),
             ("ò", "o"),
             ("ù", "u"),
+            ("ü", "u")
             )
         for a, b in replacements:
             s = s.replace(a, b).replace(a.upper(), b.upper())

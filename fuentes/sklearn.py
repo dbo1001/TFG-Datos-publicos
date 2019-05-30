@@ -6,6 +6,7 @@ from fuentes import Database
 from config import Config as config
 from fuentes.ine import InePoblacion
 from fuentes.mir import MirEleccionesGenerales
+from fuentes.turismo import Turismo
 from sklearn.ensemble import RandomForestRegressor
 from sklearn import tree
 from sklearn.model_selection import cross_val_predict
@@ -13,6 +14,7 @@ from sklearn.linear_model import LinearRegression
 import numpy as np
 import math
 import os
+import difflib
 
 
 
@@ -73,7 +75,7 @@ class Sklearn(Fuente):
         dfo = self.lee_dataframe(Irpf2014)
         
         df = dfo[['Codigo Municipio', 'Gini despues imp', 'Renta despues imp']]
-        #print(df.head(5))
+        df = df.drop(df[df['Codigo Municipio'] == '00000'].index, axis = 0)
         return df
        
     def lee_dataframe(self, fuente):
@@ -90,8 +92,124 @@ class Sklearn(Fuente):
         df = pd.DataFrame(list(df.find()))        
         return df
     
-    def carga(self):
+    def buscaSimilares(self, muniDF, porEncontrar, encontrados, delitosDF):
+        sinEncontrar = list()
+        #me quedo unicamente con los que aun no han sido encontrados
+        muniDF = muniDF[~muniDF['Municipio'].isin(encontrados)]
+        print(porEncontrar)
+        for e in porEncontrar:
+            #me quedo con los de la misma provincia
+            aux = muniDF[muniDF['CodProv'] == e[2]]
+            nombresMuni = aux['Municipio'].tolist()
+            similares = difflib.get_close_matches(e[1], nombresMuni, n=10 )
+            print(e[1], similares)
+            num = int(input())
+            if num >= 0:
+                index = delitosDF[delitosDF['Nombre'] == e[1]].index.values
+                #Cambio el nombre para que coincidan
+                delitosDF.loc[index, 'Nombre'] = similares[num]
+            else:
+                sinEncontrar.append(e)
+            
+            
+        dir = os.path.dirname(__file__)
+        url = os.path.join(dir, 'datos\\para_predecir.csv')
+        delitosDF.to_csv(url, sep=';', encoding = "ISO-8859-1")
+            
+    
+    
+    def procesaCodMunicipios(self):
+        dir = os.path.dirname(__file__)
 
+        url = os.path.join(dir, 'datos\para_predecir.csv')
+        urlMuni = os.path.join(dir, 'datos\Municipios.csv')
+        delitosDF = pd.read_csv(url, sep=';', header=0, encoding = "ISO-8859-1")
+        #delitosDF.columns = ['Codigo Municipio', 'Nombre', 'Clase']
+        muniDF = pd.read_csv(urlMuni, sep=';', header=0, encoding = "ISO-8859-1")
+        delitosNom = delitosDF['Nombre'].tolist()
+
+        '''
+        #usado para quitar el codigo de municipio delante del nombre la primera vez
+        #(ver documentacion)
+        delitosNom = delitosDF['Nombre'].str.split('-', 1).tolist()
+        #normalizar la primera vez
+        delitosNom = [x[1].upper() for x in delitosNom]
+        delitosNom = [Turismo.normalize(self, x) for x in delitosNom]
+        '''
+        
+        delitosNom = [x.upper() for x in delitosNom]
+        delitosNom = [Turismo.normalize(self, x) for x in delitosNom]
+
+        #delitosDF['Nombre'] = delitosNom
+        muniNom = muniDF['Municipio'].tolist()
+        muniNom = [x.upper() for x in muniNom]
+        muniNom = [Turismo.normalize(self, x) for x in muniNom]
+        
+        #Para quedarme con el primer nombre en caso de tener (valido para la primera vez)
+        #delitosNom = [x.split('/',1)[0] for x in delitosNom]
+        for i in range(len(delitosNom)):
+            if ',' in delitosNom[i]:
+                articulo = delitosNom[i].split(',', 1)[1]
+                articulo = articulo[1:]
+                articulo = '(' + articulo + ')'
+                delitosNom[i] = delitosNom[i].split(',',1)[0] + ' ' + articulo
+        
+        delitosDF['Nombre'] = delitosNom
+        delitosDF['Codigo Municipio'] = delitosDF['Codigo Municipio'].astype(str).str.zfill(5)
+        codigosProvincia = delitosDF['Codigo Municipio'].tolist()
+        codigosProvincia = [x[0:2] for x in codigosProvincia]
+        delitosDF['CodProv'] = codigosProvincia
+        
+        muniDF['Municipio'] = muniNom
+        muniDF['Código'] = muniDF['Código'].astype(str).str.zfill(5)
+        codigosProvincia = muniDF['Código'].tolist()
+        codigosProvincia = [x[0:2] for x in codigosProvincia]
+        muniDF['CodProv'] = codigosProvincia
+        
+        #codigosNuevos = list()
+        porEncontrar = list()
+        encontrados = list()
+
+
+        codigos_a_cambiar =[0] * len(muniDF['Código'].tolist())
+        for i in range (len(delitosDF)):
+            #print('...', i)
+            muniDF_acotado = muniDF[muniDF['CodProv'] == delitosDF['CodProv'][i]]
+            municipioBuscado = muniDF_acotado[muniDF_acotado['Municipio'] == delitosDF['Nombre'][i]]
+        
+            #municipioBuscado = municipioBuscado.reset_index()
+            #print(municipioBuscado)
+            if len(municipioBuscado) != 1:
+                if len(municipioBuscado) > 1:
+                    index = municipioBuscado.index.values
+                    encontrados.append(municipioBuscado['Municipio'].tolist()[0])
+                    for j in index:
+                        codigos_a_cambiar[j] = delitosDF['Codigo Municipio'][i]
+                else:
+                    porEncontrar.append([delitosDF['Codigo Municipio'][i], delitosDF['Nombre'][i], delitosDF['CodProv'][i]])
+            else:
+                index = municipioBuscado.index.values[0]
+                #print(codigos_a_cambiar[index])
+                codigos_a_cambiar[index] = delitosDF['Codigo Municipio'][i]
+                encontrados.append(municipioBuscado['Municipio'].tolist()[0])
+                #print(codigos_a_cambiar[index])
+                #print('...')
+            
+        #print(len(porEncontrar))
+        #print(porEncontrar)
+        muniDF['Codigo_Mapa'] = codigos_a_cambiar
+        muniDF = muniDF[['Comunidad Autónoma', 'Provincia', 'Municipio', 'Código', 'CodProv', 'Codigo_Mapa']]
+        dir = os.path.dirname(__file__)
+        url = os.path.join(dir, 'datos\\Municipios.csv')
+        muniDF.to_csv(url, sep=';', encoding = "ISO-8859-1")
+        #self.buscaSimilares(muniDF, porEncontrar, encontrados, delitosDF)
+        
+        return porEncontrar
+    def carga(self):
+        porEncontrar = self.procesaCodMunicipios()
+        #Me quedo unicamente con el codigo del municipio no encontrado
+        for i in range(len(porEncontrar)):
+            porEncontrar[i] = porEncontrar[i][0]
         df_Ine = self.obtenerDatosIne()
         df_Mir = self.obtenerDatosMir()
         df_Gini = self.obtenerDatosGini() 
@@ -127,9 +245,12 @@ class Sklearn(Fuente):
         url = os.path.join(dir, 'datos\para_predecir.csv')
         
         delitos = pd.read_csv(url, sep=';', header=0, encoding = "ISO-8859-1")
-        delitos.columns = ['Codigo Municipio', 'Nombre', 'Clase']
-        delitos = delitos.drop(['Nombre'], axis = 1)
+        #delitos.columns = ['Codigo Municipio', 'Nombre', 'Clase']
         delitos['Codigo Municipio'] = delitos['Codigo Municipio'].astype(str).str.zfill(5)
+        for e in porEncontrar:
+            delitos = delitos.drop(delitos[delitos['Codigo Municipio'] == e].index, axis = 0)
+        #df = df.drop(df[df.score < 50].index)
+        delitos = delitos.drop(['Nombre'], axis = 1)
         
         df_train = pd.merge(df, delitos, on='Codigo Municipio')
        
@@ -142,8 +263,8 @@ class Sklearn(Fuente):
         target_data = df_train["Clase"].values
         
         #regr = regr.fit(train_data, target_data)
-        print('W')
-        pred = cross_val_predict(regr, train_data, target_data, cv=4)
+        print('cross_val_predict')
+        pred = cross_val_predict(regr, train_data, target_data, cv=10)
         
         regr.fit(train_data, target_data)
         importances = regr.feature_importances_
@@ -164,15 +285,14 @@ class Sklearn(Fuente):
         #print(pred[-20:-1])  
         #print(target_data[-20:-1])     
         df_train['Prediccion'] = pred
-        df_train['Error'] = abs(df_train['Prediccion'] - df_train['Clase'])
+        df_train['Error'] = (df_train['Prediccion'] - df_train['Clase']).abs()
         
-        errorMedio = df_train['Error'].abs().mean()
+        errorMedio = df_train['Error'].mean()
         mediaDel = target_data.mean()
-        print(mediaDel)
         print(errorMedio)
         #print(df_train.head(5))                        
         
-        
+        print(df_train['Error'].min())
         
         
         
