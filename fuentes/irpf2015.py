@@ -10,7 +10,7 @@ from fuentes.Fuente import Fuente, rename
 from fuentes.Gini import *
 import os
 
-class Irpf2014(Fuente):
+class Irpf2015(Fuente):
     
     renombrar = {
         'muni': 'municipio (local)',
@@ -23,10 +23,10 @@ class Irpf2014(Fuente):
      
     def __init__(self):
         dir = os.path.dirname(__file__)
-        self.url = os.path.join(dir, 'datos\MuestraIRPF_2014.csv')
+        self.url = os.path.join(dir, 'datos\MuestraIRPF_2015.csv')
         
-        descripcion = 'Datos de irpf 2014'
-        super().__init__('irpf2014', 'irpf', descripcion)
+        descripcion = 'Datos de irpf 2015'
+        super().__init__('irpf2015', 'irpf', descripcion)
     
 
     def obtenerDatosCorrectos(self, lDatos):
@@ -68,24 +68,24 @@ class Irpf2014(Fuente):
         nombresActividades = ['-'] * len(df)
         for i in range(len(df)):
             secciones = list()
-            if df['P087_1'][i] > 0:
-                secciones.append(df['P087_1'][i])
-                if df['P087_2'][i] > 0:
-                    secciones.append(df['P087_2'][i]) 
-                    if df['P087_3'][i] > 0:
-                        secciones.append(df['P087_3'][i]) 
-                        if df['P087_4'][i] > 0:
-                            secciones.append(df['P087_4'][i]) 
-                            if df['P087_5'][i] > 0:
-                                secciones.append(df['P087_5'][i])
-                                if df['P087_6'][i] > 0:
-                                    secciones.append(df['P087_6'][i]) 
+            if df['Par087_1'][i] > 0:
+                secciones.append(df['Par087_1'][i])
+                if df['Par087_2'][i] > 0:
+                    secciones.append(df['Par087_2'][i]) 
+                    if df['Par087_3'][i] > 0:
+                        secciones.append(df['Par087_3'][i]) 
+                        if df['Par087_4'][i] > 0:
+                            secciones.append(df['Par087_4'][i]) 
+                            if df['Par087_5'][i] > 0:
+                                secciones.append(df['Par087_5'][i])
+                                if df['Par087_6'][i] > 0:
+                                    secciones.append(df['Par087_6'][i]) 
             
             numActiv = len(secciones)
 
             for j in range(numActiv):
                 seccion = secciones[j]
-                grupo = df['P088_'+str(int(j + 1))][i].astype(int)
+                grupo = df['Par088_'+str(int(j + 1))][i].astype(int)
                 grupo = str(grupo)
                 #grupo = grupo[i]
                 allSections = list()
@@ -136,14 +136,12 @@ class Irpf2014(Fuente):
         df = pd.read_csv(self.url, sep='\t', header=0, 
                          usecols=['factor','sexo','prov','muni','ca','EjnacD','Par430','Par445', 'Par17',
                                   'Par18','Par19', 'Par20', 'Par589', 'Par490', 'Par495', 'Par545', 'Par546',
-                                  'dec', 'P087_1', 'P087_2','P087_3','P087_4','P087_5','P087_6','P088_1',
-                                  'P088_2','P088_3','P088_4','P088_5','P088_6'])
+                                  'dec', 'Par087_1', 'Par087_2','Par087_3','Par087_4','Par087_5','Par087_6','Par088_1',
+                                  'Par088_2','Par088_3','Par088_4','Par088_5','Par088_6'])
         
-        #dtype={'P088_1': str,'P088_2': str,'P088_3': str,'P088_4': str,'P088_5': str,
-        #'P088_6': str}
         
-        print('Irpf2014: csv leido')
-        print('Irpf2014: Obteniendo actividades empresariales')
+        print('Irpf2015: csv leido')
+        print('Irpf2015: Obteniendo actividades empresariales')
 
         #actividades = self.obtenerActividadEmpresarial(df)
         #df['Actividad Empresarial'] = actividades
@@ -151,7 +149,7 @@ class Irpf2014(Fuente):
         
         
         
-        print('Irpf2014: Calculando Rentas')
+        print('Irpf2015: Calculando Rentas')
 
         df['Codigo Municipio'] = df['prov'].astype(str).str.zfill(2) + df['muni'].astype(str).str.zfill(3)
         
@@ -173,16 +171,16 @@ class Irpf2014(Fuente):
         df['Renta despues imp'] = rentas   
         
                 
-        print('Irpf2014: Obteniendo municipios')
+        print('Irpf2015: Obteniendo municipios')
         
         dictG1, dictG2, df = self.obtenerCodigoMunicipio(df)
         
-        print('Irpf2014: guardando datos')
+        print('Irpf2015: guardando datos')
         
         df = df.drop(['Par430','Par445', 'Par17','Par18','Par19', 'Par20',
-                      'Par589', 'Par490', 'Par495', 'Par545', 'Par546', 'P087_1',
-                      'P087_2','P087_3','P087_4','P087_5','P087_6','P088_1',
-                      'P088_2','P088_3','P088_4','P088_5','P088_6' ], axis = 1)
+                      'Par589', 'Par490', 'Par495', 'Par545', 'Par546', 'Par087_1',
+                      'Par087_2','Par087_3','Par087_4','Par087_5','Par087_6','Par088_1',
+                      'Par088_2','Par088_3','Par088_4','Par088_5','Par088_6' ], axis = 1)
         
         #print(df.head(25))
         
@@ -219,7 +217,7 @@ class Irpf2014(Fuente):
         dir = os.path.dirname(__file__)
         url = os.path.join(dir, 'datos\Municipios.csv')
         muniDF = pd.read_csv(url, sep=';', header=0, encoding = "ISO-8859-1")
-        print('Irpf2014: Obteniendo nombres municipio')
+        print('Irpf2015: Obteniendo nombres municipio')
         nombres = list()
         codigosMapa = list()
         for i in range(len(df)):
@@ -246,7 +244,7 @@ class Irpf2014(Fuente):
         
         dictG1 = dict()
         dictG2 = dict()
-        print('Irpf2014: Calculando Gini')
+        print('Irpf2015: Calculando Gini')
         cont = 0
         aux = len(listaMuni)
         for i in listaMuni:

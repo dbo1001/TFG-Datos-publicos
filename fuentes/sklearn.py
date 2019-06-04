@@ -1,7 +1,7 @@
 import pandas as pd
 from fuentes.Fuente import Fuente
 from fuentes.ine import Ine
-from fuentes.irpf2014 import Irpf2014
+from fuentes.irpf2015 import Irpf2015
 from fuentes import Database
 from config import Config as config
 from fuentes.ine import InePoblacion
@@ -72,10 +72,16 @@ class Sklearn(Fuente):
         return df
     
     def obtenerDatosGini(self):
-        dfo = self.lee_dataframe(Irpf2014)
+        dfo = self.lee_dataframe(Irpf2015)
         
         df = dfo[['Codigo Municipio', 'Gini despues imp', 'Renta despues imp']]
         df = df.drop(df[df['Codigo Municipio'] == '00000'].index, axis = 0)
+        return df
+    
+    def obtenerDatosTurismo(self):
+        dfo = self.lee_dataframe(Turismo)
+        df = dfo.drop(['Codigo Provincia', 'Comunidad Autónoma', 'Municipio', 'Provincia', '_id'], axis = 1)
+        
         return df
        
     def lee_dataframe(self, fuente):
@@ -213,6 +219,8 @@ class Sklearn(Fuente):
         df_Ine = self.obtenerDatosIne()
         df_Mir = self.obtenerDatosMir()
         df_Gini = self.obtenerDatosGini() 
+        df_Turismo = self.obtenerDatosTurismo()
+        
         enero16 ={ # Modificado, a las coaliciones les doy la media aritmetica
         "PP": 8.28,
         "PSOE": 4.49,
@@ -234,12 +242,11 @@ class Sklearn(Fuente):
         
         df = pd.merge(df_Ine, df_Mir, on='Codigo Municipio')
         df = pd.merge(df, df_Gini, on='Codigo Municipio')
-        #print(df.columns)
+        
+        df = pd.merge(df, df_Turismo, on='Codigo Municipio')
+
         
         regr = RandomForestRegressor()
-        #regr= tree.DecisionTreeRegressor()
-        #regr = LinearRegression()
-        
         
         dir = os.path.dirname(__file__)
         url = os.path.join(dir, 'datos\para_predecir.csv')
