@@ -1,8 +1,4 @@
-'''
-Created on 12 feb. 2019
 
-@author: Sergio
-'''
 import pandas as pd
 import numpy as np
 import datetime
@@ -11,7 +7,9 @@ from fuentes.Gini import *
 import os
 
 class Irpf2015(Fuente):
-    
+    """
+    Fuente de datos de Hacienda
+    """
     renombrar = {
         'muni': 'municipio (local)',
         'prov': 'Codigo Provincia',
@@ -30,6 +28,9 @@ class Irpf2015(Fuente):
     
 
     def obtenerDatosCorrectos(self, lDatos):
+        """
+        Devuelve una lista que indica si cada valor es válido o no
+        """
         #Datos que no se deben tener en cuenta
         correcto = list()
         for i in range(len(lDatos[0])):
@@ -47,6 +48,9 @@ class Irpf2015(Fuente):
         return correcto
     
     def obtenerActividadEmpresarial(self, df):
+        """
+        Devuelve una lista con la denominación de la actividad empresarial de cada declaración
+        """
         dir = os.path.dirname(__file__)
         url = os.path.join(dir, 'datos\ActividadEmpresarial.csv')
         
@@ -87,11 +91,9 @@ class Irpf2015(Fuente):
                 seccion = secciones[j]
                 grupo = df['Par088_'+str(int(j + 1))][i].astype(int)
                 grupo = str(grupo)
-                #grupo = grupo[i]
                 allSections = list()
                 allSections.append(str(int(seccion)))
-                #print(seccion)
-                #print(grupo)
+
                 if len(grupo) > 0:
                     allSections.append(grupo[0])
                     if len(grupo) > 1:
@@ -111,13 +113,11 @@ class Irpf2015(Fuente):
                         try:
                             nombresActividades[i] = actividadEm.loc[tupla]['Denominación']
                         except:
-                            #print(i, tupla, len(grupo), grupo, 'tipo1')
                             nombresActividades[i] = ''
                     else:
                         try:
                             nombresActividades[i] = nombresActividades[i] + '\n' + actividadEm.loc[tupla]['Denominación']
                         except:
-                           #print(i, tupla, len(grupo), grupo, 'tipo2')
                            nombresActividades[i] = '' 
                 else:
                     nombresActividades[i] = ''      
@@ -131,11 +131,11 @@ class Irpf2015(Fuente):
     @rename(renombrar)   
     def carga(self):
         """
-        Devuelve el Dataframe con los códigos
+        Devuelve el Dataframe con los datos procesados
         """
         df = pd.read_csv(self.url, sep='\t', header=0, 
-                         usecols=['factor','sexo','prov','muni','ca','EjnacD','Par430','Par445', 'Par17',
-                                  'Par18','Par19', 'Par20', 'Par589', 'Par490', 'Par495', 'Par545', 'Par546',
+                         usecols=['factor','sexo','prov','muni','ca','EjnacD','Par380','Par395','Par16', 'Par17',
+                                  'Par18', 'Par20','Par21', 'Par532', 'Par440', 'Par445', 'Par490', 'Par491',
                                   'dec', 'Par087_1', 'Par087_2','Par087_3','Par087_4','Par087_5','Par087_6','Par088_1',
                                   'Par088_2','Par088_3','Par088_4','Par088_5','Par088_6'])
         
@@ -143,22 +143,21 @@ class Irpf2015(Fuente):
         print('Irpf2015: csv leido')
         print('Irpf2015: Obteniendo actividades empresariales')
 
+        #Se deja comentado (Ver Sección 5.3 de la memoria)
         #actividades = self.obtenerActividadEmpresarial(df)
         #df['Actividad Empresarial'] = actividades
-        
-        
-        
+
         
         print('Irpf2015: Calculando Rentas')
 
         df['Codigo Municipio'] = df['prov'].astype(str).str.zfill(2) + df['muni'].astype(str).str.zfill(3)
         
-        df['Renta total'] = df.Par430 + df.Par445 + df.Par17 + df.Par18 +  df.Par19 +  df.Par20
-        df['Renta despues imp'] = df['Renta total'] - df.Par589
+        df['Renta total'] = df.Par380 + df.Par395 + df.Par17 + df.Par18 +  df.Par16 +  df.Par20 +df.Par21
+        df['Renta despues imp'] = df['Renta total'] - df.Par532
         
         
         
-        lDatos = [list(df['Par430']), list(df['Par445']), list(df['Par490']), list(df['Par495']), list(df['Par545']), list(df['Par546']), list(df['Par589']), list(df['dec'])]
+        lDatos = [list(df['Par380']), list(df['Par395']), list(df['Par440']), list(df['Par445']), list(df['Par490']), list(df['Par491']), list(df['Par532']), list(df['dec'])]
         
         correcto = self.obtenerDatosCorrectos(lDatos)
                 
@@ -173,16 +172,15 @@ class Irpf2015(Fuente):
                 
         print('Irpf2015: Obteniendo municipios')
         
-        dictG1, dictG2, df = self.obtenerCodigoMunicipio(df)
+        dictG1, dictG2, df = self.obtenerGini(df)
         
         print('Irpf2015: guardando datos')
         
-        df = df.drop(['Par430','Par445', 'Par17','Par18','Par19', 'Par20',
-                      'Par589', 'Par490', 'Par495', 'Par545', 'Par546', 'Par087_1',
-                      'Par087_2','Par087_3','Par087_4','Par087_5','Par087_6','Par088_1',
-                      'Par088_2','Par088_3','Par088_4','Par088_5','Par088_6' ], axis = 1)
+        df = df.drop(['Par380','Par395','Par16', 'Par17', 'Par18', 'Par20',
+                      'Par21', 'Par532', 'Par440', 'Par445', 'Par490', 'Par491',
+                      'Par087_1', 'Par087_2','Par087_3','Par087_4','Par087_5',
+                      'Par087_6','Par088_1', 'Par088_2','Par088_3','Par088_4','Par088_5','Par088_6' ], axis = 1)
         
-        #print(df.head(25))
         
         df = df.groupby('Codigo Municipio', as_index=False).mean().round(2)
 
@@ -197,11 +195,9 @@ class Irpf2015(Fuente):
         df['Nombre Municipio'] = nombres
         df['Codigos_Mapa'] = codigosMapa
         
-        anno = datetime.datetime.now()
-        anno = int(anno.year)
+        anno = 2015
         
         df['EjnacD'] = anno - df['EjnacD']       
-        #df['Codigo Municipio'] = df['Codigo Municipio'].astype(str).str.zfill(5)
         df['sexo'] = df['sexo'] - 1
         df['prov'] = df['prov'].astype(int)
         df['muni'] = df['muni'].astype(int)
@@ -209,11 +205,16 @@ class Irpf2015(Fuente):
         df['muni'] = df['muni'].astype(str).str.zfill(3)
         df = df.drop(['Codigo Municipio' ], axis = 1)
         df['Codigos_Mapa'] = df['Codigos_Mapa'].astype(str).str.zfill(5)
+        
         return df
     
     
     
     def obtenerNombreMunicipio(self, df):
+        """
+        Devuelve dos listas: una con el nombre de los municipios,
+        otra con el código municipio que corresponde con el de la aplicación.
+        """
         dir = os.path.dirname(__file__)
         url = os.path.join(dir, 'datos\Municipios.csv')
         muniDF = pd.read_csv(url, sep=';', header=0, encoding = "ISO-8859-1")
@@ -232,7 +233,10 @@ class Irpf2015(Fuente):
                 codigosMapa.append('0')
         return nombres, codigosMapa
     
-    def obtenerCodigoMunicipio(self, df):
+    def obtenerGini(self, df):
+        """
+        Devuelve dos diccionarios con el cálculo del índice Gini.
+        """
         listaMuni = list()
         df['Codigo Municipio'] = df['Codigo Municipio'].astype(int)
         cont = 0

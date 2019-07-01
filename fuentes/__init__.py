@@ -6,7 +6,7 @@ from fuentes.mir import MirElecciones, MirEleccionesGenerales
 from fuentes.irpf2015 import Irpf2015
 from fuentes.epa import Epa
 from fuentes.turismo import Turismo
-from fuentes.sklearn import Sklearn
+from fuentes.Predicciones import Predicciones
 
 
 # Lista de todas las fuentes disponibles
@@ -22,5 +22,5 @@ fuentes = [
     MirElecciones,
     MirEleccionesGenerales,
     Turismo,
-    Sklearn
+    Predicciones
 ]

@@ -5,7 +5,7 @@ from web import app
 
 
 COORDENADAS = [40, -3]
-ZOOM = 4.5
+ZOOM = 5.5
 
 
 def agrupa_df(df, metodo):

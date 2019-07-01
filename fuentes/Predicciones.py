@@ -2,6 +2,7 @@ import pandas as pd
 from fuentes.Fuente import Fuente
 from fuentes.ine import Ine
 from fuentes.irpf2015 import Irpf2015
+from fuentes.epa import Epa
 from fuentes import Database
 from config import Config as config
 from fuentes.ine import InePoblacion
@@ -21,7 +22,10 @@ import difflib
 import numpy as np
 import matplotlib.pyplot as plt
 
-class Sklearn(Fuente):
+class Predicciones(Fuente):
+    """
+    Fuente de datos de criminalidad y resultado de las predicciones
+    """
     
     def __init__(self):        
         descripcion = ''
@@ -29,9 +33,11 @@ class Sklearn(Fuente):
         
         
     def obtenerDatosIne(self):
+        """
+        Lee la fuente de la base de datos y normaliza los datos. Devuelve el Dataframe
+        """
         
         dfo = self.lee_dataframe(InePoblacion)
-        #print(dfo)
         df = dfo[['Provincia', 'Municipio', 'Ambos sexos-Total-Total', 'Codigo Municipio', 'Codigo Provincia']].copy()
         
         df['Ambos sexos-Total-Menores de 16 años'] = dfo['Ambos sexos-Total-Menores de 16 años'] / dfo['Ambos sexos-Total-Total']
@@ -53,7 +59,9 @@ class Sklearn(Fuente):
         return df
         
     def obtenerDatosMir(self):
-        
+        """
+        Lee la fuente de la base de datos y normaliza los datos. Devuelve el Dataframe
+        """
         dfo = self.lee_dataframe(MirEleccionesGenerales)
         
         df = dfo[dfo.Año == 2015]
@@ -70,8 +78,11 @@ class Sklearn(Fuente):
         
         #print(df.columns.values)
         return df
-    
+
     def obtenerDatosGini(self):
+        """
+        Lee la fuente de la base de datos. Devuelve el Dataframe
+        """
         dfo = self.lee_dataframe(Irpf2015)
         
         df = dfo[['Codigo Municipio', 'Gini despues imp', 'Renta despues imp']]
@@ -79,12 +90,18 @@ class Sklearn(Fuente):
         return df
     
     def obtenerDatosTurismo(self):
+        """
+        Lee la fuente de la base de datos. Devuelve el Dataframe
+        """
         dfo = self.lee_dataframe(Turismo)
         df = dfo.drop(['Codigo Provincia', 'Comunidad Autónoma', 'Municipio', 'Provincia', '_id'], axis = 1)
         
         return df
        
     def lee_dataframe(self, fuente):
+        """
+        Conecta con la base de datos para leer la fuente de datos pasada por parámetro.
+        """
         db = Database.Database(
             database=config.MONGO_DBNAME,
             host=config.MONGO_HOST,
@@ -99,6 +116,9 @@ class Sklearn(Fuente):
         return df
     
     def buscaSimilares(self, muniDF, porEncontrar, encontrados, delitosDF):
+        """
+        Actualiza el nombre de los municipios para que coincidan. 
+        """
         sinEncontrar = list()
         #me quedo unicamente con los que aun no han sido encontrados
         muniDF = muniDF[~muniDF['Municipio'].isin(encontrados)]
@@ -120,11 +140,16 @@ class Sklearn(Fuente):
             
         dir = os.path.dirname(__file__)
         url = os.path.join(dir, 'datos\\para_predecir.csv')
+        #guardo los cambios en el csv
         delitosDF.to_csv(url, sep=';', encoding = "ISO-8859-1")
             
     
     
     def procesaCodMunicipios(self):
+        """
+        Encuentra el codigo múnicipio correcto para el municipio y lo añade al csv
+        Ver sección 5.3 de la memoria.
+        """
         dir = os.path.dirname(__file__)
 
         url = os.path.join(dir, 'datos\para_predecir.csv')
@@ -136,7 +161,7 @@ class Sklearn(Fuente):
 
         '''
         #usado para quitar el codigo de municipio delante del nombre la primera vez
-        #(ver documentacion)
+        #después se decidió guardarlo únicamente con el nombre para mayor comodidad
         delitosNom = delitosDF['Nombre'].str.split('-', 1).tolist()
         #normalizar la primera vez
         delitosNom = [x[1].upper() for x in delitosNom]
@@ -146,7 +171,6 @@ class Sklearn(Fuente):
         delitosNom = [x.upper() for x in delitosNom]
         delitosNom = [Turismo.normalize(self, x) for x in delitosNom]
 
-        #delitosDF['Nombre'] = delitosNom
         muniNom = muniDF['Municipio'].tolist()
         muniNom = [x.upper() for x in muniNom]
         muniNom = [Turismo.normalize(self, x) for x in muniNom]
@@ -172,19 +196,15 @@ class Sklearn(Fuente):
         codigosProvincia = [x[0:2] for x in codigosProvincia]
         muniDF['CodProv'] = codigosProvincia
         
-        #codigosNuevos = list()
         porEncontrar = list()
         encontrados = list()
 
 
         codigos_a_cambiar =[0] * len(muniDF['Código'].tolist())
         for i in range (len(delitosDF)):
-            #print('...', i)
             muniDF_acotado = muniDF[muniDF['CodProv'] == delitosDF['CodProv'][i]]
             municipioBuscado = muniDF_acotado[muniDF_acotado['Municipio'] == delitosDF['Nombre'][i]]
         
-            #municipioBuscado = municipioBuscado.reset_index()
-            #print(municipioBuscado)
             if len(municipioBuscado) != 1:
                 if len(municipioBuscado) > 1:
                     index = municipioBuscado.index.values
@@ -195,23 +215,24 @@ class Sklearn(Fuente):
                     porEncontrar.append([delitosDF['Codigo Municipio'][i], delitosDF['Nombre'][i], delitosDF['CodProv'][i]])
             else:
                 index = municipioBuscado.index.values[0]
-                #print(codigos_a_cambiar[index])
                 codigos_a_cambiar[index] = delitosDF['Codigo Municipio'][i]
                 encontrados.append(municipioBuscado['Municipio'].tolist()[0])
-                #print(codigos_a_cambiar[index])
-                #print('...')
-            
-        #print(len(porEncontrar))
-        #print(porEncontrar)
+
         muniDF['Codigo_Mapa'] = codigos_a_cambiar
         muniDF = muniDF[['Comunidad Autónoma', 'Provincia', 'Municipio', 'Código', 'CodProv', 'Codigo_Mapa']]
         dir = os.path.dirname(__file__)
         url = os.path.join(dir, 'datos\\Municipios.csv')
         muniDF.to_csv(url, sep=';', encoding = "ISO-8859-1")
+        
+        #Para actualizar los nombres de los municpios no encontrados en el csv
         #self.buscaSimilares(muniDF, porEncontrar, encontrados, delitosDF)
         
         return porEncontrar
+    
     def carga(self):
+        """
+        Realiza las predicciones y devuelve el DataFrame final procesado 
+        """
         porEncontrar = self.procesaCodMunicipios()
         #Me quedo unicamente con el codigo del municipio no encontrado
         for i in range(len(porEncontrar)):
@@ -220,7 +241,7 @@ class Sklearn(Fuente):
         df_Mir = self.obtenerDatosMir()
         df_Gini = self.obtenerDatosGini() 
         df_Turismo = self.obtenerDatosTurismo()
-        
+
         enero16 ={ # Modificado, a las coaliciones les doy la media aritmetica
         "PP": 8.28,
         "PSOE": 4.49,
@@ -252,11 +273,12 @@ class Sklearn(Fuente):
         url = os.path.join(dir, 'datos\para_predecir.csv')
         
         delitos = pd.read_csv(url, sep=';', header=0, encoding = "ISO-8859-1")
-        #delitos.columns = ['Codigo Municipio', 'Nombre', 'Clase']
         delitos['Codigo Municipio'] = delitos['Codigo Municipio'].astype(str).str.zfill(5)
+        delitos['CodProv'] = delitos['CodProv'].astype(str).str.zfill(2)
+        
+        
         for e in porEncontrar:
             delitos = delitos.drop(delitos[delitos['Codigo Municipio'] == e].index, axis = 0)
-        #df = df.drop(df[df.score < 50].index)
         delitos = delitos.drop(['Nombre'], axis = 1)
         
         df_train = pd.merge(df, delitos, on='Codigo Municipio')
@@ -264,12 +286,11 @@ class Sklearn(Fuente):
         #Desordeno las filas de forma aleatoria
         df_train = df_train.sample(frac=1).reset_index(drop=True) 
 
-        train_data = df_train.drop(["Provincia", "Municipio", "Codigo Municipio", "Codigo Provincia", "Nombre de Comunidad", "Clase"], axis=1)
+        train_data = df_train.drop(["Provincia", "Municipio", "Codigo Municipio", "Codigo Provincia", "Nombre de Comunidad", "Clase", 'CodProv', 'Unnamed: 0'], axis=1)
         mio = train_data
         train_data = train_data.values
         target_data = df_train["Clase"].values
         
-        #regr = regr.fit(train_data, target_data)
         print('cross_val_predict')
         pred = cross_val_predict(regr, train_data, target_data, cv=10)
         
@@ -281,59 +302,27 @@ class Sklearn(Fuente):
             print(cont, e)
             cont += 1
             
-        #print(importances)
-        
-        
-        
-        
-        
-        
-        
-        #print(pred[-20:-1])  
-        #print(target_data[-20:-1])     
         df_train['Prediccion'] = pred
         df_train['Error'] = (df_train['Prediccion'] - df_train['Clase']).abs()
         
         errorMedio = df_train['Error'].mean()
         mediaDel = target_data.mean()
-        print(errorMedio)
-        #print(df_train.head(5))                        
-        
-        print(df_train['Error'].min())
-        
-        
-        
-        std = np.std([tree.feature_importances_ for tree in regr.estimators_],
-             axis=0)
-        indices = np.argsort(importances)[::-1]
-        
-        # Print the feature ranking
-        print("Feature ranking:")
-        
-        for f in range(train_data.shape[1]):
-            print("%d. feature %d (%f)" % (f + 1, indices[f], importances[indices[f]]))
-        
-        # Plot the feature importances of the regr
-        plt.figure()
-        plt.title("Feature importances")
-        plt.bar(range(train_data.shape[1]), importances[indices],
-               color="r", yerr=std[indices], align="center")
-        plt.xticks(range(train_data.shape[1]), indices)
-        plt.xlim([-1, train_data.shape[1]])
-        plt.show()
-        
+        #print(errorMedio)
         
         df_train.rename(columns={'Clase':'Delitos', 'Prediccion':'Delitos Predichos'}, inplace=True)
         
-        
-        #probar con delito por habitante
-        #time.sleep(20)
+        df_train['Delitos'] = df_train['Delitos'].astype(float)
+        df_train['Delitos Predichos'] = df_train['Delitos Predichos'].astype(float)
+        df_train['Error'] = df_train['Error'].astype(int)
+
         return df_train
     
 
 
     def weighted_avg_and_std(self, values, weights):
-
+        """
+        calcula el peso medio y la varianza de una lista de valores pasados por parámetro
+        """
         average = np.average(values, weights=weights)
         # Fast and numerically precise:
         variance = np.average((values-average)**2, weights=weights)
@@ -341,17 +330,18 @@ class Sklearn(Fuente):
     
     
     def procesa_municipio(self, municipioDF, partido_escala):
+        """
+        Devuelve una Serie con los datos procesados y el valor medio
+        de la posición en la escala ideológica de ese municipio así como
+        de su varianza.
+        """
         
         values_dict ={}
-        
         
         primer_partido_idx = 11
                    
         comunidad = municipioDF["Nombre de Comunidad"]
-        #provinciaC = municipioDF["Código de Provincia"]
-        #provincia = municipioDF["Nombre de Provincia"]
         municipioC = municipioDF["Codigo Municipio"]
-        #municipioN = municipioDF["Nombre de Municipio"]
         
         total = int(municipioDF["Total censo electoral"])
         votos = int(municipioDF["Total votantes"])
@@ -380,7 +370,6 @@ class Sklearn(Fuente):
         index = ["Nombre de Comunidad","Codigo Municipio",  
                  "Participacion","Blancos","Nulos","ACandidaturas",
                  "%CandMayoritarias","EscalaAvg","EscalaStd"]
-        # cambia para que estén tambien todos lso datos que ayudan a hacer el merge
         vals = [comunidad,municipioC,votos/total,blancos/votos,nulos/votos,
                 a_candidaturas/votos,a_candidaturas_mayoritarias/votos,
                 weighted_avg,weighted_std]

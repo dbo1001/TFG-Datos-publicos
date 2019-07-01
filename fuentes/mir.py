@@ -141,8 +141,8 @@ class MirElecciones(Mir):
 
     def __init__(self):
         url_base = 'http://www.infoelectoral.mir.es/infoelectoral/docxl/04_{}_1.zip'
-        #anios = [198706, 199105, 199505, 199906, 200305, 200705]
-        anios = [198706]
+        anios = [198706, 199105, 199505, 199906, 200305, 200705]
+        #anios = [198706]
 
         descripcion = 'Resultados de elecciones municipales por año por partido del Ministerio del Interior.'
         super().__init__(url_base, anios, 'elecciones', descripcion)

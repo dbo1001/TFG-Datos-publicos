@@ -12,6 +12,9 @@ import gc
 
 from fuentes.epa import leerMunicipiosCSV 
 class Turismo(Fuente):
+    """
+    Fuente de datos obtenida de Booking.
+    """
     
     renombrar = {
         'Codigo_Mapa': 'Codigo Municipio'      
@@ -24,6 +27,9 @@ class Turismo(Fuente):
 
     @rename(renombrar)
     def carga(self):
+        """
+        Realiza el webscraping y devuelve el DataFrame procesado
+        """
         #si aparece este texto guardar para comprobar despues.
         patron = re.compile('Echa un vistazo a estos otros .*')
         dir = os.path.dirname(__file__)
@@ -33,7 +39,6 @@ class Turismo(Fuente):
         driver.set_page_load_timeout(20)
         driver.get(url)                
         
-        #muniDF = leerMunicipiosCSV()
         muniDF = self.leerMunicipiosCSV2()
         
         municipiosDF = muniDF.Municipio
@@ -47,7 +52,6 @@ class Turismo(Fuente):
         muniDFaux = pd.DataFrame()
         for i in range (len(municipios)):
             print( i, '/', len(municipios))
-            #muniDF = muniDF.drop(muniDF.index[i])
             muniDFaux = muniDFaux.append(muniDF.iloc[i])            
             MaxIntent = 2
             flag = True
@@ -57,7 +61,6 @@ class Turismo(Fuente):
                 try:
                     elemento = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.ID, 'ss')))
                     flag = False
-                    #elemento = driver.find_element_by_id('ss')
                 except Exception:
                     if intentos < MaxIntent:
                         intentos += 1
@@ -84,7 +87,6 @@ class Turismo(Fuente):
                 try:
                     elemento = WebDriverWait(driver, 2).until(EC.presence_of_element_located((By.CLASS_NAME, "sorth1")))
                     flag = False
-                    #elemento = driver.find_element_by_class_name('sorth1')
                 except Exception:
                     if intentos < MaxIntent:
                         intentos += 1
@@ -211,23 +213,7 @@ class Turismo(Fuente):
                     driver.get(url)
                 
         driver.quit()
-        '''
-        #municipiosDF = municipiosDF.to_frame()
-        muniDF['Nº alojamientos'] = alojamientos
-        muniDF['Nº alojamientos'] = muniDF['Nº alojamientos'].astype(int)
-        driver.quit()
-        print(municipiosDF)
-        muniDF['Código'] = muniDF['Código'].astype(str).str.zfill(5)
-        muniDF['Codigo Provincia'] = muniDF['Código'].str[0:2]
-        dir = os.path.dirname(__file__)
-        url = os.path.join(dir, 'datos\\turismoMunicipios.csv')
-        muniDF.to_csv(url, sep=';', encoding = "ISO-8859-1")
         
-        
-        url = os.path.join(dir, 'datos\\noEncontrados.csv')
-        noEncontrados = pd.Series(no_encontrados)
-        noEncontrados.to_csv(url, sep=';', encoding = "ISO-8859-1")
-        '''
         url = os.path.join(dir, 'datos\\turismoMunicipios.csv')
         turismoMuniDF = pd.read_csv(url, sep=';', header=0, encoding="ISO-8859-1", 
                                                 dtype={'CodProv': str, 'Codigo Provincia': str,
@@ -242,6 +228,9 @@ class Turismo(Fuente):
         
         
     def normalize(self, s):
+        """
+        Realiza la normalización a un string pasado por parámetro.
+        """
         replacements = (
             ("á", "a"),
             ("é", "e"),
@@ -260,6 +249,9 @@ class Turismo(Fuente):
         return s
     
     def leerMunicipiosCSV2(self):
+        """
+        Lee el archivo y devuelve el DataFrame
+        """
         dir = os.path.dirname(__file__)
         url = os.path.join(dir, 'datos\MunicipiosCopia.csv')
         muniDF = pd.read_csv(url, sep=';', header=0, encoding="ISO-8859-1",
